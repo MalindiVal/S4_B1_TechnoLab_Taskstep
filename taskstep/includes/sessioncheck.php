@@ -2,6 +2,8 @@
 //Allow sessions
 session_start();  
 header("Cache-control: private");
+require_once("model/SettingDAO.php");
+$settingdb = new SettingDAO();
 
 //Include the configuration
 include("config.php");
@@ -13,26 +15,22 @@ if ($mysqli->connect_error) {
 }
 
 //Grab the setting for "sessions"
-$result = $mysqli->query("SELECT value FROM settings WHERE setting='sessions'");
-if ($result->num_rows > 0)
-{
-	//Select the results of the query in the format (query,row,column)
-	$r = $result->fetch_row();
+//Select the results of the query in the format (query,row,column)
+$session = $settingdb->getSetting('sessions');
 
-	//If sessions are enabled...
-	if ($r[0] == '1')
+//If sessions are enabled...
+if ($session == '1')
+{
+  //and there is no session for "loggedin"...
+	if(!$_SESSION['loggedin'])
 	{
-	  //and there is no session for "loggedin"...
-		if(!$_SESSION['loggedin'])
-		{
-			//...send them packing to the login page
-			$host  = $_SERVER['HTTP_HOST'];
-			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-			$extra = 'login.php';
-			session_write_close();
-			header("Location: http://$host$uri/$extra");
-			exit;
-		}
+		//...send them packing to the login page
+		$host  = $_SERVER['HTTP_HOST'];
+		$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+		$extra = 'login.php';
+		session_write_close();
+		header("Location: http://$host$uri/$extra");
+		exit;
 	}
 }
 ?>
