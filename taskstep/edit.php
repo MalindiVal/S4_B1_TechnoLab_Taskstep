@@ -1,6 +1,7 @@
 <?php
 include("includes/header.php");
 require_once("model/SectionDAO.php");
+require_once("model/ContextDAO.php");
 $clear = false;
 
 if ( isset($_GET["id"]) )	//If 'id' is set in the request URL, then the user is editing a task and we need to grab its data from the database
@@ -94,13 +95,12 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 	<td>
 		<select name='context' size="7">
 		<?php
-		$result2 = $mysqli->query("SELECT * FROM contexts ORDER BY title");
-		while($r=$result2->fetch_array())
-		{
-			$context2=$r["title"];
-			$selected = ($context == $context2) ? 'selected="selected"' : '';
-			echo "<option value='$context2' $selected>$context2</option>\n";
-		} 
+		$contextdb = new ContextDAO();
+		$contexts = $contextdb->getAll();
+		foreach($contexts as $s){
+			$selected = ($context == $s->getTitle()) ? 'selected="selected"' : '';
+			echo "<option value='".$s->getTitle()."' $selected>" . $s->getTitle() . "</option>\n";
+		}
 		?>
 		</select>
 	</td>
