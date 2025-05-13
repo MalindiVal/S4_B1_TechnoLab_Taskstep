@@ -1,14 +1,21 @@
 <?php
+require_once("./Config/Config.php");
 abstract class Database{
     private PDO $pdo;
     public function __construct(){
         try {
-            $this->pdo  = new PDO("mysql:host=localhost;dbname=grp-472_s4_sae;charset=utf8","grp-472","5S2qmfJa",[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+            $this->pdo = new PDO(
+                Config::get('dsn'),
+                Config::get('user'),
+                Config::get('pass'),
+                [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+            );
         }
         catch (PDOException $e) {
             die('Erreur : ' . $e->getMessage());
             throw new PDOException("Database connection failed");
         }
+        
     }
 
     /**
@@ -43,6 +50,8 @@ abstract class Database{
         $req = $this->pdo->prepare($req, $params);
         
         foreach ($params as $key => $value) {
+            var_dump($params);
+            var_dump($key);
             $req->bindValue($key, $value);
         }
 
