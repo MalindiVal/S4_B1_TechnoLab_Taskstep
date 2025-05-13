@@ -2,6 +2,7 @@
 include("includes/header.php");
 require_once("model/SectionDAO.php");
 require_once("model/ContextDAO.php");
+require_once("model/ProjectDAO.php");
 $clear = false;
 
 if ( isset($_GET["id"]) )	//If 'id' is set in the request URL, then the user is editing a task and we need to grab its data from the database
@@ -107,12 +108,11 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 	<td>
 		<select name='project' size="7">
 		<?php
-		$result3 = $mysqli->query("SELECT * FROM projects ORDER BY title");
-		while($r=$result3->fetch_array())
-		{
-			$project2=$r["title"];
-			$selected = ($project == $project2) ? 'selected="selected"' : '';
-			echo "<option value='$project2' $selected>$project2</option>\n";
+		$projectdb = new ProjectDAO();
+		$projects = $projectdb->getAll();
+		foreach($projects as $s){
+			$selected = ($project == $s->getTitle()) ? 'selected="selected"' : '';
+			echo "<option value='".$s->getTitle() ."' $selected >".$s->getTitle()."</option>\n";
 		}
 		?>
 		</select>
