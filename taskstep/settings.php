@@ -1,6 +1,7 @@
 <?php
 include("includes/header.php");
-
+require_once("model/SettingDAO.php");
+$settingdb = new SettingDAO();
 //"Settings Updated" block
 if (isset($_POST["submit"]))
 {
@@ -8,12 +9,12 @@ if (isset($_POST["submit"]))
 	$settingsstatus = '';
 	
 	$tips = (isset($_POST['tips'])) ? 1 : 0;
-	$result = $mysqli->query("UPDATE settings SET value='$tips' WHERE setting='tips'");
+	$settingdb->setSetting('tips',$tips);
 	if ($tips) $settingsstatus .= $l_cp_display_tipson;
 	else $settingsstatus .= $l_cp_display_tipsoff;
 
 	$style = $_POST['style'];
-	$result = $mysqli->query("UPDATE settings SET value='$style' WHERE setting='style'");
+	$settingdb->setSetting('style',$style);
 	if ($style == 'none') $settingsstatus .= "<br />".$l_cp_display_defaultcss;
 	else $settingsstatus .= "<br />".$style;
 	
@@ -24,18 +25,15 @@ if (isset($_POST["submit"]))
 else $updatedblock = '';
 
 //Show/Hide Tips checkbox
-$result = $mysqli->query("SELECT * FROM settings WHERE setting='tips'");
-while ($r=$result->fetch_array())
-{
-	$checked = ($r['value']) ? ' checked="checked"' : '';
+	
+	$tipsON = intval($settingdb->getSetting('tips'));
+	$checked = ($tipsON) ? ' checked="checked"' : '';
 	$tipsfield = $l_cp_display_tips.": <input type='checkbox' value='Display tips' name='tips'$checked />";
-}
 
 //Stylesheets code
-$result = $mysqli->query("SELECT * FROM settings WHERE setting='style'");
-$styleoptions = '';
-while($r=$result->fetch_array())
-{
+	$style = $settingdb->getSetting('style');
+	$styleoptions = '';
+
 	//Define the folder and path
 	$folder="styles";
 	$path = $_SERVER['DOCUMENT_ROOT']."/".$folder;
@@ -49,27 +47,22 @@ while($r=$result->fetch_array())
 			{
 				if (substr($file,-3)=='css')	//...if it is CSS...
 				{
-					$selected = ($r['value'] == $file) ? ' selected="selected"' : '';
+					$selected = ($style == $file) ? ' selected="selected"' : '';
 					$styleoptions .= "<option value='$file'$selected>$file</option>";	//...echo the file name as an option
 				}
 			}
 		}
 	}
 	closedir($handle); 
-}
 
 //Password code
 if (isset($_POST["passchanges"]))
 {
 	//Get the salt
-	$salt_result = $mysqli->query("SELECT value FROM settings WHERE setting='salt'");
-	$r = $salt_result->fetch_row();
-	$salt = $r[0];
+	$salt = $settingdb->getSetting('salt');
 
 	//Get the hashed password
-	$pass_result = $mysqli->query("SELECT value FROM settings WHERE setting='password'");
-	$r = $pass_result->fetch_row();
-	$oldpass = $r[0];
+	$oldpass = $settingdb->getSetting('password');
 
 	//Massive error trapping going on here
 	$submitted = md5($_POST['currentpass']);
@@ -83,20 +76,18 @@ if (isset($_POST["passchanges"]))
 			$newsalt = substr(uniqid(rand(), true), 0, 5);
 			$secure_password = md5($_POST['newpass1']);
 			$newtotal = $secure_password.$newsalt;
-			$mysqli->query("UPDATE settings SET value='$newsalt' WHERE setting='salt'");
-			$mysqli->query("UPDATE settings SET value='$newtotal' WHERE setting='password'");
+			$settingdb->setSetting('salt',$newsalt);
+			$settingdb->setSetting('password',$newtotal);
 		}
 		$svalue = (isset($_POST['sessions'])) ? 1 : 0;
-		$result = $mysqli->query("UPDATE settings SET value='$svalue' WHERE setting='sessions'");
+		$settingdb->setSetting('sessions',$svalue);
 		$pwmessage = $l_cp_password_updated;
 	}
 }
 else $pwmessage = '';
 
 //"Use Passwords" checkbox
-$use_result = $mysqli->query("SELECT value FROM settings WHERE setting='sessions'");
-$res = $use_result->fetch_row();
-$use = $res[0];
+$use = $settingdb->getSetting('sessions');
 $checked = ($use) ? ' checked="checked"' : '';
 $usepwfield = $l_cp_password_use.": <input type='checkbox' value='Sessions' name='sessions'$checked />";
 
