@@ -1,5 +1,8 @@
 <?php
 include("includes/header.php");
+require_once("model/SectionDAO.php");
+require_once("model/ContextDAO.php");
+require_once("model/ProjectDAO.php");
 
 $type = (isset($_GET['type'])) ? $_GET['type'] : '';
 $getcmd = (isset($_GET['cmd'])) ? $_GET['cmd'] : '';
@@ -39,13 +42,36 @@ if(!$getcmd || $getcmd == "delete")
 {
 	echo "<p>".$l_dbp_l2[$type]."</p>";
 	echo "<div id='editlist'><a href='edit_types.php?type=$type&amp;cmd=add' class='listlinkssmart'><img src='images/add.png' alt='' /> ".$l_dbp_add[$type]."</a>";
-	$result = $mysqli->query("SELECT * FROM {$type}s ORDER BY title");
-	while($r=$result->fetch_array())
-	{
-		$title=$r["title"];
-		$id=$r["id"];
-		echo "<a href='edit_types.php?type=$type&amp;cmd=edit&amp;id=$id' class='listlinkssmart'><img src='images/pencil.png' alt='' /> $title</a>";
-	}	
+	
+	if ($type == "context"){
+		$contextdb = new ContextDAO();
+		$contexts = $contextdb->getAll();
+		
+		
+		foreach($contexts as $s){
+			//grab the title and the ID of the project/context
+			$title=$s->getTitle();
+			$id=$s->getId();
+	
+			//make the title a link
+			echo "<a href='edit_types.php?type=$type&amp;cmd=edit&amp;id=$id' class='listlinkssmart'><img src='images/pencil.png' alt='' /> $title</a>";
+		}
+	}
+	
+	if ($type == "project"){
+		$contextdb = new ProjectDAO();
+		$contexts = $contextdb->getAll();
+		
+		foreach($contexts as $s){
+			//grab the title and the ID of the project/context
+			$title=$s->getTitle();
+			$id=$s->getId();
+	
+			//make the title a link
+			echo "<a href='edit_types.php?type=$type&amp;cmd=edit&amp;id=$id' class='listlinkssmart'><img src='images/pencil.png' alt='' /> $title</a>";
+		}
+	}
+		
 	echo "</div>";
 }
 	
@@ -65,12 +91,29 @@ elseif($getcmd == "edit")
 	
 	//DEBUG echo "This would produce an edit form for the context with id $editid <br />";
 	
-	$editquery = $mysqli->query("SELECT * FROM {$type}s WHERE id=$editid");
-	while($r=$editquery->fetch_array())
-	{
-		$edittitle = $r["title"];
-		$editid2 = $r["id"];
+	if ($type == "context"){
+		$contextdb = new ContextDAO();
+		$contexts = $contextdb->getById($editid);
+		
+		
+		foreach($contexts as $s){
+			//grab the title and the ID of the project/context
+			$title=$s->getTitle();
+			$id=$s->getId();
+		}
 	}
+	
+	if ($type == "project"){
+		$contextdb = new ProjectDAO();
+		$contexts = $contextdb->getById($editid);
+		
+		foreach($contexts as $s){
+			//grab the title and the ID of the project/context
+			$edittitle=$s->getTitle();
+			$editid2=$s->getId();
+		}
+	}
+
 	//DEBUG echo "The MySQL code has matched this to the context with the following: <br />";
 	//DEBUG echo "ID: $editid2 <br />";
 	//DEBUG echo "Title: $edittitle <br />";
