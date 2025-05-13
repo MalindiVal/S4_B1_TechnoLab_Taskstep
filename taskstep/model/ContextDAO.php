@@ -15,4 +15,13 @@ class ContextDAO extends Database
         return $tab;
         
     }
+
+    public function getById() : Context{
+        $tab = array();
+        $res= $this->queryOne("SELECT id,title FROM contexts Where id= :section",[":section" => $id]);
+        $context = new Context();
+        $context->hydrate($res);
+        
+        return $context;
+    }
 }

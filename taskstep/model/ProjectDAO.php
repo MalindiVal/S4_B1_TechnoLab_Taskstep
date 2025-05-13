@@ -15,4 +15,13 @@ class ProjectDAO extends Database
         return $tab;
         
     }
+
+    public function getById() : Project {
+        $tab = array();
+        $res= $this->queryOne("SELECT id,title FROM projects Where id= :id",[":id" => $id]);
+        $project = new Project();
+        $project->hydrate($res);
+        
+        return $project;
+    }
 }
