@@ -1,6 +1,6 @@
 <?php
 include("includes/header.php");
-
+require_once("model/SectionDAO.php");
 $clear = false;
 
 if ( isset($_GET["id"]) )	//If 'id' is set in the request URL, then the user is editing a task and we need to grab its data from the database
@@ -79,14 +79,15 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 <tr>
 	<td></td>
 	<td>
+		<?php var_dump($section); ?>
 		<select name='section' size="7">
 		<?php
-		$result4 = $mysqli->query("SELECT * FROM sections ORDER BY id");
-		foreach($l_sectionlist as $key=>$value)
-		{
-			$selected = ($section == $key) ? 'selected="selected"' : '';
-			echo "<option value='$key' $selected>$value</option>\n";
-		}
+			$sectiondb = new SectionDAO();
+			$sections = $sectiondb->getAll();
+			foreach($sections as $s){
+				$selected = ($section == $s->getFancyTitle()) ? 'selected="selected"' : '';
+				echo "<option value='".$s->getTitle() ."' $selected >".$l_sectionlist[$s->getTitle()]."</option>\n";
+			}
 		?>
 		</select>
 	</td>
