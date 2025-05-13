@@ -16,12 +16,16 @@ class ProjectDAO extends Database
         
     }
 
-    public function getById() : Project {
+    public function getById(int $id) : Project {
         $tab = array();
         $res= $this->queryOne("SELECT id,title FROM projects Where id= :id",[":id" => $id]);
         $project = new Project();
         $project->hydrate($res);
         
         return $project;
+    }
+
+    public function Delete(int $id){
+        $this->execute("DELETE FROM projects WHERE id= :id",[":id" => $id]);
     }
 }
