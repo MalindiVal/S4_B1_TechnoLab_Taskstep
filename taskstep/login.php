@@ -50,7 +50,11 @@ include("lang/".$language.".php");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>TaskStep - Login</title>
-<?php stylesheet() ?>
+<?php 
+	$db = new SettingDAO();
+	$value = $db->getSetting('style');
+	echo "<link rel='stylesheet' type='text/css' href='styles/".$value."' media='screen' />";
+?>
 </head>
 
 <body>
