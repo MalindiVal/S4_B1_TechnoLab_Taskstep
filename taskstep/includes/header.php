@@ -2,6 +2,7 @@
 include("sessioncheck.php");	//Initialize DB connection and make sure the user is logged in
 include("lang/".$language.".php");
 include("functions.php");
+require_once("./model/SettingDAO.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -9,7 +10,11 @@ include("functions.php");
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>TaskStep</title>
 
-<?php stylesheet() ?>
+<?php 
+	$db = new SettingDAO();
+	$value = $db->getSetting('style');
+	echo "<link rel='stylesheet' type='text/css' href='styles/".$value."' media='screen' />";
+?>
 <link rel="stylesheet" type="text/css" href="styles/system/print.css" media="print" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php selfref_url(); ?>rss.php" /> 
 <?php pagespecific()?>

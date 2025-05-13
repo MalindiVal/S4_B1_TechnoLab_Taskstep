@@ -59,13 +59,6 @@ function pagespecific(){
 	}
 }
 
-function stylesheet(){
-	global $mysqli;
-	$db = new SettingDAO();
-	$value = $db->getSetting('style');
-	echo "<link rel='stylesheet' type='text/css' href='styles/".$value."' media='screen' />";
-}
-
 function display_items($display = '', $section = '', $tid = '', $sortby = ''){
 	global $mysqli, $result, $l_items_do, $l_items_edit, $l_items_del, $l_items_undo, $task_date_format;
 
