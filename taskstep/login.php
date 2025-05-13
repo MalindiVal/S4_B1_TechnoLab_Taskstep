@@ -3,18 +3,18 @@ session_start();
 
 include("config.php");
 include("includes/functions.php");
-
+require_once("model/SettingDAO.php");
+$settingdb = new SettingDAO();
 $mysqli = connect();
 
 $failed = false;
 
 if (isset($_POST["submit"]))
 {
-	$result = $mysqli->query("SELECT setting,value FROM settings WHERE setting='password' OR setting='salt'");
-	while($r=$result->fetch_assoc())
-	{
-		$setting[$r['setting']] = $r['value'];	//Build a multi-dimensional array containing the returned rows
-	}
+	$hashpassword = $settingdb->getSetting('password');
+	$salt = $settingdb->getSetting('salt');
+	$setting['password'] = $hashpassword;	//Build a multi-dimensional array containing the returned rows
+	$setting['salt'] = $salt;
 	
 	$given = $_POST["password"];
 	$secured = md5($given);
@@ -58,12 +58,7 @@ include("lang/".$language.".php");
 <!--Open container-->
 <div id="container">
 <?php
-$result = $mysqli->query("SELECT * FROM settings WHERE setting='sessions'");
-
-while($r3=$result->fetch_array())
-{
-  $sessionssetting = $r3["value"];
-}
+$sessionssetting = $settingdb->getSetting('sessions');
 ?>
 <div id="loginbox">
 <h1><img src="images/icon.png" alt="" /> TaskStep</h1>
