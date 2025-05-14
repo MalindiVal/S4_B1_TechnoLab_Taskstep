@@ -28,9 +28,7 @@ abstract class Database{
         $req = $this->pdo->prepare($req, $params);
         
         // Bind the parameters
-        foreach ($params as $key => $value) {
-            $req->bindValue($key, $value);
-        }
+        $this->binding($req,$params);
         $tab = array();
         $req->execute();
         while($data = $req->fetch(PDO::FETCH_ASSOC))
@@ -42,19 +40,13 @@ abstract class Database{
 
     /**
      * Exécute une requête du type SELECT qui renvoie une seule valeur
-     * @param string $req la requête SQL avec des éventuels paramètres
+     * @param string $sql la requête SQL avec des éventuels paramètres
      * @param array $params les paramètres de la requête
      * @return mixed un tableau associatif avec en clés les noms des colonnes et en valeur les valeur de chaque */
     
-    public function queryOne(string $req, array $params = []):array{
-        $req = $this->pdo->prepare($req, $params);
-        
-        foreach ($params as $key => $value) {
-            var_dump($params);
-            var_dump($key);
-            $req->bindValue($key, $value);
-        }
-
+    public function queryOne(string $sql, array $params = []):array{
+        $req = $this->pdo->prepare($sql, $params);
+        $this->binding($req,$params);
         $req->execute();
         $data = $req->fetch(PDO::FETCH_ASSOC);
 
@@ -63,14 +55,18 @@ abstract class Database{
 
     /**
      * Execute une requête SQL sans valeur de retour
-     * @param string $req la requête (paramétrée)
+     * @param string $sql la requête (paramétrée)
      * @param array $params les paramètres
      */
-    public function execute(string $req,array $params = []) {
-        $req = $this->pdo->prepare($req, $params);
+    public function execute(string $sql,array $params = []) {
+        $req = $this->pdo->prepare($sql, $params);
+        $this->binding($req,$params);
+        $req->execute();
+    }
+
+    private function binding($req,array $params) : void{
         foreach ($params as $key => $value) {
             $req->bindValue($key, $value);
         }
-        $req->execute();
     }
 }
