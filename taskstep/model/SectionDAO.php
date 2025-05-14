@@ -3,6 +3,10 @@ require_once("Database.php");
 require_once("model/Section.php");
 class SectionDAO extends Database
 {
+    /**
+     * Recupère les sections
+     * @return Section[]
+     */
     public function getAll() : array{
         $tab = array();
         $res= $this->queryMany("SELECT id,title,fancytitle FROM sections ORDER BY id");
@@ -16,6 +20,10 @@ class SectionDAO extends Database
         
     }
 
+    /**
+     * Récupère les Sections avec le ration taches terminées/Nombres de taches par section
+     * @return Section[]
+     */
     public function getRatio() : array{
         $tab = array();
         $res= $this->queryMany("SELECT s.title, SUM(IF(i.done = 1, 1, 0)) AS finished, COUNT(i.id) AS total
