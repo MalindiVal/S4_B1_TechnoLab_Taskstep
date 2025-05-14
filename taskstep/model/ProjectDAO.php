@@ -16,6 +16,14 @@ class ProjectDAO extends Database
         
     }
 
+    public function Update(Project $project){
+        $this->execute("UPDATE projects SET title= :title WHERE id= :id ",[":title" => $project->getTitle(), ":id" => $project->getId()]);
+    }
+
+    public function Add(Project $project){
+        $this->execute("INSERT INTO projects (title) VALUES (:title)",[":title" => $project->getTitle()]);
+    }
+
     public function getById(int $id) : Project {
         $tab = array();
         $res= $this->queryOne("SELECT id,title FROM projects Where id= :id",[":id" => $id]);

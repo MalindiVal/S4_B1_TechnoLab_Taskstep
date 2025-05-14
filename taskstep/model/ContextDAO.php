@@ -25,6 +25,15 @@ class ContextDAO extends Database
         return $context;
     }
 
+    public function Add(Context $context){
+        $this->execute("INSERT INTO contexts (title) VALUES (:title)",[":title" => $context->getTitle()]);
+    }
+
+    public function Update(Context $context){
+        var_dump($context);
+        $this->execute("UPDATE contexts SET title= :title WHERE id= :id ",[":title" => $context->getTitle(), ":id" => $context->getId()]);
+    }
+
     public function Delete(int $id){
         $this->execute("DELETE FROM contexts WHERE id= :id",[":id" => $id]);
     }
