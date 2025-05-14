@@ -102,25 +102,19 @@ elseif($getcmd == "edit")
 	
 	if ($type == "context"){
 		$contextdb = new ContextDAO();
-		$contexts = $contextdb->getById($editid);
+		$context = $contextdb->getById($editid);
 		
 		
-		foreach($contexts as $s){
-			//grab the title and the ID of the project/context
-			$title=$s->getTitle();
-			$id=$s->getId();
-		}
+		$title=$context->getTitle();
+		$id=$context->getId();
 	}
 	
 	if ($type == "project"){
-		$contextdb = new ProjectDAO();
-		$contexts = $contextdb->getById($editid);
+		$projectdb = new ProjectDAO();
+		$project = $projectdb->getById($editid);
 		
-		foreach($contexts as $s){
-			//grab the title and the ID of the project/context
-			$edittitle=$s->getTitle();
-			$editid2=$s->getId();
-		}
+		$title=$project->getTitle();
+		$id=$project->getId();
 	}
 
 	//DEBUG echo "The MySQL code has matched this to the context with the following: <br />";
@@ -128,16 +122,16 @@ elseif($getcmd == "edit")
 	//DEBUG echo "Title: $edittitle <br />";
 ?>
 	<form action="edit_types.php?type=<?php echo $type ?>" method="post">
-		<input type="hidden" name="id" value="<?php echo $editid2; ?>" />
-		<input type="hidden" name="oldtitle" value="<?php echo $edittitle; ?>" />
-		<?php echo $l_forms_title ?>&nbsp;<input type="text" name="title" value="<?php echo $edittitle; ?>" size="30" /><br /><br />
+		<input type="hidden" name="id" value="<?php echo $id; ?>" />
+		<input type="hidden" name="oldtitle" value="<?php echo $title; ?>" />
+		<?php echo $l_forms_title ?>&nbsp;<input type="text" name="title" value="<?php echo $title; ?>" size="30" /><br /><br />
 		<input type="hidden" name="cmd" value="edit">
 		<input type="checkbox" name="tasks" checked>&nbsp;<?php echo $l_msg_updateassoctasks; ?><br />
 		<br />
 		<input type="submit" name="submit" value="<?php echo $l_dbp_edit[$type]; ?>" />
 	</form>
 	<?php
-	echo "<br /><a href='edit_types.php?type=$type&amp;cmd=delete&amp;id=$editid2'><img src='images/bin_empty.png' alt='' /> ".$l_dbp_del[$type]."</a>";
+	echo "<br /><a href='edit_types.php?type=$type&amp;cmd=delete&amp;id=$id'><img src='images/bin_empty.png' alt='' /> ".$l_dbp_del[$type]."</a>";
 	}
 
 //Add form

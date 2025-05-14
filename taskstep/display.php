@@ -1,6 +1,7 @@
 <?php
 include("includes/header.php");
-
+require_once("model/ContextDAO.php");
+require_once("model/ProjectDAO.php");
 //This is where all the action happens. Most php files in TaskStep link here in some form or another, so best advice is DON'T CHANGE IT!
 
 if (isset($_GET["cmd"]))
@@ -50,10 +51,18 @@ switch ($display)
 		$noresultsurl = '?section=' . $section;
 	break;
 	case "project":
+		$projectdb = new ProjectDAO();
+		$idresult = $projectdb->getById($tid);
+		$disptitle = $idresult->getTitle();
+		$result = $mysqli->query("SELECT * FROM items WHERE project='$disptitle' ORDER BY $sortby");
+		echo "<div id='sectiontitle'><h1>$disptitle</h1></div>";
+		$noresultsurl = '?tid=' . $tid;
+	break;
 	case "context":
-		$idresult = $mysqli->query("SELECT title FROM {$display}s WHERE id='$tid'");
-		$disptitle = $idresult->fetch_row()[0];
-		$result = $mysqli->query("SELECT * FROM items WHERE $display='$disptitle' ORDER BY $sortby");
+		$contextdb = new ContextDAO();
+		$idresult = $contextdb->getById($tid);
+		$disptitle = $idresult->getTitle();
+		$result = $mysqli->query("SELECT * FROM items WHERE context='$disptitle' ORDER BY $sortby");
 		echo "<div id='sectiontitle'><h1>$disptitle</h1></div>";
 		$noresultsurl = '?tid=' . $tid;
 	break;
