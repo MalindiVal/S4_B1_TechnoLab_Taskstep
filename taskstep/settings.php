@@ -1,7 +1,9 @@
 <?php
 include("includes/header.php");
 require_once("model/SettingDAO.php");
+require_once("model/ItemDAO.php");
 $settingdb = new SettingDAO();
+$itemdb = new ItemDAO();
 //"Settings Updated" block
 if (isset($_POST["submit"]))
 {
@@ -95,9 +97,9 @@ $usepwfield = $l_cp_password_use.": <input type='checkbox' value='Sessions' name
 if (!isset($_GET['delete'])) $purgetext = '<a href="#" onclick="check()">' . $l_cp_tools_purge . '</a>';
 else
 {
-	$del_rows = $mysqli->query("SELECT * FROM items WHERE done=1");
-	$num_affected = $del_rows->num_rows;
-	$mysqli->query("DELETE FROM items WHERE done=1");
+	$del_rows = $itemdb->getChecked(true);
+	$num_affected = count($del_rows);
+	$itemdb->PurgeDoneItem();
 	$purgetext = $num_affected.$l_cp_tools_purged;
 }
 

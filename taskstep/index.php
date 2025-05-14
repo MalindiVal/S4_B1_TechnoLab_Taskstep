@@ -1,6 +1,8 @@
 <?php 
 include("includes/header.php");
 require_once("model/SettingDAO.php");
+require_once("model/ItemDAO.php");
+$itemdb = new ItemDAO();
 $settingdb = new SettingDAO();
 ?>
 
@@ -16,8 +18,8 @@ $settingdb = new SettingDAO();
 	?>
 	<p><img src="images/chart_bar.png" alt="" />&nbsp;
 	<?php
-		$tasktotal = $mysqli->query("SELECT * FROM items WHERE done='0'");
-		$numtasks = $tasktotal->num_rows;
+		$tasktotal = $itemdb->getChecked(false);
+		$numtasks = count($tasktotal);
 		if($numtasks == 1) echo $l_index_1task;
 		else echo $l_index_mtasks.$numtasks.$l_index_mtaske;
 	?>
