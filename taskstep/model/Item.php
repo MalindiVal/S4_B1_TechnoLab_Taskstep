@@ -181,16 +181,16 @@ class Item{
             $this->url = $data["url"];
         }
 
-        if (isset($data["contextId"])) {
-            $this->contextId = intval($data["contextId"]);
+        if (isset($data["context_id"])) {
+            $this->contextId = intval($data["context_id"]);
         }
 
-        if (isset($data["sectionId"])) {
-            $this->sectionId = intval($data["sectionId"]);
+        if (isset($data["section_id"])) {
+            $this->sectionId = intval($data["section_id"]);
         }
 
-        if (isset($data["projectId"])) {
-            $this->projectId = intval($data["projectId"]);
+        if (isset($data["project_id"])) {
+            $this->projectId = intval($data["project_id"]);
         }
 
         if (isset($data["user_id"])) {

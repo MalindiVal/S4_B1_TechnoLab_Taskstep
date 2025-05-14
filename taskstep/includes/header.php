@@ -64,7 +64,7 @@ require_once("./model/SectionDAO.php");
 				$percentage = ($total > 0) ? round((100 * $finished) / $total) : 0;
 				$label = htmlspecialchars($l_sectionlist[$result->getTitle()] ?? $result->getTitle(), ENT_QUOTES, 'UTF-8');
 			?>
-			<a class="<?= $title ?>" href="display.php?display=section&amp;section=<?= urlencode($result->getTitle()) ?>&amp;sort=date">
+			<a class="<?= $title ?>" href="display.php?display=section&amp;section=<?= urlencode($result->getTitle()) ?>&amp;sort=date&tid=<?= $result->getId() ?> ">
 				<?= $label ?>
 				<div>(<?= $finished ?> / <?= $total ?>)</div>
 				<div><?= $percentage ?>%</div>

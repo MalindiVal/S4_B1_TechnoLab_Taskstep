@@ -26,9 +26,9 @@ class SectionDAO extends Database
      */
     public function getRatio() : array{
         $tab = array();
-        $res= $this->queryMany("SELECT s.title, SUM(IF(i.done = 1, 1, 0)) AS finished, COUNT(i.id) AS total
+        $res= $this->queryMany("SELECT s.id, s.title, SUM(IF(i.done = 1, 1, 0)) AS finished, COUNT(i.id) AS total
 			FROM sections s 
-			LEFT JOIN items i ON s.title = i.section 
+			LEFT JOIN items i ON s.id = i.section_id 
 			GROUP BY s.title 
 			ORDER BY s.id"
         );

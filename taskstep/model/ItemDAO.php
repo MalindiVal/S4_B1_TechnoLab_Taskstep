@@ -8,24 +8,40 @@ class ItemDAO extends Database
      * @param string|null $orderby Nom de la colonne pour le tri
      * @return array Tableau d'objets Item
      */
-    public function getAll(string $orderby): array {
-        $tab = array();
+    public function getAll(string $type = null, int $id = null, string $orderby): array {
+        $tab = [];
         $sql = "SELECT * FROM items";
-
-        $allowedColumns = ["id", "title", "done"]; // à adapter selon ton schéma
-        if ($orderby && in_array($orderby, $allowedColumns)) {
-            $sql .= " ORDER BY " . $orderby;
+        $params = [];
+    
+        $allowedTypes = ["section", "project", "context", "today"];
+        $allowedOrderBy = ["id", "title", "done", "date"];
+    
+        if ($type !== "all" && in_array($type, $allowedTypes)) {
+            if ($type !== "today") {
+                $sql .= " WHERE {$type}_id = :id";
+                $params[':id'] = $id;
+            } else {
+                $today = date("Y-m-d");
+                $sql .= " WHERE end_date = :today";
+                $params[':today'] = $today;
+            }
         }
-
-        $res = $this->queryMany($sql);
+    
+        if ($orderby && in_array($orderby, $allowedOrderBy)) {
+            $sql .= " ORDER BY {$orderby}";
+        }
+    
+        $res = $this->queryMany($sql, $params);
         foreach ($res as $s) {
             $item = new Item();
             $item->hydrate($s);
+            var_dump($s);
             $tab[] = $item;
         }
-
+    
         return $tab;
     }
+    
 
     /**
      * Récupère un item selon son identifiant

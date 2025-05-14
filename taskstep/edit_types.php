@@ -4,6 +4,8 @@ require_once("model/ContextDAO.php");
 require_once("model/ProjectDAO.php");
 require_once("model/Context.php");
 require_once("model/Project.php");
+require_once("model/ItemDAO.php");
+$itemdb = new ItemDAO();
 $contextdb = new ContextDAO();
 $projectdb = new ProjectDAO();
 $type = (isset($_GET['type'])) ? $_GET['type'] : '';
