@@ -2,6 +2,8 @@
 include("includes/header.php");
 require_once("model/ContextDAO.php");
 require_once("model/ProjectDAO.php");
+require_once("model/ItemDAO.php");
+$itemdb = new ItemDAO();
 //This is where all the action happens. Most php files in TaskStep link here in some form or another, so best advice is DON'T CHANGE IT!
 
 if (isset($_GET["cmd"]))
@@ -10,17 +12,14 @@ if (isset($_GET["cmd"]))
 	switch ($_GET["cmd"])
 	{
 		case "delete":
-		    $sql = "DELETE FROM items WHERE id=$id";
-		    $result = $mysqli->query($sql);
+			$itemdb->Delete($id);
 		break;
 		case "do":
-		  	$sql = "UPDATE items SET done=1 WHERE id=$id";
-		  	$result = $mysqli->query($sql);
+			$itemdb->setChecked(true,$id);
 		  	echo "<div id='updated' class='fade'><img src='images/accept.png' alt='' /> ".$l_msg_itemdo."</div>";
 		break;
 		case "undo":
-		  	$sql = "UPDATE items SET done=0 WHERE id=$id";
-		  	$result = $mysqli->query($sql);
+			$itemdb->setChecked(false,$id);
 		  	echo "<div id='deleted' class='fade'><img src='images/undone.png' alt='' /> ".$l_msg_itemundo."</div>";
 		break;  
 		default:	//Error trap it so that if a dodgy command is given it doesn't drop dead
