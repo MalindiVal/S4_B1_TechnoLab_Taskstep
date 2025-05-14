@@ -1,9 +1,11 @@
 <?php
 include("includes/header.php");
-require_once("model/SectionDAO.php");
 require_once("model/ContextDAO.php");
 require_once("model/ProjectDAO.php");
-
+require_once("model/Context.php");
+require_once("model/Project.php");
+$contextdb = new ContextDAO();
+$projectdb = new ProjectDAO();
 $type = (isset($_GET['type'])) ? $_GET['type'] : '';
 $getcmd = (isset($_GET['cmd'])) ? $_GET['cmd'] : '';
 $postcmd = (isset($_POST['cmd'])) ? $_POST['cmd'] : '';
@@ -13,8 +15,20 @@ if($postcmd == "edit" && isset($_POST["submit"]))
 {
 	$eid = $_POST["id"];
 	$enewtitle = addslashes($_POST["title"]);
-	$updatequery = $mysqli->query("UPDATE {$type}s SET title='$enewtitle' WHERE id=$eid");
-	if($updatequery) echo "<div id='updated' class='fade'><img src='images/pencil_go.png' alt=''/> ".$l_msg_updated[$type]."</div>";
+	if ($type == "context"){
+		$context = $contextdb->getById($eid);
+		$context->setTitle($enewtitle);
+		$contextdb->Update($context);
+	}
+	
+	if ($type == "project"){
+		$project = $projectdb->getById($eid);
+		$project->setTitle($enewtitle);
+		$projectdb->Update($project);
+	}
+	
+	
+	echo "<div id='updated' class='fade'><img src='images/pencil_go.png' alt=''/> ".$l_msg_updated[$type]."</div>";
 	if($_POST["tasks"]){
 		$eoldtitle = $_POST["oldtitle"];
 		$mysqli->query("UPDATE items SET $type='$enewtitle' WHERE $type='$eoldtitle'");
@@ -25,7 +39,19 @@ if($postcmd == "edit" && isset($_POST["submit"]))
 if($postcmd == "add" && isset($_POST["add"]))
 {
 	$title = addslashes($_POST["newtitle"]);
-	$result = $mysqli->query("INSERT INTO {$type}s (id,title) VALUES ('NULL', '$title')");
+
+	if ($type == "context"){
+		$context = new Context();
+		$context->setTitle($title);
+		$contextdb->Add($context);
+	}
+	
+	if ($type == "project"){
+		$project = new Project();
+		$project->setTitle($title);
+		$projectdb->Add($project);
+	}
+	
 	echo "<div id='updated' class='fade'><img src='images/add.png' alt=''/> ".$l_msg_added[$type]."</div>";
 }
 
@@ -43,7 +69,7 @@ if($getcmd=="delete")
 		$projectdb->Delete($delid);
 	}
 
-    if($delquery) echo "<div id='deleted' class='fade'><img src='images/bin.png' alt='' /> ".$l_msg_deleted[$type]."</div>";
+    echo "<div id='deleted' class='fade'><img src='images/bin.png' alt='' /> ".$l_msg_deleted[$type]."</div>";
 }
 
 //if the GET cmd has not been initialized, display a list of everything
@@ -137,11 +163,11 @@ elseif($getcmd == "edit")
 //Add form
 elseif($getcmd == "add")
 {?>
-	<form action="edit_types.php?type=<?php echo $type ?>" method="post">
-		<?php echo $l_forms_title ?>&nbsp;<input type="text" name="newtitle" value="<?php echo $l_dbp_new[$type];?>" size="30" /><br />
+	<form action="edit_types.php?type=<?= $type ?>" method="post">
+		<?= $l_forms_title ?>&nbsp;<input type="text" name="newtitle" value="<?= $l_dbp_new[$type];?>" size="30" /><br />
 		<br />
 		<input type="hidden" name="cmd" value="add" />
-		<input type="submit" name="add" value="<?php echo $l_dbp_add[$type]; ?>" />
+		<input type="submit" name="add" value="<?= $l_dbp_add[$type]; ?>" />
 	</form>
 <?php
 }

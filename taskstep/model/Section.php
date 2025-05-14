@@ -4,6 +4,8 @@ class Section{
     private int $id;
     private string $title;
     private string $fancytitle;
+    private int $total;
+    private int $finished;
 
     public function getId(): int {
         return $this->id;
@@ -15,6 +17,14 @@ class Section{
 
     public function getFancyTitle(): string {
         return $this->fancytitle;
+    }
+
+    public function getTotal(): int {
+        return $this->total;
+    }
+
+    public function getFinished(): int {
+        return $this->finished;
     }
 
     public function setTitle(string $title): void {
@@ -36,6 +46,14 @@ class Section{
 
         if (isset($data["fancytitle"])){
             $this->fancytitle = $data["fancytitle"];
+        }
+
+        if (isset($data["total"])){
+            $this->total = $data["total"];
+        }
+
+        if (isset($data["finished"])){
+            $this->finished = $data["finished"];
         }
     }
 }

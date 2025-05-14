@@ -35,6 +35,7 @@ $sortby = (isset($_GET["sort"])) ? $_GET["sort"] : 'date';
 $section = (isset($_GET["section"])) ? $_GET["section"] : '';
 $tid = (isset($_GET["tid"])) ? $_GET["tid"] : '';
 
+$title = "";
 switch ($display)
 {
 	case "section":
@@ -46,7 +47,7 @@ switch ($display)
 			}
 		}
 		$result = $mysqli->query("SELECT * FROM items WHERE section='$currentsection' ORDER BY $sortby");
-		echo "<div id='sectiontitle'><h1>$sectiontitle</h1></div>";
+		$title  =$sectiontitle;
 		$noresultsurl = '?section=' . $section;
 	break;
 	case "project":
@@ -54,7 +55,7 @@ switch ($display)
 		$idresult = $projectdb->getById($tid);
 		$disptitle = $idresult->getTitle();
 		$result = $mysqli->query("SELECT * FROM items WHERE project='$disptitle' ORDER BY $sortby");
-		echo "<div id='sectiontitle'><h1>$disptitle</h1></div>";
+		$title = $disptitle;
 		$noresultsurl = '?tid=' . $tid;
 	break;
 	case "context":
@@ -62,24 +63,30 @@ switch ($display)
 		$idresult = $contextdb->getById($tid);
 		$disptitle = $idresult->getTitle();
 		$result = $mysqli->query("SELECT * FROM items WHERE context='$disptitle' ORDER BY $sortby");
-		echo "<div id='sectiontitle'><h1>$disptitle</h1></div>";
+		$title = $disptitle;
 		$noresultsurl = '?tid=' . $tid;
 	break;
 	case "all":
 		$result = $mysqli->query("SELECT * FROM items ORDER BY $sortby");
-		echo "<div id='sectiontitle'><h1>".$l_nav_allitems."</h1></div>";
+		$title = $l_nav_allitems;
 		$noresultsurl = '';
 	break;
 	case "today":
 		$today = date("Y-m-d");
 		$todayf = date($menu_date_format);
 		$result = $mysqli->query("SELECT * FROM items WHERE date='$today' ORDER BY $sortby");
-		echo "<div id='sectiontitle'><h1>".$l_nav_today.": $todayf</h1></div>";
+		$title = $l_nav_today.": ". $todayf.
 		$noresultsurl = '';
 	break;
 }
-$numberrows = $result->num_rows;
+?>
+
+<div id='sectiontitle'><h1><?=$title ?></h1></div>
+
+<?php
+
 sort_form($display, $section, $tid, $sortby);
+$numberrows = $result->num_rows;
 if ($numberrows == 0)
 {
 	$message = ( $display == "today" ) ? $l_msg_notoday : $l_msg_noitems;

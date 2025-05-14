@@ -11,7 +11,7 @@ $type = (isset($_GET['type'])) ? $_GET['type'] : '';
 
 <div id='editlist'>
 	<p><?= $l_dbp_l1[$type] ?></p>
-	<a href='edit_types.php?type=$type&amp;cmd=add' class='listlinkssmart'><img src='images/add.png' alt='' /> <?= $l_dbp_add[$type] ?></a>
+	<a href='edit_types.php?type=<?= $type?>&cmd=add' class='listlinkssmart'><img src='images/add.png' alt='' /> <?= $l_dbp_add[$type] ?></a>
 
 	<?php
 		if ($type == "context"){
@@ -33,6 +33,6 @@ $type = (isset($_GET['type'])) ? $_GET['type'] : '';
 				<a href="display.php?display=<?= $type?>&tid=<?= $id ?>&sort=date" class='listlinkssmart'><img src='images/<?= $type ?>.png' alt='' /> <?= $title ?></a>
 			<?php endforeach; ?>
 <a href="edit_types.php?type=<?= $type?>" class='listlinkssmart'><img src='images/<?= $type ?>_edit.png' alt='' /> <?= $l_dbp_edit[$type] ?></a></div>
-
+<?php
 include('includes/footer.php');
 ?>
