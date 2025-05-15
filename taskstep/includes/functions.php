@@ -1,4 +1,5 @@
 <?php
+require_once("./model/SettingDAO.php");
 function connect(){
 	global $mysqli, $server, $user, $password, $db;
 
@@ -55,15 +56,6 @@ function pagespecific(){
 				}
 			}</script>';
 	break;
-	}
-}
-
-function stylesheet(){
-	global $mysqli;
-	$result = $mysqli->query("SELECT * FROM settings WHERE setting='style'");
-	while($r = $result->fetch_array())
-	{
-		echo "<link rel='stylesheet' type='text/css' href='styles/".$r['value']."' media='screen' />";	//Use the stylesheet selected in the database
 	}
 }
 

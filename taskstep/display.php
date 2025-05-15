@@ -1,25 +1,27 @@
 <?php
 include("includes/header.php");
-
+require_once("model/SectionDAO.php");
+require_once("model/ContextDAO.php");
+require_once("model/ProjectDAO.php");
+require_once("model/ItemDAO.php");
+$itemdb = new ItemDAO();
 //This is where all the action happens. Most php files in TaskStep link here in some form or another, so best advice is DON'T CHANGE IT!
 
 if (isset($_GET["cmd"]))
 {
-	$id = $_GET["id"];
+	$id = intval($_GET["id"]);
 	switch ($_GET["cmd"])
 	{
 		case "delete":
-		    $sql = "DELETE FROM items WHERE id=$id";
-		    $result = $mysqli->query($sql);
+			var_dump($id);
+			$itemdb->Delete($id);
 		break;
 		case "do":
-		  	$sql = "UPDATE items SET done=1 WHERE id=$id";
-		  	$result = $mysqli->query($sql);
+			$itemdb->setChecked(true,$id);
 		  	echo "<div id='updated' class='fade'><img src='images/accept.png' alt='' /> ".$l_msg_itemdo."</div>";
 		break;
 		case "undo":
-		  	$sql = "UPDATE items SET done=0 WHERE id=$id";
-		  	$result = $mysqli->query($sql);
+			$itemdb->setChecked(false,$id);
 		  	echo "<div id='deleted' class='fade'><img src='images/undone.png' alt='' /> ".$l_msg_itemundo."</div>";
 		break;  
 		default:	//Error trap it so that if a dodgy command is given it doesn't drop dead
@@ -33,8 +35,9 @@ if (isset($_GET["cmd"]))
 $display = (isset($_GET["display"])) ? $_GET["display"] : '';
 $sortby = (isset($_GET["sort"])) ? $_GET["sort"] : 'date';
 $section = (isset($_GET["section"])) ? $_GET["section"] : '';
-$tid = (isset($_GET["tid"])) ? $_GET["tid"] : '';
+$tid = (isset($_GET["tid"])) ? intval($_GET["tid"]) : 0;
 
+$title = "";
 switch ($display)
 {
 	case "section":
@@ -45,39 +48,116 @@ switch ($display)
 				$sectiontitle = $value;
 			}
 		}
-		$result = $mysqli->query("SELECT * FROM items WHERE section='$currentsection' ORDER BY $sortby");
-		echo "<div id='sectiontitle'><h1>$sectiontitle</h1></div>";
+		
+		$result = $itemdb->getAll($display,$tid,$sortby); 
+		$sdb = new SectionDAO(); 
+		$title  = $sdb->getById($tid)->getTitle();
 		$noresultsurl = '?section=' . $section;
 	break;
 	case "project":
+		$projectdb = new ProjectDAO();
+		$idresult = $projectdb->getById($tid);
+		$disptitle = $idresult->getTitle();
+		$projectid = $idresult->getId();
+		$result = $itemdb->getAll($display,$tid,$sortby); 
+		$title = $disptitle;
+		$noresultsurl = '?tid=' . $tid;
+	break;
 	case "context":
-		$idresult = $mysqli->query("SELECT title FROM {$display}s WHERE id='$tid'");
-		$disptitle = $idresult->fetch_row()[0];
-		$result = $mysqli->query("SELECT * FROM items WHERE $display='$disptitle' ORDER BY $sortby");
-		echo "<div id='sectiontitle'><h1>$disptitle</h1></div>";
+		$contextdb = new ContextDAO();
+		$idresult = $contextdb->getById($tid);
+		$disptitle = $idresult->getTitle();
+		$result = $itemdb->getAll($display,$tid,$sortby); ;
+		$title = $disptitle;
 		$noresultsurl = '?tid=' . $tid;
 	break;
 	case "all":
-		$result = $mysqli->query("SELECT * FROM items ORDER BY $sortby");
-		echo "<div id='sectiontitle'><h1>".$l_nav_allitems."</h1></div>";
+		$result = $itemdb->getAll(null,null,$sortby); 
+		$title = $l_nav_allitems;
 		$noresultsurl = '';
 	break;
 	case "today":
 		$today = date("Y-m-d");
 		$todayf = date($menu_date_format);
-		$result = $mysqli->query("SELECT * FROM items WHERE date='$today' ORDER BY $sortby");
-		echo "<div id='sectiontitle'><h1>".$l_nav_today.": $todayf</h1></div>";
+		$result = $itemdb->getAll($display,null,$sortby);
+		$title = $l_nav_today.": ". $todayf.
 		$noresultsurl = '';
 	break;
 }
-$numberrows = $result->num_rows;
+?>
+
+<div id='sectiontitle'><h1><?=$title ?></h1></div>
+
+<?php
+
 sort_form($display, $section, $tid, $sortby);
+$numberrows = count($result);
 if ($numberrows == 0)
 {
 	$message = ( $display == "today" ) ? $l_msg_notoday : $l_msg_noitems;
 	echo "<div class='inform'><img src='images/information.png' alt='' />&nbsp;".$message." <a href='edit.php$noresultsurl'>".$l_msg_addsome."</a></div>";
 }
-else display_items($display, $section, $tid, $sortby);
+else{
+	foreach($result as $res)
+	{	
+	//the format is $variable = $r["nameofmysqlcolumn"];
+	$title=htmlentities($res->getTitle());
+	$date=$res->getDate();
+	$date_display=date($task_date_format, strtotime($date));
+	$notes=htmlentities($res->getNotes());
+	$urlfull=htmlentities($res->getUrl());
+	$done=$res->isDone();
+	$id=$res->getId();
+	$contextdb = new ContextDAO();
+	$contextbyid = $contextdb->getById($res->getContextId());
+	$context=htmlentities($contextbyid->getTitle());
+	$projectdb = new ProjectDAO();
+	$projectbyid = $projectdb->getById($res->getProjectId());
+	$project=htmlentities($projectbyid->getTitle());
+
+	if ($urlfull == "") $url = "";
+	else
+	{
+		$limit = 40; // set character limit
+		$url = "<a href='$urlfull'>";
+		// display URL up to character limit, shorten & add ellipsis if it is too long
+		$url .= (strlen($urlfull) > $limit) ? substr($urlfull,0,$limit) . '...</a>' : $urlfull . '</a>';
+	}
+	
+	//Set up a few variables for the do/undo button
+	$cmd = 'do';
+	$link = $l_items_do;
+	$icon = 'undone';
+	
+	//display the row
+   
+	//if the action is marked as done, then do not apply any current or old markings to it
+    if($done == 1)
+	{
+		echo "<div class='np'> <span style='text-decoration:line-through;'> $title - $date_display | $project | $context</span>";
+		$cmd = 'undo';
+		$link = $l_items_undo;
+		$icon = 'accept';
+	}
+
+	//if the date doesn't exist, then don't display the date
+	elseif($date == 00-00-0000) echo "<div class='np'> $title | $project | $context";
+
+	//if the date is equal to the current date, flag it as current
+   	elseif(date("Y-m-d") == $date) echo "<div class='current'><img src='images/flag_yellow.png' alt='' /> $title - $date_display | $project | $context";
+
+	//if the date is older than the current date, flag it as old
+	elseif(date("Y-m-d") > $date) echo "<div class='old'><img src='images/flag_red.png' alt='' /> $title - $date_display | $project | $context";
+
+	//if the date is neither of these, don't flag it.
+	else echo "<div class='np'> $title - $date_display | $project | $context";
+	
+	echo "<a href='display.php?display=$display&cmd=delete&id=$id&tid=$tid' title='$l_items_del' class='actionicon'><img src='images/bin_empty.png' alt='$l_items_del' /></a>";
+	echo "<a href='edit.php?id=$id' title='$l_items_edit' class='actionicon'><img src='images/pencil.png' alt='$l_items_edit' /></a>" ;
+	echo "<a href='display.php?display=$display&cmd=$cmd&id=$id&tid=$tid' title='$link' class='actionicon'><img src='images/$icon.png' alt='$link' /></a>";
+	echo "<br />$notes<br />$url</div>";
+	}
+} 
 
 if(isset($_POST['submit'])) //If submit is hit
 {

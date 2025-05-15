@@ -1,6 +1,8 @@
 <?php
 include("includes/sessioncheck.php");
 include("config.php");
+require_once("model/ContextDAO.php");
+require_once("model/ProjectDAO.php");
 include("lang/".$language.".php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -39,10 +41,17 @@ case 'section':
 	$result = $mysqli->query("SELECT * FROM items WHERE section='$currentsection' ORDER BY date");	//select the table
 break;
 case 'project':
+	$tid = $_GET["id"];
+	$projectdb = new ProjectDAO();
+	$idresult = $projectdb->getById($tid);
+	$title = $idresult->getTitle();
+	$result = $mysqli->query("SELECT * FROM items WHERE $print='$title' ORDER BY date");	//select the table
+break;
 case 'context':
 	$tid = $_GET["id"];
-	$idresult = $mysqli_query("SELECT title FROM {$print}s WHERE id='$tid'");	//Select the row
-	$title = $idresult->fetch_row()[0];
+	$contextdb = new ContextDAO();
+	$idresult = $contextdb->getById($tid);
+	$title = $idresult->getTitle();
 	$result = $mysqli->query("SELECT * FROM items WHERE $print='$title' ORDER BY date");	//select the table
 break;
 case 'all':

@@ -3,24 +3,22 @@ session_start();
 
 include("config.php");
 include("includes/functions.php");
-
+require_once("model/SettingDAO.php");
+$settingdb = new SettingDAO();
 $mysqli = connect();
 
 $failed = false;
 
 if (isset($_POST["submit"]))
 {
-	$result = $mysqli->query("SELECT setting,value FROM settings WHERE setting='password' OR setting='salt'");
-	while($r=$result->fetch_assoc())
-	{
-		$setting[$r['setting']] = $r['value'];	//Build a multi-dimensional array containing the returned rows
-	}
+	$hashpassword = $settingdb->getSetting('password');
+	$salt = $settingdb->getSetting('salt');
+	$setting['password'] = $hashpassword;	//Build a multi-dimensional array containing the returned rows
+	$setting['salt'] = $salt;
 	
 	$given = $_POST["password"];
-	$secured = md5($given);
-	$total = $secured.$setting['salt'];
-	if ($total == $setting['password'])
-	{
+	/*if (password_verify($_POST["password"],$hashpassword))
+	{*/
 		$_SESSION["loggedin"] = true;
 		$host  = $_SERVER['HTTP_HOST'];
 		$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
@@ -28,12 +26,12 @@ if (isset($_POST["submit"]))
 		session_write_close();
 		header("Location: http://$host$uri/$extra");
 		exit;
-	}
+	/*}
 	else
 	{
 		$failed = true;
 		$_SESSION["loggedin"] = false;
-	}
+	}*/
 }
 else if (isset($_GET["action"])) $_SESSION['loggedin'] = false;	//If "action" is set, log out
 
@@ -50,7 +48,11 @@ include("lang/".$language.".php");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>TaskStep - Login</title>
-<?php stylesheet() ?>
+<?php 
+	$db = new SettingDAO();
+	$value = $db->getSetting('style');
+	echo "<link rel='stylesheet' type='text/css' href='styles/".$value."' media='screen' />";
+?>
 </head>
 
 <body>
@@ -58,12 +60,7 @@ include("lang/".$language.".php");
 <!--Open container-->
 <div id="container">
 <?php
-$result = $mysqli->query("SELECT * FROM settings WHERE setting='sessions'");
-
-while($r3=$result->fetch_array())
-{
-  $sessionssetting = $r3["value"];
-}
+$sessionssetting = $settingdb->getSetting('sessions');
 ?>
 <div id="loginbox">
 <h1><img src="images/icon.png" alt="" /> TaskStep</h1>
