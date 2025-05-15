@@ -77,11 +77,11 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 <table>
 <tr>
    <td><?php echo $l_forms_title; ?>:</td>
-   <td colspan="3" rowspan="1"><input type='text' id="addtitle" name='title' value="<?php echo $title ?>" size="60" /></td>
+   <td colspan="3" rowspan="1"><input type='text' id="addtitle" name='title' value="<?php echo $title ?>" size="60" required/></td>
 </tr>
 <tr>
    <td><?php echo $l_forms_notes; ?>:</td>
-   <td colspan="3" rowspan="1"><input type='text' name='notes' value="<?php echo $notes ?>" size="60" /></td>
+   <td colspan="3" rowspan="1"><input type='text' name='notes' value="<?php echo $notes ?>" size="60" required/></td>
 </tr>
 <tr>
    <td></td>
@@ -92,7 +92,7 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 <tr>
 	<td></td>
 	<td>
-		<select name='section_id' size="7">
+		<select name='section_id' size="7" required>
 		<?php
 			$sectiondb = new SectionDAO();
 			$sections = $sectiondb->getAll();
@@ -105,7 +105,7 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 		</select>
 	</td>
 	<td>
-		<select name='context_id' size="7">
+		<select name='context_id' size="7" required>
 		<?php
 		$contextdb = new ContextDAO();
 		$contexts = $contextdb->getAll();
@@ -117,7 +117,7 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 		</select>
 	</td>
 	<td>
-		<select name='project_id' size="7">
+		<select name='project_id' size="7" required>
 		<?php
 		$projectdb = new ProjectDAO();
 		$projects = $projectdb->getAll();
@@ -138,13 +138,13 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 <tr>
    <td><?php echo $l_forms_date; ?>:</td>
    <td colspan="3" rowspan="1" id="holder">
-      <input type='text' autocomplete="off" name='end_date' value="<?php echo $date ?>" size="60" class="datebox" onfocus="JACS.show(this,event);" />
+      <input type='text' autocomplete="off" name='end_date' value="<?php echo $date ?>" size="60" class="datebox" onfocus="JACS.show(this,event);" required />
    </td>
 </tr>
 <tr>
    <td><?php echo $l_forms_url; ?>:</td>
    <td colspan="3" rowspan="1">
-      <input type='text' name='url' value="<?php echo $url ?>" size="60" />
+      <input type='text' name='url' value="<?php echo $url ?>" size="60" required />
    </td>
 </tr>
 <tr>

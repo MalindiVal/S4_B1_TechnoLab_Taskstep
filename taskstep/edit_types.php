@@ -148,7 +148,7 @@ elseif($getcmd == "edit")
 	<form action="display_type.php?type=<?php echo $type ?>" method="post">
 		<input type="hidden" name="id" value="<?php echo $id; ?>" />
 		<input type="hidden" name="oldtitle" value="<?php echo $title; ?>" />
-		<?php echo $l_forms_title ?>&nbsp;<input type="text" name="title" value="<?php echo $title; ?>" size="30" /><br /><br />
+		<?php echo $l_forms_title ?>&nbsp;<input type="text" name="title" value="<?php echo $title; ?>" size="30" required/><br /><br />
 		<input type="hidden" name="cmd" value="edit">
 		<input type="checkbox" name="tasks" checked>&nbsp;<?php echo $l_msg_updateassoctasks; ?><br />
 		<br />
@@ -161,7 +161,7 @@ elseif($getcmd == "edit")
 elseif($getcmd == "add")
 {?>
 	<form action="display_type.php?type=<?= $type ?>" method="post">
-		<?= $l_forms_title ?>&nbsp;<input type="text" name="newtitle" value="<?= $l_dbp_new[$type];?>" size="30" /><br />
+		<?= $l_forms_title ?>&nbsp;<input type="text" name="newtitle" value="<?= $l_dbp_new[$type];?>" size="30" required/><br />
 		<br />
 		<input type="hidden" name="cmd" value="add" />
 		<input type="submit" name="add" value="<?= $l_dbp_add[$type]; ?>"  onclick="return confirm('Are you sure you want to create this <?= $type ?>?');" />
