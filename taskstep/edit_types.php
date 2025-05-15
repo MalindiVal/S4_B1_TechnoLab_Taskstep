@@ -31,10 +31,6 @@ if($postcmd == "edit" && isset($_POST["submit"]))
 	
 	
 	echo "<div id='updated' class='fade'><img src='images/pencil_go.png' alt=''/> ".$l_msg_updated[$type]."</div>";
-	if($_POST["tasks"]){
-		$eoldtitle = $_POST["oldtitle"];
-		$mysqli->query("UPDATE items SET $type='$enewtitle' WHERE $type='$eoldtitle'");
-	}
 }
 
 //adding in mysql
