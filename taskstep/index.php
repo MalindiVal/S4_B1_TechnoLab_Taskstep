@@ -33,7 +33,6 @@ $settingdb = new SettingDAO();
 $todaydate = date("Y-m-d");
 $itemdb = new ItemDAO();
 $result = $itemdb->getImediateItems();
-//$result = $mysqli->query("SELECT * FROM items WHERE date <= '$todaydate' AND done='0' AND date != '00-00-0000' OR section='immediate' AND done='0' ORDER BY date LIMIT 5");
 $numrows= count($result);
 ?>
 <div id="immediateblock">
