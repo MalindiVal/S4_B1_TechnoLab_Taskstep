@@ -21,9 +21,9 @@ class Config {
     // Renvoie le tableau des paramètres en le chargeant au besoin
     private static function getParameter() {
         if (self::$param == null) {
-            $cheminFichier = "Config/prod.ini";
+            $cheminFichier = __DIR__."\prod.ini";
             if (!file_exists($cheminFichier)) {
-                $cheminFichier = "Config/dev.ini";
+                $cheminFichier = __DIR__."\dev.ini";
             }
             if (!file_exists($cheminFichier)) {
                 throw new Exception("Aucun fichier de configuration trouvé");
