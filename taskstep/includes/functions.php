@@ -124,38 +124,6 @@ function display_items($display = '', $section = '', $tid = '', $sortby = ''){
 	}
 }
 
-function display_frontpage(){
-	global $mysqli, $l_sectionlist, $l_items_do, $l_items_edit, $l_index_noimmediate, $task_date_format;
-	//select the table
-	$todaydate = date("Y-m-d");
-	$result = $mysqli->query("SELECT * FROM items WHERE date <= '$todaydate' AND done='0' AND date != '00-00-0000' OR section='immediate' AND done='0' ORDER BY date LIMIT 5");
-	$numrows= $result->num_rows;
-	?>
-	<div id="immediateblock">
-	<h2><img src="images/lightning.png" alt="" /> <?php echo $l_sectionlist['immediate'] ?> (<?php echo $numrows; ?>)</h2>
-	<?php
-	while($r=$result->fetch_array())
-	{	
-	  	 //the format is $variable = $r["nameofmysqlcolumn"];
-
-		$title=htmlentities($r["title"]);
-		$date = ($r["date"] != 00-00-0000) ? ' - '.date($task_date_format, strtotime($r["date"])) : '';
-		$notes=htmlentities($r["notes"]);
-		$url=htmlentities($r["url"]);
-		$done=$r["done"];
-		$id=$r["id"];
-		$context=htmlentities($r["context"]);
-		$project=htmlentities($r["project"]);
-	   
-		//nested if statement
-		//display the row
-		echo "<div class='immediateitem'><a href='display.php?display=section&amp;section=immediate&amp;cmd=do&amp;id=$id' title='".$l_items_do."'><img src='images/undone.png' alt='".$l_items_do."' class='valign'/></a>\n";
-		echo "<a href='edit.php?id=$id' title='".$l_items_edit."'>$title</a>$date | $context</div>\n";
-	}
-	if ($numrows == 0) echo $l_index_noimmediate;
-	echo '</div>';
-}
-
 function selfref_url(){
 	$dirstuff = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
 	$full = "http://".$_SERVER['HTTP_HOST'].$dirstuff;
