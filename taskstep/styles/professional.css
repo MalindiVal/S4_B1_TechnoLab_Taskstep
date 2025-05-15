@@ -10,11 +10,16 @@ body{
 	margin:0 auto;
 }
 
+#container *{
+	margin: 5px;
+}
+
+
 #footer{
 	padding: 2em 0px;
 	font-size: .7em;
 	text-align: center;
-	color: gray;
+	color: rgb(102, 97, 97);
 	clear: both;
 }
 
@@ -54,11 +59,13 @@ body{
 #headernav ul{
 	margin:0;
 	padding:0;
+	display: flex;
+	justify-content: space-around;
 }
 
 #headernav ul li{
 	display:inline;
-	padding-left:14px;
+	margin-left:14px;
 	list-style-type:none;
 	font-size:10pt;
 }
@@ -316,9 +323,12 @@ a img{
 /* Index page */
 
 #immediateblock{
-	width:255px;
 	background-color:#ffa;
 	padding:5px;
+}
+
+#immediateblock *{
+	margin: 5px;
 }
 
 .valign{
@@ -375,8 +385,6 @@ h2{
 
 #welcomebox{
 	background-color:#cfc;
-	float:right;
-	width:255px;
 	padding:5px;
 	text-align:justify;
 }
