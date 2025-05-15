@@ -1,5 +1,6 @@
 <?php
 include("includes/header.php");
+require_once("model/SectionDAO.php");
 require_once("model/ContextDAO.php");
 require_once("model/ProjectDAO.php");
 require_once("model/ItemDAO.php");
@@ -8,10 +9,11 @@ $itemdb = new ItemDAO();
 
 if (isset($_GET["cmd"]))
 {
-	$id = $_GET["id"];
+	$id = intval($_GET["id"]);
 	switch ($_GET["cmd"])
 	{
 		case "delete":
+			var_dump($id);
 			$itemdb->Delete($id);
 		break;
 		case "do":
@@ -33,7 +35,7 @@ if (isset($_GET["cmd"]))
 $display = (isset($_GET["display"])) ? $_GET["display"] : '';
 $sortby = (isset($_GET["sort"])) ? $_GET["sort"] : 'date';
 $section = (isset($_GET["section"])) ? $_GET["section"] : '';
-$tid = (isset($_GET["tid"])) ? $_GET["tid"] : '';
+$tid = (isset($_GET["tid"])) ? intval($_GET["tid"]) : 0;
 
 $title = "";
 switch ($display)
@@ -48,7 +50,8 @@ switch ($display)
 		}
 		
 		$result = $itemdb->getAll($display,$tid,$sortby); 
-		$title  =$sectiontitle;
+		$sdb = new SectionDAO(); 
+		$title  = $sdb->getById($tid)->getTitle();
 		$noresultsurl = '?section=' . $section;
 	break;
 	case "project":
@@ -149,10 +152,10 @@ else{
 	//if the date is neither of these, don't flag it.
 	else echo "<div class='np'> $title - $date_display | $project | $context";
 	
-	echo "<a href='display.php?display=$display&amp;{$section}{$tid}{$sortby}cmd=delete&amp;id=$id' title='$l_items_del' class='actionicon'><img src='images/bin_empty.png' alt='$l_items_del' /></a>
-	<a href='edit.php?id=$id' title='$l_items_edit' class='actionicon'><img src='images/pencil.png' alt='$l_items_edit' /></a> 
-	<a href='display.php?display=$display&amp;{$section}{$tid}{$sortby}cmd=$cmd&amp;id=$id' title='$link' class='actionicon'><img src='images/$icon.png' alt='$link' /></a>
-	<br />$notes<br />$url</div>";
+	echo "<a href='display.php?display=$display&cmd=delete&id=$id&tid=$tid' title='$l_items_del' class='actionicon'><img src='images/bin_empty.png' alt='$l_items_del' /></a>";
+	echo "<a href='edit.php?id=$id' title='$l_items_edit' class='actionicon'><img src='images/pencil.png' alt='$l_items_edit' /></a>" ;
+	echo "<a href='display.php?display=$display&cmd=$cmd&id=$id&tid=$tid' title='$link' class='actionicon'><img src='images/$icon.png' alt='$link' /></a>";
+	echo "<br />$notes<br />$url</div>";
 	}
 } 
 
