@@ -124,6 +124,6 @@ class ItemDAO extends Database
      * Supprime tous les items marqués comme terminés (done = 1)
      */
     public function PurgeDoneItem(): void {
-        $this->execute("DELETE FROM items WHERE done = 1");
+        $this->execute("DELETE FROM items WHERE done = 1 and user_id= :user_id", [":user_id" => intval($_SESSION["user_id"])] );
     }
 }
