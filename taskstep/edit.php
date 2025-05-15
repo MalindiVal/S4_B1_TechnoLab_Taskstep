@@ -35,6 +35,7 @@ else if ( isset($_POST["submit"]) )	//Otherwise, if the user has submitted a for
 	$project = isset($_POST['project_id']) ? addslashes($_POST['project_id']) : '';
 	$item = new Item();
 	$item->hydrate($_POST);
+	$item->setDone(false);
 	if( empty($section) || empty($context) || empty($project) )	//Make sure that the form data is valid
 	{
 		$id = '';
@@ -98,7 +99,7 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 			$sections = $sectiondb->getAll();
 			var_dump($sections);
 			foreach($sections as $s){
-				$selected = ($section == $s->getFancyTitle()) ? 'selected="selected"' : '';
+				$selected = ($section == $s->getId()) ? 'selected="selected"' : '';
 				echo "<option value='".$s->getId() ."' $selected >".$l_sectionlist[$s->getTitle()]."</option>\n";
 			}
 		?>
@@ -110,7 +111,7 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 		$contextdb = new ContextDAO();
 		$contexts = $contextdb->getAll();
 		foreach($contexts as $s){
-			$selected = ($context == $s->getTitle()) ? 'selected="selected"' : '';
+			$selected = ($context == $s->getId()) ? 'selected="selected"' : '';
 			echo "<option value='".$s->getId()."' $selected>" . $s->getTitle() . "</option>\n";
 		}
 		?>
@@ -122,7 +123,7 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 		$projectdb = new ProjectDAO();
 		$projects = $projectdb->getAll();
 		foreach($projects as $s){
-			$selected = ($project == $s->getTitle()) ? 'selected="selected"' : '';
+			$selected = ($project == $s->getId()) ? 'selected="selected"' : '';
 			echo "<option value='".$s->getId() ."' $selected >".$s->getTitle()."</option>\n";
 		}
 		?>

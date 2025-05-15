@@ -50,6 +50,7 @@ class ItemDAO extends Database
             ":context" => $item->getContextId(),
             ":project" => $item->getProjectId(),
             ":section" => $item->getSectionId(),
+            ":done" => $item->isDone(),
             ":user_id" => intval($_SESSION["user_id"]),
             ":id" => $item->getId()
         ]
