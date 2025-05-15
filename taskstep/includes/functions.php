@@ -169,10 +169,13 @@ function sort_form($type = '', $section = '', $tid = '', $sortby = ''){
 	
 	switch($type) {
 		case 'section':
-			$printurl = "print=section&amp;section=$section";
-			$hidden = "<input type='hidden' name='section' value='$section' />";
+			$printurl = "print=section&amp;id=$tid";
+			$hidden = "<input type='hidden' name='tid' value='$tid' />";
 		break;
 		case 'context':
+			$printurl = "print=$type&amp;id=$tid";
+			$hidden = "<input type='hidden' name='tid' value='$tid' />";
+		break;
 		case 'project':
 			$printurl = "print=$type&amp;id=$tid";
 			$hidden = "<input type='hidden' name='tid' value='$tid' />";
