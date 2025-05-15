@@ -1,7 +1,8 @@
 <!-- Close content -->
+</main>
 </div>
-<div id="footer">Taskstep 1.1 - By Rob Lowcock, Ethan Romba, and Thomas Hooge</div>
+<footer id="footer">Taskstep 1.1 - By Rob Lowcock, Ethan Romba, and Thomas Hooge</footer>
 <!--Close container-->
-</div>
+
 </body>
 </html>

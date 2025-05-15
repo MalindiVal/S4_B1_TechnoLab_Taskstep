@@ -5,12 +5,12 @@ include("functions.php");
 require_once("./model/SettingDAO.php");
 require_once("./model/SectionDAO.php");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html >
+<html lang="en" >
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>TaskStep</title>
-
 <?php 
 	if (isset($_SESSION["user_id"])){
 		$settingdb = new SettingDAO();
@@ -22,8 +22,10 @@ require_once("./model/SectionDAO.php");
 	
 	echo "<link rel='stylesheet' type='text/css' href='styles/".$value."' media='screen' />";
 ?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="styles/system/print.css" media="print" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php selfref_url(); ?>rss.php" /> 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 <?php pagespecific()?>
 <script type="text/javascript" src="script/fat.js"></script>
 </head>
@@ -33,13 +35,13 @@ require_once("./model/SectionDAO.php");
 <!--Open container-->
 <div id="sexyBG"></div><div id="sexyBOX" onmousedown="document.onclick=function(){};" onmouseup="setTimeout('sexyTOG()',1);"></div>
 
-<div id="container">
+
 
 <!--Header-->
-<div id="header">
-<h1><img src="images/icon.png" alt="" style="vertical-align:middle"/>&nbsp;<a href="index.php">TaskStep <span class="subtitle">1.1</span></a></h1>
-</div>
-<div id="headernav">
+<header id="header">
+<h1><a href="index.php"><img src="images/icon.png" alt="" style="vertical-align:middle"/>&nbsp;TaskStep <span class="subtitle">1.1</span></a></h1>
+</header>
+<nav id="headernav" >
 	<ul>
 		<li><a href="display.php?display=today&amp;sort=done"><img src="images/calendar_view_day.png" alt="" /><?php echo $l_nav_today; ?>: <?php echo date($menu_date_format); ?></a></li>
 		<li><a href="index.php"><img src="images/house.png" alt="" /><?php echo $l_nav_home; ?></a></li>
@@ -50,8 +52,8 @@ require_once("./model/SectionDAO.php");
 		<li><a href="http://www.cunningtitle.com/taskstep"><img src="images/help.png" alt="" /><?php echo $l_nav_help; ?></a></li>
 		<li><a href="login.php?action=logout"><img src="images/door_in.png" alt="" /><?php echo $l_nav_logout; ?></a></li>
 	</ul>
-</div>
-
+</nav>
+<div id="container">
 <!--Sidebar-->
 <!--Numbers hack originally by Place, and adapted by Rob to fit with the language system-->
 <div id="sidebar">                     
@@ -80,4 +82,4 @@ require_once("./model/SectionDAO.php");
     </ul>
 </div>
 
-<div id="content">
+<main id="content">
