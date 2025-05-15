@@ -2,6 +2,9 @@
 include("includes/header.php");
 require_once("model/SettingDAO.php");
 require_once("model/Setting.php");
+require_once("model/SectionDAO.php");
+require_once("model/ContextDAO.php");
+require_once("model/ProjectDAO.php");
 require_once("model/ItemDAO.php");
 $settingdb = new SettingDAO();
 $itemdb = new ItemDAO();
@@ -110,17 +113,25 @@ else
 if(!isset($_GET['export'])) $exporttext = '<a href="settings.php?export=csv">' . $l_cp_tools_export . '</a>';
 else
 {
-	$result = $mysqli->query("SELECT * FROM items");
-	while($r=$result->fetch_array())
+	$result =$itemdb->getAll(null,null,"done");
+	foreach($result as $res)
 	{
-		$title=$r["title"];
-		$date=$r["date"];
-		$notes=$r["notes"];
-		$url=$r["url"];
-		$done=$r["done"];
-		$id=$r["id"];
-		$context=$r["context"];
-		$project=$r["project"];
+		$title=htmlentities($res->getTitle());
+		$date = ($res->getDate() != 00-00-0000) ? $res->getDate()." | " : '';
+		$notes=htmlentities($res->getNotes());
+		$url=htmlentities($res->getUrl());
+		$done=$res->isDone() ;
+		$id=$res->getId();
+
+		$contextdb = new ContextDAO();
+		$idresult = $contextdb->getById($res->getContextId());
+		$Contexttitle = $idresult->getTitle();
+		$context=htmlentities($Contexttitle);
+		
+		$projectdb = new ProjectDAO();
+		$idresult = $projectdb->getById($res->getProjectId());
+		$projecttitle = $idresult->getTitle();
+		$project=htmlentities($projecttitle);
 
 		$data = "$id,$title,$date,$notes,$context,$project,$url,$done\r\n";
 		$file = "exported_results.csv";   

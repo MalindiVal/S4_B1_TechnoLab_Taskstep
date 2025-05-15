@@ -51,8 +51,8 @@ switch ($display)
 		
 		$result = $itemdb->getAll($display,$tid,$sortby); 
 		$sdb = new SectionDAO(); 
-		$title  = $sdb->getById($tid)->getTitle();
-		$noresultsurl = '?section=' . $section;
+		$title  = $l_sectionlist[$sdb->getById($tid)->getTitle()];
+		$noresultsurl = '?tid=' . $tid;
 	break;
 	case "project":
 		$projectdb = new ProjectDAO();
