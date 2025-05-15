@@ -152,7 +152,7 @@ elseif($getcmd == "edit")
 		<input type="hidden" name="cmd" value="edit">
 		<input type="checkbox" name="tasks" checked>&nbsp;<?php echo $l_msg_updateassoctasks; ?><br />
 		<br />
-		<input type="submit" name="submit" value="<?php echo $l_dbp_edit[$type]; ?>" />
+		<input type="submit" name="submit" value="<?php echo $l_dbp_edit[$type]; ?>" onclick="return confirm('Are you sure you want to update this <?= $type ?>?');"/>
 	</form>
 	<?php
 	}
@@ -164,7 +164,7 @@ elseif($getcmd == "add")
 		<?= $l_forms_title ?>&nbsp;<input type="text" name="newtitle" value="<?= $l_dbp_new[$type];?>" size="30" /><br />
 		<br />
 		<input type="hidden" name="cmd" value="add" />
-		<input type="submit" name="add" value="<?= $l_dbp_add[$type]; ?>" />
+		<input type="submit" name="add" value="<?= $l_dbp_add[$type]; ?>"  onclick="return confirm('Are you sure you want to create this <?= $type ?>?');" />
 	</form>
 <?php
 }

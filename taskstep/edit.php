@@ -92,7 +92,6 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 <tr>
 	<td></td>
 	<td>
-		<?php var_dump($section); ?>
 		<select name='section_id' size="7">
 		<?php
 			$sectiondb = new SectionDAO();
@@ -150,7 +149,7 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 </tr>
 <tr>
    <td></td>
-   <td colspan="3" rowspan="1"><input type="submit" name="submit" value="<?php echo $l_forms_button[$type]; ?>" /></td> 
+   <td colspan="3" rowspan="1"><input type="submit" name="submit" value="<?php echo $l_forms_button[$type]; ?>"  onclick="return confirm('Are you sure of those informations?');"/></td> 
 </tr>
 </table>
 <input type="hidden" name="id" value="<?php echo $id ?>" />
