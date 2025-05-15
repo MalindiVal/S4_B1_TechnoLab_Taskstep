@@ -157,11 +157,19 @@ else{
 
 	//if the date is neither of these, don't flag it.
 	else echo "<div class='np'> $title - $date_display | $project | $context";
+	?>
+
+	<a href="display.php?display=<?= $display ?>&cmd=delete&id=<?= $id ?>&tid=<?= $tid?>" title="<?= $l_items_del?>" class="actionicon" onclick="return confirm('Are you sure you want to delete this item?');">
+		<img src="images/bin_empty.png" alt="<?= $l_items_del ?>" /></a>
+	<a href="edit.php?id=<?= $id ?>" title="<?= $l_items_edit?>" class="actionicon">
+		<img src="images/pencil.png" alt="<?= $l_items_edit ?>" />
+	</a>
+	<a href="display.php?display=<?= $display ?>&cmd=<?= $cmd ?>&id=<?= $id ?>&tid=<?= $tid ?>" title="<?= $link ?>" class="actionicon" >
+		<img src="images/<?= $icon ?>.png" alt="<?= $link ?>" >
+	</a>
+	<br /><?= $notes ?> <br /><?= $url ?></div>
 	
-	echo "<a href='display.php?display=$display&cmd=delete&id=$id&tid=$tid' title='$l_items_del' class='actionicon'><img src='images/bin_empty.png' alt='$l_items_del' /></a>";
-	echo "<a href='edit.php?id=$id' title='$l_items_edit' class='actionicon'><img src='images/pencil.png' alt='$l_items_edit' /></a>" ;
-	echo "<a href='display.php?display=$display&cmd=$cmd&id=$id&tid=$tid' title='$link' class='actionicon'><img src='images/$icon.png' alt='$link' /></a>";
-	echo "<br />$notes<br />$url</div>";
+	<?php 
 	}
 } 
 

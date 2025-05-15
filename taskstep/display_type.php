@@ -104,14 +104,15 @@ if($getcmd=="delete")
 					$id=$s->getId();
 				?>
 				<div>
-					<a href="display.php?display=<?= $type?>&tid=<?= $id ?>&sort=date" class='listlinkssmart'>
+					<a href="display.php?display=<?= $type?>&tid=<?= $id ?>&sort=date" class='listlinkssmart' >
 						<img src='images/<?= $type ?>.png' alt='' /> <?= $title ?>
 					</a>
 					<a href="edit_types.php?type=<?= $type ?>&amp;cmd=edit&amp;id=<?= $id ?>" >
 						<img src="images/pencil.png" alt=""> 
 						<?= $l_dbp_edit[$type] ?>
 					</a>
-					<a href="display_type.php?type=<?= $type ?>&cmd=delete&id=<?= $id ?>">
+					<a href="display_type.php?type=<?= $type ?>&cmd=delete&id=<?= $id ?>" 
+						onclick="return confirm('Are you sure you want to delete this <?= $type ?>?');">
 						<img src="images/bin_empty.png" alt="" />
 						<?=  $l_dbp_del[$type] ?>
 					</a>
