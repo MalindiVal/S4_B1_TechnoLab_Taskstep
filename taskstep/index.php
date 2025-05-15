@@ -27,7 +27,43 @@ $settingdb = new SettingDAO();
 </div>
 
 <?php
+//select the table
+$todaydate = date("Y-m-d");
+$itemdb = new ItemDAO();
+$result = $itemdb->getImediateItems();
+//$result = $mysqli->query("SELECT * FROM items WHERE date <= '$todaydate' AND done='0' AND date != '00-00-0000' OR section='immediate' AND done='0' ORDER BY date LIMIT 5");
+$numrows= count($result);
+?>
+<div id="immediateblock">
+<h2><img src="images/lightning.png" alt="" /> <?php echo $l_sectionlist['immediate'] ?> (<?php echo $numrows; ?>)</h2>
+<?php
+foreach($result as $res)
+{	
+	//the format is $variable = $r["nameofmysqlcolumn"];
+	$title=htmlentities($res->getTitle());
+	$date = ($res->getDate() != 00-00-0000) ? ' - '.date($task_date_format, strtotime($res->getDate())) : '';
+	$notes=htmlentities($res->getNotes());
+	$url=htmlentities($res->getUrl());
+	$done=$res->isDone() ;
+	$id=$res->getId();
 
+	$contextdb = new ContextDAO();
+	$idresult = $contextdb->getById($res->getContextId());
+	$Contexttitle = $idresult->getTitle();
+	$context=htmlentities($Contexttitle);
+	
+	$projectdb = new ProjectDAO();
+	$idresult = $projectdb->getById($res->getProjectId());
+	$projecttitle = $idresult->getTitle();
+	$project=htmlentities($projecttitle);
+   
+	//nested if statement
+	//display the row
+	echo "<div class='immediateitem'><a href='display.php?display=section&amp;section=immediate&amp;cmd=do&amp;id=$id' title='".$l_items_do."'><img src='images/undone.png' alt='".$l_items_do."' class='valign'/></a>\n";
+	echo "<a href='edit.php?id=$id' title='".$l_items_edit."'>$title</a>$date | $context</div>\n";
+}
+if ($numrows == 0) echo $l_index_noimmediate;
+echo '</div>';
 
 $settings = $settingdb->getAll();
 	//Tips Box
