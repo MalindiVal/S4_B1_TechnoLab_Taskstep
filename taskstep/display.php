@@ -38,8 +38,10 @@ $section = (isset($_GET["section"])) ? $_GET["section"] : '';
 $tid = (isset($_GET["tid"])) ? intval($_GET["tid"]) : 0;
 
 $title = "";
+$backlink = "";
 switch ($display)
 {
+	
 	case "section":
 		//Massively cleaned up section which obtains section titles from the language file
 		foreach($l_sectionlist as $key=>$value){
@@ -55,6 +57,7 @@ switch ($display)
 		$noresultsurl = '?tid=' . $tid;
 	break;
 	case "project":
+		$backlink = "display_type.php?type=project";
 		$projectdb = new ProjectDAO();
 		$idresult = $projectdb->getById($tid);
 		$disptitle = $idresult->getTitle();
@@ -64,6 +67,7 @@ switch ($display)
 		$noresultsurl = '?tid=' . $tid;
 	break;
 	case "context":
+		$backlink = "display_type.php?type=context";
 		$contextdb = new ContextDAO();
 		$idresult = $contextdb->getById($tid);
 		$disptitle = $idresult->getTitle();
@@ -85,7 +89,9 @@ switch ($display)
 	break;
 }
 ?>
-
+<?php if( $display == "context" || $display == "project") : ?>
+	<a href=<?= $backlink ?> ><- Back</a>
+<?php endif; ?>
 <div id='sectiontitle'><h1><?=$title ?></h1></div>
 
 <?php

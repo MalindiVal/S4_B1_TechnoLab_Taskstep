@@ -120,7 +120,7 @@ elseif($getcmd == "edit")
 		die;
 	}
 	
-	$editid = $_GET["id"];
+	$editid = intval($_GET["id"]);
 	
 	//DEBUG echo "This would produce an edit form for the context with id $editid <br />";
 	
@@ -145,7 +145,7 @@ elseif($getcmd == "edit")
 	//DEBUG echo "ID: $editid2 <br />";
 	//DEBUG echo "Title: $edittitle <br />";
 ?>
-	<form action="edit_types.php?type=<?php echo $type ?>" method="post">
+	<form action="display_type.php?type=<?php echo $type ?>" method="post">
 		<input type="hidden" name="id" value="<?php echo $id; ?>" />
 		<input type="hidden" name="oldtitle" value="<?php echo $title; ?>" />
 		<?php echo $l_forms_title ?>&nbsp;<input type="text" name="title" value="<?php echo $title; ?>" size="30" /><br /><br />
@@ -155,13 +155,12 @@ elseif($getcmd == "edit")
 		<input type="submit" name="submit" value="<?php echo $l_dbp_edit[$type]; ?>" />
 	</form>
 	<?php
-	echo "<br /><a href='edit_types.php?type=$type&amp;cmd=delete&amp;id=$id'><img src='images/bin_empty.png' alt='' /> ".$l_dbp_del[$type]."</a>";
 	}
 
 //Add form
 elseif($getcmd == "add")
 {?>
-	<form action="edit_types.php?type=<?= $type ?>" method="post">
+	<form action="display_type.php?type=<?= $type ?>" method="post">
 		<?= $l_forms_title ?>&nbsp;<input type="text" name="newtitle" value="<?= $l_dbp_new[$type];?>" size="30" /><br />
 		<br />
 		<input type="hidden" name="cmd" value="add" />
