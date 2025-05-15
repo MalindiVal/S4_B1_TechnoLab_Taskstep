@@ -1,6 +1,8 @@
 <?php 
 include("includes/header.php");
 require_once("model/SettingDAO.php");
+require_once("model/ContextDAO.php");
+require_once("model/ProjectDAO.php");
 require_once("model/ItemDAO.php");
 $itemdb = new ItemDAO();
 $settingdb = new SettingDAO();
