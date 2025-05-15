@@ -41,14 +41,14 @@ require_once("./model/SectionDAO.php");
 </div>
 <div id="headernav">
 	<ul>
-		<li><a href="display.php?display=today&amp;sort=done"><img src="images/calendar_view_day.png" alt="" /></a> <a href="display.php?display=today&amp;sort=done"><?php echo $l_nav_today; ?>: <?php echo date($menu_date_format); ?></a></li>
-		<li><a href="index.php"><img src="images/house.png" alt="" /></a> <a href="index.php"><?php echo $l_nav_home; ?></a></li>
-		<li><a href="display.php?display=all&amp;sort=date"><img src="images/page_white_text.png" alt="" /></a> <a href="display.php?display=all&amp;sort=date"><?php echo $l_nav_allitems; ?></a></li>
-		<li><a href="display_type.php?type=context"><img src="images/context.png" alt="" /></a> <a href="display_type.php?type=context"><?php echo $l_nav_context; ?></a></li>
-		<li><a href="display_type.php?type=project"><img src="images/project.png" alt="" /></a> <a href="display_type.php?type=project"><?php echo $l_nav_project; ?></a></li>
-		<li><a href="settings.php"><img src="images/textfield_rename.png" alt="" /></a> <a href="settings.php"><?php echo $l_nav_settings; ?></a></li>
-		<li><a href="http://www.cunningtitle.com/taskstep"><img src="images/help.png" alt="" /></a> <a href="http://cunningtitle.com/forum/"><?php echo $l_nav_help; ?></a></li>
-		<li><a href="login.php?action=logout"><img src="images/door_in.png" alt="" /></a> <a href="login.php?action=logout"><?php echo $l_nav_logout; ?></a></li>
+		<li><a href="display.php?display=today&amp;sort=done"><img src="images/calendar_view_day.png" alt="" /><?php echo $l_nav_today; ?>: <?php echo date($menu_date_format); ?></a></li>
+		<li><a href="index.php"><img src="images/house.png" alt="" /><?php echo $l_nav_home; ?></a></li>
+		<li><a href="display.php?display=all&amp;sort=date"><img src="images/page_white_text.png" alt="" /><?php echo $l_nav_allitems; ?></a></li>
+		<li><a href="display_type.php?type=context"><img src="images/context.png" alt="" /><?php echo $l_nav_context; ?></a></li>
+		<li><a href="display_type.php?type=project"><img src="images/project.png" alt="" /><?php echo $l_nav_project; ?></a></li>
+		<li><a href="settings.php"><img src="images/textfield_rename.png" alt="" /><?php echo $l_nav_settings; ?></a></li>
+		<li><a href="http://www.cunningtitle.com/taskstep"><img src="images/help.png" alt="" /><?php echo $l_nav_help; ?></a></li>
+		<li><a href="login.php?action=logout"><img src="images/door_in.png" alt="" /><?php echo $l_nav_logout; ?></a></li>
 	</ul>
 </div>
 
