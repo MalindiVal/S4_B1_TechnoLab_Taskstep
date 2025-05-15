@@ -114,7 +114,6 @@ if(!isset($_GET['export'])) $exporttext = '<a href="settings.php?export=csv">' .
 else
 {
 	$result =$itemdb->getAll(null,null,"done");
-	//$result = $mysqli->query("SELECT * FROM items");
 	foreach($result as $res)
 	{
 		$title=htmlentities($res->getTitle());
