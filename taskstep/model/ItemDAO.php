@@ -126,4 +126,20 @@ class ItemDAO extends Database
     public function PurgeDoneItem(): void {
         $this->execute("DELETE FROM items WHERE done = 1 and user_id= :user_id", [":user_id" => intval($_SESSION["user_id"])] );
     }
+
+    public function getImediateItems() : array{
+        $tab = array();
+        $today  = date("Y-m-d");
+        $result = $this->queryMany("SELECT * FROM items 
+        WHERE date <= :today AND done='0' 
+            AND date != '00-00-0000' OR section_id=3 
+            AND done='0' ORDER BY date LIMIT 5",[":today" => $today]);
+        foreach ($result as $s) {
+            $item = new Item();
+            $item->hydrate($s);
+            $tab[] = $item;
+        }
+    
+        return $tab;
+    }
 }
