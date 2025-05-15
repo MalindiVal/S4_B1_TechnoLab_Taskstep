@@ -1,14 +1,12 @@
 <?php
-class Setting{
+class Setting {
     private int $id;
     private bool $tips;
-    private string $theme;
+    private string $stylesheet;
+    private bool $session;
     private int $userid;
 
-    /**
-     * Récupère l'Id du parametre
-     * @return int l'id
-     */
+    // Getters
     public function getId(): int {
         return $this->id;
     }
@@ -17,8 +15,12 @@ class Setting{
         return $this->tips;
     }
 
-    public function getTheme(): string {
-        return $this->theme;
+    public function getStylesheet(): string {
+        return $this->stylesheet;
+    }
+
+    public function getSession(): bool {
+        return $this->session;
     }
 
     public function getUserId(): int {
@@ -30,11 +32,38 @@ class Setting{
         $this->tips = $tips;
     }
 
-    public function setTheme(string $theme): void {
-        $this->theme = $theme;
+    public function setStylesheet(string $stylesheet): void {
+        $this->stylesheet = $stylesheet;
+    }
+
+    public function setSession(bool $session): void {
+        $this->session = $session;
     }
 
     public function setUserId(int $userid): void {
         $this->userid = $userid;
+    }
+
+    /**
+     * Hydrate the object from an associative array
+     * @param array $data
+     * @return void
+     */
+    public function hydrate(array $data): void {
+        if (isset($data['id'])) {
+            $this->setId((int)$data['id']);
+        }
+        if (isset($data['tips'])) {
+            $this->setTips((bool)$data['tips']);
+        }
+        if (isset($data['stylesheet']) || isset($data['style'])) {
+            $this->setStylesheet((string)$data['stylesheet']);
+        }
+        if (isset($data['session'])) {
+            $this->setSession((bool)$data['session']);
+        }
+        if (isset($data['user_id'])) {
+            $this->setUserId((int)$data['user_id']);
+        }
     }
 }

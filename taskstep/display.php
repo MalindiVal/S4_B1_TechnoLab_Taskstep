@@ -106,9 +106,11 @@ else{
 	$done=$res->isDone();
 	$id=$res->getId();
 	$contextdb = new ContextDAO();
-	$context=htmlentities($contextdb->getById($res->getContextId())->getTitle());
-	$projectdb = new ContextDAO();
-	$project=htmlentities($projectdb->getById($res->getProjectId())->getTitle());
+	$contextbyid = $contextdb->getById($res->getContextId());
+	$context=htmlentities($contextbyid->getTitle());
+	$projectdb = new ProjectDAO();
+	$projectbyid = $projectdb->getById($res->getProjectId());
+	$project=htmlentities($projectbyid->getTitle());
 
 	if ($urlfull == "") $url = "";
 	else

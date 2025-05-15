@@ -1,6 +1,7 @@
 <?php
 include("includes/header.php");
 require_once("model/SettingDAO.php");
+require_once("model/Setting.php");
 require_once("model/ItemDAO.php");
 $settingdb = new SettingDAO();
 $itemdb = new ItemDAO();
@@ -11,15 +12,17 @@ if (isset($_POST["submit"]))
 	$settingsstatus = '';
 	
 	$tips = (isset($_POST['tips'])) ? 1 : 0;
-	$settingdb->setSetting('tips',$tips);
 	if ($tips) $settingsstatus .= $l_cp_display_tipson;
 	else $settingsstatus .= $l_cp_display_tipsoff;
 
 	$style = $_POST['style'];
-	$settingdb->setSetting('style',$style);
 	if ($style == 'none') $settingsstatus .= "<br />".$l_cp_display_defaultcss;
 	else $settingsstatus .= "<br />".$style;
 	
+	$setting= new Setting();
+	$setting->setTips($tips>0);
+	$setting->setStylesheet($_POST['style']);
+	$settingdb->UpdateSetting($setting);
 	$updatedblock = "<div id='updated' style='width: 20em;'>";
 	$updatedblock .= "<img src='images/accept.png' alt='' />&nbsp;$l_cp_display_settingsupdated:<br />";
 	$updatedblock .= "<span class='italic'>$settingsstatus</span></div>";
@@ -28,12 +31,12 @@ else $updatedblock = '';
 
 //Show/Hide Tips checkbox
 	
-	$tipsON = intval($settingdb->getSetting('tips'));
+	$tipsON = intval($settingdb->getAll()->getTips());
 	$checked = ($tipsON) ? ' checked="checked"' : '';
 	$tipsfield = $l_cp_display_tips.": <input type='checkbox' value='Display tips' name='tips'$checked />";
 
 //Stylesheets code
-	$style = $settingdb->getSetting('style');
+	$style = $settingdb->getAll()->getStylesheet();
 	$styleoptions = '';
 
 	//Define the folder and path
@@ -61,7 +64,7 @@ else $updatedblock = '';
 if (isset($_POST["passchanges"]))
 {
 	//Get the salt
-	$salt = $settingdb->getSetting('salt');
+	$salt = $settingdb->getAll()->getSalt();
 
 	//Get the hashed password
 	$oldpass = $settingdb->getSetting('password');
@@ -89,7 +92,7 @@ if (isset($_POST["passchanges"]))
 else $pwmessage = '';
 
 //"Use Passwords" checkbox
-$use = $settingdb->getSetting('sessions');
+$use = $settingdb->getAll()->getSession();
 $checked = ($use) ? ' checked="checked"' : '';
 $usepwfield = $l_cp_password_use.": <input type='checkbox' value='Sessions' name='sessions'$checked />";
 

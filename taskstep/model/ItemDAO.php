@@ -35,11 +35,41 @@ class ItemDAO extends Database
         foreach ($res as $s) {
             $item = new Item();
             $item->hydrate($s);
-            var_dump($s);
             $tab[] = $item;
         }
     
         return $tab;
+    }
+
+    public function Update(Item $item){
+        $this->execute("UPDATE items SET title=:title , notes= :notes , url = :url , context_id = :context , section_id = :section, project_id = :project , done=:done WHERE id=:id and user_id= :user_id",
+        [
+            ":title" => $item->getTitle(),
+            ":notes" => $item->getNotes(),
+            ":url" => $item->getUrl(),
+            ":context" => $item->getContextId(),
+            ":project" => $item->getProjectId(),
+            ":section" => $item->getSectionId(),
+            ":user_id" => intval($_SESSION["user_id"]),
+            ":id" => $item->getId()
+        ]
+    );
+    }
+
+    public function Add(Item $item){
+        $this->execute("INSERT INTO items (title,date,section_id,notes,url,done,context_id,project_id,user_id)".
+		"values (:title, :date, :section, :notes,:url, 0, :context, :project,:user_id)",
+        [
+            ":title" => $item->getTitle(),
+            ":notes" => $item->getNotes(),
+            ":date" => $item->getDate(),
+            ":url" => $item->getUrl(),
+            ":context" => $item->getContextId(),
+            ":project" => $item->getProjectId(),
+            ":section" => $item->getSectionId(),
+            ":user_id" => intval($_SESSION["user_id"])
+        ]
+    );
     }
     
 
@@ -49,7 +79,7 @@ class ItemDAO extends Database
      * @return Item
      */
     public function getById(int $id): Item {
-        $res = $this->queryOne("SELECT * FROM items WHERE id = :id", [":id" => $id]);
+        $res = $this->queryOne("SELECT * FROM items WHERE id = :id and user_id= :user_id " , [":id" => $id,":user_id" => intval($_SESSION["user_id"])]);
         $item = new Item();
         $item->hydrate($res);
         return $item;
@@ -63,7 +93,7 @@ class ItemDAO extends Database
     public function getChecked(bool $done): array {
         $tab = array();
         $num = $done ? 1 : 0;
-        $res = $this->queryMany("SELECT * FROM items WHERE done = :done", [":done" => $num]);
+        $res = $this->queryMany("SELECT * FROM items WHERE done = :done and user_id= :user_id", [":done" => $num,":user_id" => intval($_SESSION["user_id"])]);
         foreach ($res as $s) {
             $item = new Item();
             $item->hydrate($s);
@@ -79,7 +109,7 @@ class ItemDAO extends Database
      */
     public function setChecked(bool $done, int $id): void {
         $num = $done ? 1 : 0;
-        $this->execute("UPDATE items SET done = :done WHERE id = :id", [":done" => $num, ":id" => $id]);
+        $this->execute("UPDATE items SET done = :done WHERE id = :id and user_id= :user_id ", [":done" => $num, ":id" => $id,":user_id" => intval($_SESSION["user_id"])]);
     }
 
     /**
@@ -87,7 +117,7 @@ class ItemDAO extends Database
      * @param int $id
      */
     public function Delete(int $id): void {
-        $this->execute("DELETE FROM items WHERE id = :id", [":id" => $id]);
+        $this->execute("DELETE FROM items WHERE id = :id and user_id= :user_id", [":id" => $id,":user_id" => intval($_SESSION["user_id"])]);
     }
 
     /**

@@ -89,8 +89,8 @@ class Section {
             $this->title = $data["title"];
         }
 
-        if (isset($data["fancytitle"])) {
-            $this->fancytitle = $data["fancytitle"];
+        if (isset($data["fancy_title"])) {
+            $this->fancytitle = $data["fancy_title"];
         }
 
         if (isset($data["total"])) {

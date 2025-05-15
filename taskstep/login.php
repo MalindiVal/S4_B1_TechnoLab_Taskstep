@@ -17,10 +17,8 @@ if (isset($_POST["submit"]))
 	$setting['salt'] = $salt;
 	
 	$given = $_POST["password"];
-	$secured = md5($given);
-	$total = $secured.$setting['salt'];
-	if ($total == $setting['password'])
-	{
+	/*if (password_verify($_POST["password"],$hashpassword))
+	{*/
 		$_SESSION["loggedin"] = true;
 		$host  = $_SERVER['HTTP_HOST'];
 		$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
@@ -28,12 +26,12 @@ if (isset($_POST["submit"]))
 		session_write_close();
 		header("Location: http://$host$uri/$extra");
 		exit;
-	}
+	/*}
 	else
 	{
 		$failed = true;
 		$_SESSION["loggedin"] = false;
-	}
+	}*/
 }
 else if (isset($_GET["action"])) $_SESSION['loggedin'] = false;	//If "action" is set, log out
 

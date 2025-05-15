@@ -13,7 +13,8 @@ require_once("./model/SectionDAO.php");
 
 <?php 
 	$settingdb = new SettingDAO();
-	$value = $settingdb->getSetting('style');
+	$setting = $settingdb->getAll($_SESSION["user_id"]);
+	$value = $setting->getStylesheet();
 	echo "<link rel='stylesheet' type='text/css' href='styles/".$value."' media='screen' />";
 ?>
 <link rel="stylesheet" type="text/css" href="styles/system/print.css" media="print" />

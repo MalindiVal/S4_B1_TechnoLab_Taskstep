@@ -27,13 +27,11 @@ class ContextDAO extends Database
      * @return Context L'objet Context associé à l'id.
      */
     public function getById(int $id) : Context {
-        $tab = array();  
         
         $res = $this->queryOne("SELECT id, title FROM contexts WHERE id = :section", [":section" => $id]);
         
-        $context = new Context();  
+        $context = new Context(); 
         $context->hydrate($res); 
-        
        
         return $context;
     }
@@ -44,7 +42,7 @@ class ContextDAO extends Database
      * @return void
      */
     public function Add(Context $context) {
-        $this->execute("INSERT INTO contexts (title) VALUES (:title)", [":title" => $context->getTitle()]);
+        $this->execute("INSERT INTO contexts (title,user_id) VALUES (:title,:userid)", [":title" => $context->getTitle(),":userid" => intval($_SESSION["user_id"])]);
     }
 
     /**

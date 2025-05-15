@@ -3,39 +3,32 @@ require_once("Database.php");
 require_once("Setting.php");
 class SettingDAO extends Database
 {
-    /**
-     * Summary of setSetting
-     * @param string $type
-     * @param string $value
-     * @return void
-     */
-    public function setSetting(string $type,string $value){
-        $this->execute("UPDATE settings SET value= :value WHERE setting=:setting",[':value' => $value,':setting' => $type]);
-    }
-
-    /**
-     * Summary of getSetting
-     * @param string $type
-     * @return string
-     */
-    public function getSetting(string $type) : string{
-        $res= $this->queryOne("SELECT value FROM settings WHERE setting= :setting",[':setting' => $type]);
-        return $res["value"];
-    }
 
     /**
      * Summary of getAll
      * @return array
      */
-    public function getAll() : array{
+    public function getAll(): Setting {
         $tab = array();
-        
-        
-        return $tab;
-        
-    }
 
-    public function UpdateSetting(): void {
-        
+        $res = $this->queryOne("SELECT tips, stylesheet, session FROM settings WHERE user_id = :uid", [
+            ':uid' => intval($_SESSION["user_id"])
+        ]);
+
+        $setting = new Setting();
+        $setting->hydrate($res);
+
+        return $setting;
     }
+    
+
+    public function UpdateSetting(Setting $settings): void {
+        $sql = "UPDATE settings SET tips = :tips, stylesheet = :stylesheet, session = 1 WHERE user_id = :uid";
+        $this->execute($sql, [
+            ':tips' => $settings->getTips(),
+            ':stylesheet' => $settings->getStylesheet(),
+            ':uid' => intval($_SESSION["user_id"])
+        ]);
+    }
+    
 }

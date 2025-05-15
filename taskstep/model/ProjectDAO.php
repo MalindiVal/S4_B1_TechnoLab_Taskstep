@@ -41,8 +41,10 @@ class ProjectDAO extends Database
      */
     public function Add(Project $project) {
         $this->execute(
-            "INSERT INTO projects (title) VALUES (:title)",
-            [":title" => $project->getTitle()]
+            "INSERT INTO projects (title,user_id) VALUES (:title,:userid)",
+            [":title" => $project->getTitle(),
+                ":userid" => intval($_SESSION["user_id"])
+            ]
         );
     }
 
@@ -53,7 +55,7 @@ class ProjectDAO extends Database
      */
     public function getById(int $id) : Project {
         $res = $this->queryOne(
-            "SELECT id, title FROM projects WHERE id = :id",
+            "SELECT id, title FROM projects WHERE id = :id ",
             [":id" => $id]
         );
 

@@ -43,14 +43,12 @@ else if ( isset($_POST["submit"]) )	//Otherwise, if the user has submitted a for
 	else if ( !empty($_POST['id']) )	//If a task id was also sent in the form data, update that task
 	{
 		$id = $_POST['id'];
-		$itemdb->
-		$result = $mysqli->query("UPDATE items SET title='$title',date='$date',notes='$notes',url='$url',section='$section',context='$context',project='$project' WHERE id=$id");
+		$itemdb->Update($item);
 		echo "<div id='updated' class='fade'><img src='images/pencil_go.png' alt=''/> ".$l_msg_itemedit."</div>";
 	}
 	else	//Otherwise, add the data as a new task
 	{
-		$result = $mysqli->query("INSERT INTO items (id,title,date,section,notes,url,done,context,project)".
-		"values ('NULL', '$title', '$date', '$section', '$notes', '$url', '$done', '$context', '$project')");
+		$itemdb->Add($item);
 		echo "<div id='updated' class='fade'><img src='images/note_go.png' alt='' /> ".$l_msg_itemadd."</div>";
 		$clear = true;
 	}
@@ -98,6 +96,7 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 		<?php
 			$sectiondb = new SectionDAO();
 			$sections = $sectiondb->getAll();
+			var_dump($sections);
 			foreach($sections as $s){
 				$selected = ($section == $s->getFancyTitle()) ? 'selected="selected"' : '';
 				echo "<option value='".$s->getId() ."' $selected >".$l_sectionlist[$s->getTitle()]."</option>\n";
@@ -124,7 +123,7 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 		$projects = $projectdb->getAll();
 		foreach($projects as $s){
 			$selected = ($project == $s->getTitle()) ? 'selected="selected"' : '';
-			echo "<option value='".$s->getTitle() ."' $selected >".$s->getTitle()."</option>\n";
+			echo "<option value='".$s->getId() ."' $selected >".$s->getTitle()."</option>\n";
 		}
 		?>
 		</select>

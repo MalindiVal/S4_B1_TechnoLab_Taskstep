@@ -173,6 +173,10 @@ class Item{
             $this->date = $data["date"];
         }
 
+        if (isset($data["end_date"])) {
+            $this->date = $data["end_date"];
+        }
+
         if (isset($data["notes"])) {
             $this->notes = $data["notes"];
         }

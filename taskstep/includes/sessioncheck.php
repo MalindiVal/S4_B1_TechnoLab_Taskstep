@@ -4,6 +4,7 @@ session_start();
 header("Cache-control: private");
 require_once("model/SettingDAO.php");
 $settingdb = new SettingDAO();
+$_SESSION["user_id"] = 1;
 
 //Include the configuration
 include("config.php");
@@ -16,7 +17,7 @@ if ($mysqli->connect_error) {
 
 //Grab the setting for "sessions"
 //Select the results of the query in the format (query,row,column)
-$session = $settingdb->getSetting('sessions');
+$session = 1;
 
 //If sessions are enabled...
 if ($session == '1')

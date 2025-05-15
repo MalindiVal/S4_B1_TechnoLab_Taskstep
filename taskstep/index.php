@@ -27,10 +27,11 @@ $settingdb = new SettingDAO();
 </div>
 
 <?php
-display_frontpage();
 
+
+$settings = $settingdb->getAll();
 	//Tips Box
-	$tips = intval($settingdb->getSetting('tips'));
+	$tips = intval($settings->getTips());
 	if($tips == 1)
 	{
 		echo '<div id="tipsbox"><img src="images/information.png" alt="" />&nbsp;' . $l_index_tip . ':&nbsp;';
