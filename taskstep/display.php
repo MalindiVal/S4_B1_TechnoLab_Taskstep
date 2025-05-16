@@ -95,8 +95,9 @@ switch ($display)
 <div id='sectiontitle'><h1><?=$title ?></h1></div>
 
 <?php
+sort_form($display, $section, $tid, $sortby); ?>
 
-sort_form($display, $section, $tid, $sortby);
+<div> <?php
 $numberrows = count($result);
 if ($numberrows == 0)
 {
@@ -159,20 +160,28 @@ else{
 	else echo "<div class='np'> $title - $date_display | $project | $context";
 	?>
 
-	<a href="display.php?display=<?= $display ?>&cmd=delete&id=<?= $id ?>&tid=<?= $tid?>" title="<?= $l_items_del?>" class="actionicon" onclick="return confirm('Are you sure you want to delete this item?');">
-		<img src="images/bin_empty.png" alt="<?= $l_items_del ?>" /></a>
-	<a href="edit.php?id=<?= $id ?>" title="<?= $l_items_edit?>" class="actionicon">
-		<img src="images/pencil.png" alt="<?= $l_items_edit ?>" />
-	</a>
-	<a href="display.php?display=<?= $display ?>&cmd=<?= $cmd ?>&id=<?= $id ?>&tid=<?= $tid ?>" title="<?= $link ?>" class="actionicon" >
-		<img src="images/<?= $icon ?>.png" alt="<?= $link ?>" >
-	</a>
-	<br /><?= $notes ?> <br /><?= $url ?></div>
-	
+	<br /><?= $notes ?> <br /><?= $url ?>
+		<div class="actions">
+			<a href="display.php?display=<?= $display ?>&cmd=delete&id=<?= $id ?>&tid=<?= $tid?>" title="<?= $l_items_del?>" class="actionicon" onclick="return confirm('Are you sure you want to delete this item?');">
+				<img src="images/bin_empty.png" alt="<?= $l_items_del ?>" />
+				<?= $l_items_del ?>
+			</a>
+			<a href="edit.php?id=<?= $id ?>" title="<?= $l_items_edit?>" class="actionicon">
+				<img src="images/pencil.png" alt="<?= $l_items_edit ?>" />
+				<?= $l_items_edit?>
+			</a>
+			<a href="display.php?display=<?= $display ?>&cmd=<?= $cmd ?>&id=<?= $id ?>&tid=<?= $tid ?>" title="<?= $link ?>" class="actionicon" >
+				<img src="images/<?= $icon ?>.png" alt="<?= $link ?>" >
+				<?= $link ?>
+			</a>
+		</div>
+	</div>
 	<?php 
 	}
-} 
+}
+?></div> 
 
+<?php
 if(isset($_POST['submit'])) //If submit is hit
 {
   $section=$_POST['section'];
