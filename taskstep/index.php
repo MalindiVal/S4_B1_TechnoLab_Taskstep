@@ -7,8 +7,9 @@ require_once("model/ItemDAO.php");
 $itemdb = new ItemDAO();
 $settingdb = new SettingDAO();
 ?>
-
+<h1>&nbsp;<?php echo $l_nav_home; ?></h1>
 <div id="welcomebox">
+
 <h2><img src="images/page.png" alt="" />&nbsp;<?php echo $l_index_welcome; ?></h2>
 <p>
 	<?php

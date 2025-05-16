@@ -23,6 +23,10 @@ body{
 }
 
 /* Header */
+button.btn.d-md-none.my-2.ms-3 {
+    border: rgb(165, 165, 165) 1px solid;
+    width: auto;
+}
 
 #header{
 	border-bottom:1px solid #999;
@@ -40,16 +44,14 @@ body{
 }
 
 #headernav{
-	height:22px;
 	background-color:#ececef;
-	margin-bottom: 14px;
+	padding: 7px;
 }
 
 .subtitle{
 	font-size:10pt;
 	/* font-style:italic; */
 	color:#1b5697;
-	background-color:#fff;
 	font-weight:normal;
 }
 
@@ -80,7 +82,7 @@ body{
 }
 
 #headernav ul li a:hover{
-	text-decoration:underline;
+	font-weight: bold;
 }
 
 #headernav ul li a img{
@@ -181,6 +183,71 @@ body{
 	font-size:8pt;
 }
 
+/* Off Screen Canvas */
+button.btn.d-md-none.my-2.ms-3 {
+    border: rgb(255, 255, 255) 1px solid;
+    width: auto;
+	color: black;
+	background: #ececef;
+}
+
+div#offcanvasSidebar{
+	background-image: url(images/modern/splash.jpg);
+	border: dotted rgba(255, 255, 255, 0.795) 1px;
+	color: black;
+	background: #ececef;
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item{
+	padding:1em 25px;
+	border-bottom:1px dotted #ccc;
+	background-image: url(images/add.png);
+	background-repeat: no-repeat;
+	background-position: 0% 50% ;
+	background-size: 10%;
+	display:block;
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item a.nav-link{
+	color: black;
+	text-decoration:none;
+	font-size:15pt;
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item:hover{
+	background-color: #ffffff;
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.ideas{
+	background-image: url(images/lightbulb.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.tobuy{
+	background-image: url(images/cart.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.immediate{
+	background-image: url(images/lightning.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.week{
+	background-image: url(images/newspaper.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.month{
+	background-image: url(images/calendar.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.year{
+	background-image: url(images/world.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.lifetime{
+	border:none;
+	background-image: url(images/user.png);
+}
+
+
 /* Content */
 
 #sectiontitle{
@@ -190,8 +257,6 @@ body{
 
 #content{
 	font-size:10pt;
-	width:550px;
-	margin-left:220px;
 }
 
 #content a{

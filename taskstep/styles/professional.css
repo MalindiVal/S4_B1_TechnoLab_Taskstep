@@ -25,28 +25,22 @@ body{
 
 /* Header */
 
-#header{
-	background-image:url(images/pro/headerback.jpg);
-	height:62px;
+#headernav a.navbar-brand{
+	color:white;
+	padding: 7px;
 }
 
-#header h1{
-	padding:8px 0 0 10px;
-	font-family:Helvetica;
-	font-size:14pt;
-	color:#fff;
-	font-weight:normal;
+.navbar-toggler-icon {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-#header h1 a{
-	color:#fff;
-	text-decoration:none;
+button.btn.d-md-none.my-2.ms-3 {
+    width: auto;
 }
 
 #headernav{
-	height:22px;
-	background-color:#ececef;
-	margin-bottom: 14px;
+	background-color:#516878;
+	padding: 7px;
 }
 
 #date-today{
@@ -71,7 +65,7 @@ body{
 }
 
 #headernav ul li a{
-	color:#000;
+	color: white;
 	text-decoration:none;
 }
 
@@ -171,6 +165,68 @@ body{
 	color:green;
 	font-size:8pt;
 }
+/* Off Screen Canvas */
+button.btn.d-md-none.my-2.ms-3 {
+    width: auto;
+	color: white;
+	background-color: #516878;
+}
+
+div#offcanvasSidebar{
+	background-color:#516878;
+	border: dotted rgba(255, 255, 255, 0.795) 1px;
+	color: white;
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item{
+	padding:1em 25px;
+	border-bottom:3px solid #ccc;
+	background-image: url(images/add.png);
+	background-repeat: no-repeat;
+	background-position: 0% 50% ;
+	background-size: 10%;
+	display:block;
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item a.nav-link{
+	color:#fff;
+	text-decoration:none;
+	font-size:15pt;
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item:hover{
+	background-color: #6b7b86;
+	color: #000;
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.ideas{
+	background-image: url(images/lightbulb.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.tobuy{
+	background-image: url(images/cart.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.immediate{
+	background-image: url(images/lightning.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.week{
+	background-image: url(images/newspaper.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.month{
+	background-image: url(images/calendar.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.year{
+	background-image: url(images/world.png);
+}
+
+div.offcanvas-body ul.nav.flex-column li.nav-item.lifetime{
+	border:none;
+	background-image: url(images/user.png);
+}
 
 /* Content */
 
@@ -181,8 +237,6 @@ body{
 
 #content{
 	font-size:10pt;
-	width:550px;
-	margin-left:220px;
 }
 
 #content a{
