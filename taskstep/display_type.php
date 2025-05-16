@@ -103,20 +103,22 @@ if($getcmd=="delete")
 					$title=$s->getTitle();
 					$id=$s->getId();
 				?>
-				<div>
-					<a href="display.php?display=<?= $type?>&tid=<?= $id ?>&sort=date" class='listlinkssmart' >
-						<img src='images/<?= $type ?>.png' alt='' /> <?= $title ?>
+				<div class="action-links">
+					<a href="display.php?display=<?= $type ?>&tid=<?= $id ?>&sort=date" class="listlinkssmart">
+						<img src="images/<?= $type ?>.png" alt="" /> <?= $title ?>
 					</a>
-					<a href="edit_types.php?type=<?= $type ?>&amp;cmd=edit&amp;id=<?= $id ?>" >
-						<img src="images/pencil.png" alt=""> 
-						<?= $l_dbp_edit[$type] ?>
+
+					<a href="edit_types.php?type=<?= $type ?>&cmd=edit&id=<?= $id ?>" class="action-icon edit-link">
+						<img src="images/pencil.png" alt="Edit <?= $type ?>" /> <?= $l_dbp_edit[$type] ?>
 					</a>
-					<a href="display_type.php?type=<?= $type ?>&cmd=delete&id=<?= $id ?>" 
+
+					<a href="display_type.php?type=<?= $type ?>&cmd=delete&id=<?= $id ?>"
+						class="action-icon delete-link"
 						onclick="return confirm('Are you sure you want to delete this <?= $type ?>?');">
-						<img src="images/bin_empty.png" alt="" />
-						<?=  $l_dbp_del[$type] ?>
+						<img src="images/bin_empty.png" alt="Delete <?= $type ?>" /> <?= $l_dbp_del[$type] ?>
 					</a>
 				</div>
+
 			<?php endforeach; ?>
 </div>
 <?php
