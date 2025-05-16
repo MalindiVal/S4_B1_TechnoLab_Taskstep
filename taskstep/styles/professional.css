@@ -265,9 +265,28 @@ a img{
 }
 
 .actionicon{
-	float:right;
 	padding-left:2px;
 }
+
+a.actionicon {
+	display: inline-block;
+	padding: 0.5em 1em;
+	background-color: #88959e;
+	color: rgb(255, 255, 255);
+	text-decoration: none;
+	border-radius: 4px;
+  }
+  
+  a.actionicon img {
+	vertical-align: middle;
+	margin-right: 5px;
+  }
+
+  a.actionicon:hover {
+	background-color: #ffffff;
+	color: #000;
+	font-weight: bolder;
+  }
 
 #deleted{
 	background-color:#eee;
