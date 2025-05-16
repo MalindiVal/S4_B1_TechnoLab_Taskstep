@@ -11,8 +11,8 @@ $failed = false;
 
 if (isset($_POST["submit"]))
 {
-	$hashpassword = $settingdb->getSetting('password');
-	$salt = $settingdb->getSetting('salt');
+	//$hashpassword = $settingdb->getSetting('password');
+	//$salt = $settingdb->getSetting('salt');
 	$setting['password'] = $hashpassword;	//Build a multi-dimensional array containing the returned rows
 	$setting['salt'] = $salt;
 	
@@ -48,11 +48,7 @@ include("lang/".$language.".php");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>TaskStep - Login</title>
-<?php 
-	$db = new SettingDAO();
-	$value = $db->getSetting('style');
-	echo "<link rel='stylesheet' type='text/css' href='styles/".$value."' media='screen' />";
-?>
+<link rel='stylesheet' type='text/css' href='styles/default.css' media='screen' />
 </head>
 
 <body>
@@ -60,7 +56,7 @@ include("lang/".$language.".php");
 <!--Open container-->
 <div id="container">
 <?php
-$sessionssetting = $settingdb->getSetting('sessions');
+$sessionssetting = 1;
 ?>
 <div id="loginbox">
 <h1><img src="images/icon.png" alt="" /> TaskStep</h1>

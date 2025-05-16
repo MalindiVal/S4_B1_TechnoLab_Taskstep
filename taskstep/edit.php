@@ -72,6 +72,9 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 	$project = (isset($_GET['project'])) ? $_GET['project'] : '';
 }
 ?>
+<h1>
+	<?= $l_forms_button[$type] ?> <?php if ($type == 'edit') : ?> : <?php echo $title ?><?php endif ; ?>
+</h1>
 <form method="post" action="edit.php" id="addform">
 <div>
 <table>

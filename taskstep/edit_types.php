@@ -145,6 +145,9 @@ elseif($getcmd == "edit")
 	//DEBUG echo "ID: $editid2 <br />";
 	//DEBUG echo "Title: $edittitle <br />";
 ?>
+<h1>
+	<?= $l_dbp_edit[$type] ?> : <?php echo $title; ?>
+</h1>
 	<form action="display_type.php?type=<?php echo $type ?>" method="post">
 		<input type="hidden" name="id" value="<?php echo $id; ?>" />
 		<input type="hidden" name="oldtitle" value="<?php echo $title; ?>" />
@@ -160,6 +163,9 @@ elseif($getcmd == "edit")
 //Add form
 elseif($getcmd == "add")
 {?>
+	<h1>
+		<?= $l_dbp_add[$type] ?>
+	</h1>
 	<form action="display_type.php?type=<?= $type ?>" method="post">
 		<?= $l_forms_title ?>&nbsp;<input type="text" name="newtitle" value="<?= $l_dbp_new[$type];?>" size="30" required/><br />
 		<br />
