@@ -11,6 +11,8 @@ require_once("./model/SectionDAO.php");
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>TaskStep</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 <?php 
 	if (isset($_SESSION["user_id"])){
 		$settingdb = new SettingDAO();
@@ -22,7 +24,6 @@ require_once("./model/SectionDAO.php");
 	
 	echo "<link rel='stylesheet' type='text/css' href='styles/".$value."' media='screen' />";
 ?>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="styles/system/print.css" media="print" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php selfref_url(); ?>rss.php" /> 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
@@ -38,48 +39,105 @@ require_once("./model/SectionDAO.php");
 
 
 <!--Header-->
-<header id="header">
-<h1><a href="index.php"><img src="images/icon.png" alt="" style="vertical-align:middle"/>&nbsp;TaskStep <span class="subtitle">1.1</span></a></h1>
-</header>
-<nav id="headernav" >
-	<ul>
-		<li><a href="display.php?display=today&amp;sort=done"><img src="images/calendar_view_day.png" alt="" /><?php echo $l_nav_today; ?>: <?php echo date($menu_date_format); ?></a></li>
-		<li><a href="index.php"><img src="images/house.png" alt="" /><?php echo $l_nav_home; ?></a></li>
-		<li><a href="display.php?display=all&amp;sort=date"><img src="images/page_white_text.png" alt="" /><?php echo $l_nav_allitems; ?></a></li>
-		<li><a href="display_type.php?type=context"><img src="images/context.png" alt="" /><?php echo $l_nav_context; ?></a></li>
-		<li><a href="display_type.php?type=project"><img src="images/project.png" alt="" /><?php echo $l_nav_project; ?></a></li>
-		<li><a href="settings.php"><img src="images/textfield_rename.png" alt="" /><?php echo $l_nav_settings; ?></a></li>
-		<li><a href="http://www.cunningtitle.com/taskstep"><img src="images/help.png" alt="" /><?php echo $l_nav_help; ?></a></li>
-		<li><a href="login.php?action=logout"><img src="images/door_in.png" alt="" /><?php echo $l_nav_logout; ?></a></li>
-	</ul>
+<!-- Responsive Header and Navigation -->
+<nav class="navbar navbar-expand-lg " id="headernav">
+  <div class="container-fluid">
+    <!-- Brand / Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="index.php">
+      <img src="images/icon.png" alt="TaskStep Icon" width="30" height="30" class="d-inline-block align-text-top me-2">
+      TaskStep <span class="subtitle ms-1">1.1</span>
+    </a>
+
+    <!-- Toggler for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTaskstep" aria-controls="navbarTaskstep" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible nav items -->
+    <div class="collapse navbar-collapse" id="navbarTaskstep">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="display.php?display=today&amp;sort=done">
+            <img src="images/calendar_view_day.png" alt="" class="me-1" />
+            <?php echo $l_nav_today; ?>: <?php echo date($menu_date_format); ?>
+          </a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="index.php"><img src="images/house.png" alt="" class="me-1" /><?php echo $l_nav_home; ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="display.php?display=all&amp;sort=date"><img src="images/page_white_text.png" alt="" class="me-1" /><?php echo $l_nav_allitems; ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="display_type.php?type=context"><img src="images/context.png" alt="" class="me-1" /><?php echo $l_nav_context; ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="display_type.php?type=project"><img src="images/project.png" alt="" class="me-1" /><?php echo $l_nav_project; ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="settings.php"><img src="images/textfield_rename.png" alt="" class="me-1" /><?php echo $l_nav_settings; ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="http://www.cunningtitle.com/taskstep"><img src="images/help.png" alt="" class="me-1" /><?php echo $l_nav_help; ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="login.php?action=logout"><img src="images/door_in.png" alt="" class="me-1" /><?php echo $l_nav_logout; ?></a></li>
+      </ul>
+    </div>
+  </div>
 </nav>
-<div id="container">
-<!--Sidebar-->
-<!--Numbers hack originally by Place, and adapted by Rob to fit with the language system-->
-<div id="sidebar">                     
-    <ul>
-		<li><a href="edit.php"><?php echo $l_side_add; ?></a></li>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- Sidebar -->
+    <nav id="sidebar" class="col-md-3 col-lg-2 d-none d-md-block  sidebar py-3">
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" href="edit.php"><?php echo $l_side_add; ?></a></li>
+        <?php
+          $db = new SectionDAO();
+          $results = $db->getRatio();
+        ?>
+        <?php foreach ($results as $result): ?>
+          <?php
+            $title = htmlspecialchars($result->getTitle(), ENT_QUOTES, 'UTF-8');
+            $finished = (int)$result->getFinished();
+            $total = (int)$result->getTotal();
+            $percentage = ($total > 0) ? round((100 * $finished) / $total) : 0;
+            $label = htmlspecialchars($l_sectionlist[$result->getTitle()] ?? $result->getTitle(), ENT_QUOTES, 'UTF-8');
+          ?>
+          <li class="nav-item">
+            <a class="nav-link <?= $title ?>" href="display.php?display=section&amp;section=<?= urlencode($result->getTitle()) ?>&amp;sort=date&tid=<?= $result->getId() ?>">
+              <?= $label ?>
+              <div>(<?= $finished ?> / <?= $total ?>)</div>
+            </a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </nav>
+	<!-- Toggle button for mobile -->
+	<button class="btn d-md-none my-2 ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+	☰ Sections
+	</button>
+
+	<!-- Offcanvas Sidebar -->
+	<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+	<div class="offcanvas-header">
+		<h5 class="offcanvas-title" id="offcanvasSidebarLabel">Sections</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+		<ul class="nav flex-column">
+		<li class="nav-item"><a class="nav-link" href="edit.php"><?php echo $l_side_add; ?></a></li>
 		<?php
 			$db = new SectionDAO();
 			$results = $db->getRatio();
 		?>
-		<?php foreach ($results as $result) : ?>
-			<li>
+		<?php foreach ($results as $result): ?>
 			<?php
-				$title = htmlspecialchars($result->getTitle(), ENT_QUOTES, 'UTF-8');
-				$finished = (int)$result->getFinished();
-				$total = (int)$result->getTotal();
-				$percentage = ($total > 0) ? round((100 * $finished) / $total) : 0;
-				$label = htmlspecialchars($l_sectionlist[$result->getTitle()] ?? $result->getTitle(), ENT_QUOTES, 'UTF-8');
+			$title = htmlspecialchars($result->getTitle(), ENT_QUOTES, 'UTF-8');
+			$finished = (int)$result->getFinished();
+			$total = (int)$result->getTotal();
+			$label = htmlspecialchars($l_sectionlist[$result->getTitle()] ?? $result->getTitle(), ENT_QUOTES, 'UTF-8');
 			?>
-			<a class="<?= $title ?>" href="display.php?display=section&amp;section=<?= urlencode($result->getTitle()) ?>&amp;sort=date&tid=<?= $result->getId() ?> ">
+			<li class="nav-item <?= $title ?>">
+			<a class="nav-link <?= $title ?>" href="display.php?display=section&amp;section=<?= urlencode($result->getTitle()) ?>&amp;sort=date&tid=<?= $result->getId() ?>">
 				<?= $label ?>
 				<div>(<?= $finished ?> / <?= $total ?>)</div>
-				<div><?= $percentage ?>%</div>
 			</a>
 			</li>
 		<?php endforeach; ?>
-    </ul>
-</div>
+		</ul>
+	</div>
+	</div>
+	
 
-<main id="content">
+    <!-- Main content -->
+    <main id="content" class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
