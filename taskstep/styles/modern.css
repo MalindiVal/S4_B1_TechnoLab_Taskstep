@@ -252,9 +252,11 @@ div.offcanvas-body ul.nav.flex-column li.nav-item.lifetime{
 }
 
 .current{
+	font-size: larger;
 	padding:5px;
 	background-color:transparent;
 	background-image:url(images/modern/currentback.png);
+	background-color:rgba(92, 78, 0, 0.185);
 	background-repeat:repeat-y;
 	border:none;
 	margin-bottom:10px;
@@ -262,8 +264,9 @@ div.offcanvas-body ul.nav.flex-column li.nav-item.lifetime{
 }
 
 .old{
+	font-size: larger;
 	padding:5px;
-	background-color:rgba(255, 0, 0, 0.075);
+	background-color:rgba(255, 0, 0, 0.281);
 	background-image:url(images/modern/oldback.png);
 	background-repeat:repeat-y;
 	border:none;
@@ -272,6 +275,7 @@ div.offcanvas-body ul.nav.flex-column li.nav-item.lifetime{
 }
 
 .np{
+	font-size: larger;
 	padding:5px;
 	margin-bottom:10px;
 	background-color:rgba(0, 0, 0, 0.185);

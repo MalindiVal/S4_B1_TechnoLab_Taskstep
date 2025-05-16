@@ -255,12 +255,14 @@ div.offcanvas-body ul.nav.flex-column li.nav-item.lifetime{
 }
 
 .old{
+	font-size: larger;
 	padding:5px;
 	background-color:#fcc;
 	margin-bottom:10px;
 }
 
 .np{
+	font-size: larger;
 	padding:5px;
 	margin-bottom:10px;
 }

@@ -269,6 +269,7 @@ div.offcanvas-body ul.nav.flex-column li.nav-item.lifetime{
 }
 
 .old{
+	font-size: larger;
 	padding:5px;
 	background-color:#fcc;
 	border:1px solid #c00;
@@ -276,7 +277,10 @@ div.offcanvas-body ul.nav.flex-column li.nav-item.lifetime{
 }
 
 .np{
+	font-size: larger;
 	padding:5px;
+	background-color:rgb(218, 218, 218);
+	border:1px solid rgb(0, 0, 0);
 	margin-bottom:10px;
 }
 
