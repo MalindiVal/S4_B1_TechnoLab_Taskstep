@@ -28,6 +28,9 @@ class Setting {
     }
 
     // Setters
+    public function setId(int $id): void {
+        $this->id = $id;
+    }
     public function setTips(bool $tips): void {
         $this->tips = $tips;
     }

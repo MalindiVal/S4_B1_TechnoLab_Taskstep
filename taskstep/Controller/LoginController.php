@@ -12,7 +12,7 @@ class LoginController {
      * Constructeur de loginConstroller
      */
     public function __construct() {
-        $this->loginService = DependencyInjector::getService('LoginService');
+        $this->loginService = DependencyInjector::getLoginService();
     }
 
     /**

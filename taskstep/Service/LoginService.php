@@ -11,7 +11,7 @@ class LoginService{
      * Constructeur de loginService
      */
     public function __construct() {
-        $this->loginModel = DependencyInjector::getModel('UserDao');
+        $this->loginModel = DependencyInjector::getLoginDao();
     }
 
     /**

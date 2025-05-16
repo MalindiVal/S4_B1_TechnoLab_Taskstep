@@ -6,7 +6,7 @@ include("includes/functions.php");
 include("Controller/LoginController.php");
 
 //Appelle de la méthode permettant la connexiuon
-$userController = new LoginController();
+$userController = DependencyInjector::getLoginController();
 $user = $userController->connexion();
 
 
