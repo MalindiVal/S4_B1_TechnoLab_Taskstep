@@ -73,8 +73,9 @@ button.btn.d-md-none.my-2.ms-3 {
 	vertical-align:-2px;
 }
 
-#headernav ul li a:hover img{
+#headernav ul li a:hover {
 	text-decoration:none;
+	font-weight: bolder;
 }
 
 #adminbox{
@@ -166,6 +167,10 @@ button.btn.d-md-none.my-2.ms-3 {
 	font-size:8pt;
 }
 /* Off Screen Canvas */
+.btn-close {
+	filter: invert(1) grayscale(100%) brightness(200%);
+  }
+
 button.btn.d-md-none.my-2.ms-3 {
     width: auto;
 	color: white;

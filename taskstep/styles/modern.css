@@ -77,9 +77,6 @@ body{
 	vertical-align:middle;
 }
 
-#headernav ul li a:hover img{
-	text-decoration:none;
-}
 
 #adminbox{
 	float:right;
@@ -172,6 +169,10 @@ body{
 }
 
 /* Off Screen Canvas */
+.btn-close {
+	filter: invert(1) grayscale(100%) brightness(200%);
+}
+
 button.btn.d-md-none.my-2.ms-3 {
     border: rgb(255, 255, 255) 1px solid;
     width: auto;

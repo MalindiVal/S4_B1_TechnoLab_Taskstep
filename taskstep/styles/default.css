@@ -83,15 +83,13 @@ button.btn.d-md-none.my-2.ms-3 {
 
 #headernav ul li a:hover{
 	font-weight: bold;
+	text-decoration:none;
 }
 
 #headernav ul li a img{
 	vertical-align:-3px;
 }
 
-#headernav ul li a:hover img{
-	text-decoration:none;
-}
 
 #adminbox{
 	float:right;
