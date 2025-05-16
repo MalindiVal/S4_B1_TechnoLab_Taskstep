@@ -30,7 +30,7 @@ if($postcmd == "edit" && isset($_POST["submit"]))
 	}
 	
 	
-	echo "<div id='updated' class='fade'><img src='images/pencil_go.png' alt=''/> ".$l_msg_updated[$type]."</div>";
+	echo "<div id='updated' ><img src='images/pencil_go.png' alt=''/> ".$l_msg_updated[$type]."</div>";
 }
 
 //adding in mysql
@@ -50,7 +50,7 @@ if($postcmd == "add" && isset($_POST["add"]))
 		$projectdb->Add($project);
 	}
 	
-	echo "<div id='updated' class='fade'><img src='images/add.png' alt=''/> ".$l_msg_added[$type]."</div>";
+	echo "<div id='updated' ><img src='images/add.png' alt=''/> ".$l_msg_added[$type]."</div>";
 }
 
 //deleting in mysql
@@ -67,7 +67,7 @@ if($getcmd=="delete")
 		$projectdb->Delete($delid);
 	}
 
-    echo "<div id='deleted' class='fade'><img src='images/bin.png' alt='' /> ".$l_msg_deleted[$type]."</div>";
+    echo "<div id='deleted' ><img src='images/bin.png' alt='' /> ".$l_msg_deleted[$type]."</div>";
 }
 
 //if the GET cmd has not been initialized, display a list of everything

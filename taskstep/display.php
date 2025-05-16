@@ -18,11 +18,11 @@ if (isset($_GET["cmd"]))
 		break;
 		case "do":
 			$itemdb->setChecked(true,$id);
-		  	echo "<div id='updated' class='fade'><img src='images/accept.png' alt='' /> ".$l_msg_itemdo."</div>";
+		  	echo "<div id='updated' ><img src='images/accept.png' alt='' /> ".$l_msg_itemdo."</div>";
 		break;
 		case "undo":
 			$itemdb->setChecked(false,$id);
-		  	echo "<div id='deleted' class='fade'><img src='images/undone.png' alt='' /> ".$l_msg_itemundo."</div>";
+		  	echo "<div id='deleted' ><img src='images/undone.png' alt='' /> ".$l_msg_itemundo."</div>";
 		break;  
 		default:	//Error trap it so that if a dodgy command is given it doesn't drop dead
 			echo "<div class='error'><img src='images/exclamation.png' alt='' /> ".$l_msg_actionerror."</div>";

@@ -45,12 +45,12 @@ else if ( isset($_POST["submit"]) )	//Otherwise, if the user has submitted a for
 	{
 		$id = $_POST['id'];
 		$itemdb->Update($item);
-		echo "<div id='updated' class='fade'><img src='images/pencil_go.png' alt=''/> ".$l_msg_itemedit."</div>";
+		echo "<div id='updated' ><img src='images/pencil_go.png' alt=''/> ".$l_msg_itemedit."</div>";
 	}
 	else	//Otherwise, add the data as a new task
 	{
 		$itemdb->Add($item);
-		echo "<div id='updated' class='fade'><img src='images/note_go.png' alt='' /> ".$l_msg_itemadd."</div>";
+		echo "<div id='updated' ><img src='images/note_go.png' alt='' /> ".$l_msg_itemadd."</div>";
 		$clear = true;
 	}
 }
