@@ -12,7 +12,7 @@ require_once("./model/SectionDAO.php");
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>TaskStep</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+<link href="public/bootstrap-5.3.6-dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 <?php 
 	if (isset($_SESSION["user_id"])){
 		$settingdb = new SettingDAO();
@@ -26,7 +26,7 @@ require_once("./model/SectionDAO.php");
 ?>
 <link rel="stylesheet" type="text/css" href="styles/system/print.css" media="print" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php selfref_url(); ?>rss.php" /> 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+<script src="public/bootstrap-5.3.6-dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 <?php pagespecific()?>
 <script type="text/javascript" src="script/fat.js"></script>
 </head>
@@ -40,7 +40,7 @@ require_once("./model/SectionDAO.php");
 
 <!--Header-->
 <!-- Responsive Header and Navigation -->
-<nav class="navbar navbar-expand-lg " id="headernav">
+<nav class="navbar navbar-expand-lg sticky-top" id="headernav">
   <div class="container-fluid">
     <!-- Brand / Logo -->
     <a class="navbar-brand d-flex align-items-center" href="index.php">
@@ -74,7 +74,7 @@ require_once("./model/SectionDAO.php");
   </div>
 </nav>
 
-<div class="container-fluid">
+<div class="container-fluid ">
   <div class="row">
 
     <!-- Sidebar -->
