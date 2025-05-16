@@ -1,5 +1,6 @@
 <?php
 
+require_once "Model/injectorDAO.php";
 /**
  * Classe LoginService 
  */
@@ -11,7 +12,7 @@ class LoginService{
      * Constructeur de loginService
      */
     public function __construct() {
-        $this->loginModel = DependencyInjector::getLoginDao();
+        $this->loginModel = InjectorDAO::getLoginDao();
     }
 
     /**

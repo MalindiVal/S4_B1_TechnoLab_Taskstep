@@ -3,10 +3,10 @@ session_start();
 
 include("config.php");
 include("includes/functions.php");
-include("Controller/LoginController.php");
+include("Controller/injectorContoller.php");
 
 //Appelle de la méthode permettant la connexiuon
-$userController = DependencyInjector::getLoginController();
+$userController = InjectorContoller::getLoginController();
 $user = $userController->connexion();
 
 

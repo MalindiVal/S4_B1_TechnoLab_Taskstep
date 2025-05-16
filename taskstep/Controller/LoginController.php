@@ -1,6 +1,6 @@
 <?php
 
-include($_SERVER['DOCUMENT_ROOT'] . "/taskstep/dependency_injector.php");
+require_once "Service/injectorService.php";
 
 /**
  * Classe LoginController
@@ -12,7 +12,7 @@ class LoginController {
      * Constructeur de loginConstroller
      */
     public function __construct() {
-        $this->loginService = DependencyInjector::getLoginService();
+        $this->loginService = InjectorService::getLoginService();
     }
 
     /**
