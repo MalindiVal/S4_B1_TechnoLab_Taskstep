@@ -149,14 +149,27 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
     </div>
   </div>
 
-  <!-- Date -->
-  <div class="mb-3 row">
-    <label for="end_date" class="col-sm-2 col-form-label"><?php echo $l_forms_date; ?>:</label>
-    <div class="col-sm-10">
-      <input type="text" autocomplete="off" class="form-control datebox" id="end_date" name="end_date"
-             value="<?php echo $date ?>" onfocus="JACS.show(this,event);" required />
+  <!-- End Date -->
+<div class="mb-3 row">
+  <label for="end_date" class="col-sm-2 col-form-label">
+    <?= $l_forms_date; ?>:
+  </label>
+  <div class="col-sm-10">
+    <input 
+      type="date"
+      class="form-control"
+      id="end_date"
+      name="end_date"
+      value="<?= htmlspecialchars($date); ?>"
+      required
+      aria-describedby="dateHelp"
+    />
+    <div id="dateHelp" class="form-text">
+      <?= $l_forms_date_hint ?? 'Select a due date.'; ?>
     </div>
   </div>
+</div>
+
 
   <!-- URL -->
   <div class="mb-3 row">
