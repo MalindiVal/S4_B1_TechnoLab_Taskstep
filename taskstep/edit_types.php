@@ -145,33 +145,78 @@ elseif($getcmd == "edit")
 	//DEBUG echo "ID: $editid2 <br />";
 	//DEBUG echo "Title: $edittitle <br />";
 ?>
-<h1>
-	<?= $l_dbp_edit[$type] ?> : <?php echo $title; ?>
+<h1 class="mb-4">
+    <?= $l_dbp_edit[$type] ?> : <?= htmlspecialchars($title); ?>
 </h1>
-	<form action="display_type.php?type=<?php echo $type ?>" method="post">
-		<input type="hidden" name="id" value="<?php echo $id; ?>" />
-		<input type="hidden" name="oldtitle" value="<?php echo $title; ?>" />
-		<?php echo $l_forms_title ?>&nbsp;<input type="text" name="title" value="<?php echo $title; ?>" size="30" required/><br /><br />
-		<input type="hidden" name="cmd" value="edit">
-		<input type="checkbox" name="tasks" checked>&nbsp;<?php echo $l_msg_updateassoctasks; ?><br />
-		<br />
-		<input type="submit" name="submit" value="<?php echo $l_dbp_edit[$type]; ?>" onclick="return confirm('Are you sure you want to update this <?= $type ?>?');"/>
-	</form>
+
+<form action="display_type.php?type=<?= htmlspecialchars($type) ?>" method="post" class="mb-4">
+  <input type="hidden" name="id" value="<?= htmlspecialchars($id); ?>" />
+  <input type="hidden" name="oldtitle" value="<?= htmlspecialchars($title); ?>" />
+  <input type="hidden" name="cmd" value="edit" />
+
+  <!-- Title -->
+  <div class="mb-3">
+    <label for="title" class="form-label"><?= $l_forms_title ?></label>
+    <input type="text"
+           class="form-control"
+           id="title"
+           name="title"
+           value="<?= htmlspecialchars($title); ?>"
+           size="30"
+           required />
+  </div>
+
+  <!-- Checkbox for tasks -->
+  <div class="form-check mb-3">
+    <input type="checkbox"
+           class="form-check-input"
+           id="tasks"
+           name="tasks"
+           checked>
+    <label class="form-check-label" for="tasks"><?= $l_msg_updateassoctasks; ?></label>
+  </div>
+
+  <!-- Submit -->
+  <button type="submit"
+          name="submit"
+          class="btn btn-primary"
+          onclick="return confirm('Are you sure you want to update this <?= htmlspecialchars($type) ?>?');">
+    <?= $l_dbp_edit[$type]; ?>
+  </button>
+</form>
+
 	<?php
 	}
 
 //Add form
 elseif($getcmd == "add")
 {?>
-	<h1>
-		<?= $l_dbp_add[$type] ?>
-	</h1>
-	<form action="display_type.php?type=<?= $type ?>" method="post">
-		<?= $l_forms_title ?>&nbsp;<input type="text" name="newtitle" value="<?= $l_dbp_new[$type];?>" size="30" required/><br />
-		<br />
-		<input type="hidden" name="cmd" value="add" />
-		<input type="submit" name="add" value="<?= $l_dbp_add[$type]; ?>"  onclick="return confirm('Are you sure you want to create this <?= $type ?>?');" />
-	</form>
+	<h1 class="mb-4">
+    <?= $l_dbp_add[$type] ?>
+</h1>
+
+<form action="display_type.php?type=<?= htmlspecialchars($type) ?>" method="post" class="mb-4">
+  <div class="mb-3">
+    <label for="newtitle" class="form-label"><?= $l_forms_title ?></label>
+    <input type="text"
+           class="form-control"
+           id="newtitle"
+           name="newtitle"
+           value="<?= htmlspecialchars($l_dbp_new[$type]); ?>"
+           size="30"
+           required>
+  </div>
+
+  <input type="hidden" name="cmd" value="add" />
+
+  <button type="submit"
+          name="add"
+          class="btn btn-success"
+          onclick="return confirm('Are you sure you want to create this <?= htmlspecialchars($type) ?>?');">
+    <?= $l_dbp_add[$type]; ?>
+  </button>
+</form>
+
 <?php
 }
 

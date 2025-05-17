@@ -75,87 +75,106 @@ if ($clear)	//If 'clear' is true, we set the form values to blank/default values
 <h1>
 	<?= $l_forms_button[$type] ?> <?php if ($type == 'edit') : ?> : <?php echo $title ?><?php endif ; ?>
 </h1>
-<form method="post" action="edit.php" id="addform">
-<div>
-<table>
-<tr>
-   <td><?php echo $l_forms_title; ?>:</td>
-   <td colspan="3" rowspan="1"><input type='text' id="addtitle" name='title' value="<?php echo $title ?>" size="60" required/></td>
-</tr>
-<tr>
-   <td><?php echo $l_forms_notes; ?>:</td>
-   <td colspan="3" rowspan="1"><input type='text' name='notes' value="<?php echo $notes ?>" size="60" required/></td>
-</tr>
-<tr>
-   <td></td>
-   <td><?php echo $l_forms_section; ?>:</td>
-   <td><?php echo $l_forms_context; ?>:</td>
-   <td><?php echo $l_forms_project; ?>:</td>
-</tr>
-<tr>
-	<td></td>
-	<td>
-		<select name='section_id' size="7" required>
-		<?php
-			$sectiondb = new SectionDAO();
-			$sections = $sectiondb->getAll();
-			var_dump($sections);
-			foreach($sections as $s){
-				$selected = ($section == $s->getId()) ? 'selected="selected"' : '';
-				echo "<option value='".$s->getId() ."' $selected >".$l_sectionlist[$s->getTitle()]."</option>\n";
-			}
-		?>
-		</select>
-	</td>
-	<td>
-		<select name='context_id' size="7" required>
-		<?php
-		$contextdb = new ContextDAO();
-		$contexts = $contextdb->getAll();
-		foreach($contexts as $s){
-			$selected = ($context == $s->getId()) ? 'selected="selected"' : '';
-			echo "<option value='".$s->getId()."' $selected>" . $s->getTitle() . "</option>\n";
-		}
-		?>
-		</select>
-	</td>
-	<td>
-		<select name='project_id' size="7" required>
-		<?php
-		$projectdb = new ProjectDAO();
-		$projects = $projectdb->getAll();
-		foreach($projects as $s){
-			$selected = ($project == $s->getId()) ? 'selected="selected"' : '';
-			echo "<option value='".$s->getId() ."' $selected >".$s->getTitle()."</option>\n";
-		}
-		?>
-		</select>
-	</td>
-</tr>
-<tr>
-	<td></td>
-	<td></td>
-	<td><span class="listlinkstyle"><a href="edit_types.php?type=context"><img src="images/context_edit.png" alt="" /> <?php echo $l_forms_contexte; ?></a></span></td>
-	<td><span class="listlinkstyle"><a href="edit_types.php?type=project"><img src="images/project_edit.png" alt="" /> <?php echo $l_forms_projecte; ?></a></span></td>
-</tr>
-<tr>
-   <td><?php echo $l_forms_date; ?>:</td>
-   <td colspan="3" rowspan="1" id="holder">
-      <input type='text' autocomplete="off" name='end_date' value="<?php echo $date ?>" size="60" class="datebox" onfocus="JACS.show(this,event);" required />
-   </td>
-</tr>
-<tr>
-   <td><?php echo $l_forms_url; ?>:</td>
-   <td colspan="3" rowspan="1">
-      <input type='text' name='url' value="<?php echo $url ?>" size="60" required />
-   </td>
-</tr>
-<tr>
-   <td></td>
-   <td colspan="3" rowspan="1"><input type="submit" name="submit" value="<?php echo $l_forms_button[$type]; ?>"  onclick="return confirm('Are you sure of those informations?');"/></td> 
-</tr>
-</table>
-<input type="hidden" name="id" value="<?php echo $id ?>" />
-</div>
+<form method="post" action="edit.php" id="addform" class="container mt-4">
+  <input type="hidden" name="id" value="<?php echo $id ?>" />
+
+  <!-- Title -->
+  <div class="mb-3 row">
+    <label for="addtitle" class="col-sm-2 col-form-label"><?php echo $l_forms_title; ?>:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="addtitle" name="title" value="<?php echo $title ?>" required />
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="mb-3 row">
+    <label for="notes" class="col-sm-2 col-form-label"><?php echo $l_forms_notes; ?>:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="notes" name="notes" value="<?php echo $notes ?>" required />
+    </div>
+  </div>
+
+  <!-- Section / Context / Project -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label for="section_id" class="form-label"><?php echo $l_forms_section; ?>:</label>
+      <select class="form-select" id="section_id" name="section_id" size="7" required>
+        <?php
+          $sectiondb = new SectionDAO();
+          $sections = $sectiondb->getAll();
+          foreach ($sections as $s) {
+            $selected = ($section == $s->getId()) ? 'selected' : '';
+            echo "<option value='" . $s->getId() . "' $selected>" . $l_sectionlist[$s->getTitle()] . "</option>\n";
+          }
+        ?>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label for="context_id" class="form-label"><?php echo $l_forms_context; ?>:</label>
+      <select class="form-select" id="context_id" name="context_id" size="7" required>
+        <?php
+          $contextdb = new ContextDAO();
+          $contexts = $contextdb->getAll();
+          foreach ($contexts as $s) {
+            $selected = ($context == $s->getId()) ? 'selected' : '';
+            echo "<option value='" . $s->getId() . "' $selected>" . $s->getTitle() . "</option>\n";
+          }
+        ?>
+      </select>
+      <div class="mt-1">
+        <a href="edit_types.php?type=context" class="listlinkstyle">
+          <img src="images/context_edit.png" alt="" /> <?php echo $l_forms_contexte; ?>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <label for="project_id" class="form-label"><?php echo $l_forms_project; ?>:</label>
+      <select class="form-select" id="project_id" name="project_id" size="7" required>
+        <?php
+          $projectdb = new ProjectDAO();
+          $projects = $projectdb->getAll();
+          foreach ($projects as $s) {
+            $selected = ($project == $s->getId()) ? 'selected' : '';
+            echo "<option value='" . $s->getId() . "' $selected>" . $s->getTitle() . "</option>\n";
+          }
+        ?>
+      </select>
+      <div class="mt-1">
+        <a href="edit_types.php?type=project" class="listlinkstyle">
+          <img src="images/project_edit.png" alt="" /> <?php echo $l_forms_projecte; ?>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Date -->
+  <div class="mb-3 row">
+    <label for="end_date" class="col-sm-2 col-form-label"><?php echo $l_forms_date; ?>:</label>
+    <div class="col-sm-10">
+      <input type="text" autocomplete="off" class="form-control datebox" id="end_date" name="end_date"
+             value="<?php echo $date ?>" onfocus="JACS.show(this,event);" required />
+    </div>
+  </div>
+
+  <!-- URL -->
+  <div class="mb-3 row">
+    <label for="url" class="col-sm-2 col-form-label"><?php echo $l_forms_url; ?>:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="url" name="url" value="<?php echo $url ?>" required />
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="row">
+    <div class="col-sm-10 offset-sm-2">
+      <button type="submit" class="btn btn-primary" name="submit"
+              onclick="return confirm('Are you sure of those informations?');">
+        <?php echo $l_forms_button[$type]; ?>
+      </button>
+    </div>
+  </div>
 </form>
+
 <?php include('includes/footer.php') ?>
