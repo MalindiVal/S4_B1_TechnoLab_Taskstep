@@ -71,6 +71,7 @@ body{
 
 #headernav ul li a:hover{
 	text-decoration:underline;
+	background-color: #0059ff81;
 }
 
 #headernav ul li a img{
@@ -346,6 +347,8 @@ a.actionicon {
 	display:block;
 	padding:3px;
 	border-top:1px dotted #fff;
+	font-size: 15px;
+	margin: 5px;
 }
 
 .action-links a.action-icon {

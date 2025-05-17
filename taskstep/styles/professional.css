@@ -76,6 +76,7 @@ button.btn.d-md-none.my-2.ms-3 {
 #headernav ul li a:hover {
 	text-decoration:none;
 	font-weight: bolder;
+	background-color: #6187a1;
 }
 
 #adminbox{
@@ -329,6 +330,8 @@ a.actionicon {
 	display:block;
 	padding:3px;
 	border-top:1px dotted #ccc;
+	font-size: 15px;
+  	margin: 5px;
 }
 
 .action-links a.action-icon {

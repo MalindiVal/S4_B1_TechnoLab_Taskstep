@@ -84,6 +84,7 @@ button.btn.d-md-none.my-2.ms-3 {
 #headernav ul li a:hover{
 	font-weight: bold;
 	text-decoration:none;
+	background-color: #b9b9b9;
 }
 
 #headernav ul li a img{
@@ -357,6 +358,8 @@ a.actionicon {
 	padding:3px;
 	border-top:1px dotted #ccc;
 	text-decoration:none;
+	font-size: 15px;
+  	margin: 5px;
 }
 
 .action-links a.action-icon {
