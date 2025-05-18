@@ -12,9 +12,8 @@ require_once("./model/SectionDAO.php");
 <title>TaskStep</title>
 
 <?php 
-	if (isset($_SESSION["user_id"])){
-		$settingdb = new SettingDAO();
-		$setting = $settingdb->getAll();
+	if (isset($_SESSION["user_id"]) && isset($_SESSION['setting'])){
+		$setting = $_SESSION['setting'];
 		$value = $setting->getStylesheet();
 	} else {
 		$value = "default.css";

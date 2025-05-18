@@ -5,7 +5,7 @@ require_once("model/ContextDAO.php");
 require_once("model/ProjectDAO.php");
 require_once("model/ItemDAO.php");
 $itemdb = new ItemDAO();
-$settingdb = new SettingDAO();
+
 ?>
 
 <div id="welcomebox">
@@ -67,9 +67,12 @@ foreach($result as $res)
 if ($numrows == 0) echo $l_index_noimmediate;
 echo '</div>';
 
-$settings = $settingdb->getAll();
-	//Tips Box
-	$tips = intval($settings->getTips());
+	$tips = 0;
+	if (isset($_SESSION['setting'])) {
+		$setting = $_SESSION['setting'];
+		$tips = intval($setting->getTips());
+	}
+	
 	if($tips == 1)
 	{
 		echo '<div id="tipsbox"><img src="images/information.png" alt="" />&nbsp;' . $l_index_tip . ':&nbsp;';

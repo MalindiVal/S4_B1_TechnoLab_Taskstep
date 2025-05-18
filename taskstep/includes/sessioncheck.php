@@ -3,8 +3,6 @@
 session_start();  
 header("Cache-control: private");
 require_once("model/SettingDAO.php");
-$settingdb = new SettingDAO();
-$_SESSION["user_id"] = 1;
 
 //Include the configuration
 include("config.php");
@@ -24,14 +22,14 @@ if ($session == '1')
 {
   //and there is no session for "loggedin"...
 	if(!$_SESSION['loggedin'])
-	{
-		//...send them packing to the login page
-		$host  = $_SERVER['HTTP_HOST'];
-		$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-		$extra = 'login.php';
-		session_write_close();
-		header("Location: http://$host$uri/$extra");
-		exit;
-	}
+		{
+			//...send them packing to the login page
+			$host  = $_SERVER['HTTP_HOST'];
+			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+			$extra = 'login.php';
+			session_write_close();
+			header("Location: http://$host$uri/$extra");
+			exit;
+		}
 }
 ?>
