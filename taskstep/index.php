@@ -32,7 +32,6 @@ $settingdb = new SettingDAO();
 <?php
 //select the table
 $todaydate = date("Y-m-d");
-$itemdb = new ItemDAO();
 $result = $itemdb->getImediateItems();
 $numrows= count($result);
 ?>

@@ -8,6 +8,11 @@ class Item{
     private int $contextId;
     private int $sectionId;
     private int $projectId;
+
+    private string $context;
+    private string $section;
+    private string $project;
+
     private bool $done;
 
     private int $userId;
@@ -82,6 +87,30 @@ class Item{
      */
     public function getProjectId(): int {
         return $this->projectId;
+    }
+
+     /**
+     * Nom du contexte (clé étrangère)
+     * @return int
+     */
+    public function getContext(): string {
+        return $this->context;
+    }
+
+    /**
+     * le nom de la section (clé étrangère)
+     * @return int
+     */
+    public function getSection(): string {
+        return $this->section;
+    }
+
+    /**
+     * le nom du projet (clé étrangère)
+     * @return int
+     */
+    public function getProject(): string {
+        return $this->project;
     }
 
     /**
@@ -195,6 +224,18 @@ class Item{
 
         if (isset($data["project_id"])) {
             $this->projectId = intval($data["project_id"]);
+        }
+
+        if (isset($data["context"])) {
+            $this->context = $data["context"];
+        }
+
+        if (isset($data["section"])) {
+            $this->section = $data["section"];
+        }
+
+        if (isset($data["project"])) {
+            $this->project = $data["project"];
         }
 
         if (isset($data["user_id"])) {
