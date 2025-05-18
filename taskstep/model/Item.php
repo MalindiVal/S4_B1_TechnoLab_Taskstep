@@ -91,7 +91,7 @@ class Item{
 
      /**
      * Nom du contexte (clé étrangère)
-     * @return int
+     * @return string
      */
     public function getContext(): string {
         return $this->context;
@@ -99,7 +99,7 @@ class Item{
 
     /**
      * le nom de la section (clé étrangère)
-     * @return int
+     * @return string
      */
     public function getSection(): string {
         return $this->section;
@@ -107,7 +107,7 @@ class Item{
 
     /**
      * le nom du projet (clé étrangère)
-     * @return int
+     * @return string
      */
     public function getProject(): string {
         return $this->project;
