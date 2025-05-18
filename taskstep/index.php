@@ -7,8 +7,9 @@ require_once("model/ItemDAO.php");
 $itemdb = new ItemDAO();
 
 ?>
-
+<h1>&nbsp;<?php echo $l_nav_home; ?></h1>
 <div id="welcomebox">
+
 <h2><img src="images/page.png" alt="" />&nbsp;<?php echo $l_index_welcome; ?></h2>
 <p>
 	<?php
@@ -33,7 +34,6 @@ $itemdb = new ItemDAO();
 $todaydate = date("Y-m-d");
 $itemdb = new ItemDAO();
 $result = $itemdb->getImediateItems();
-//$result = $mysqli->query("SELECT * FROM items WHERE date <= '$todaydate' AND done='0' AND date != '00-00-0000' OR section='immediate' AND done='0' ORDER BY date LIMIT 5");
 $numrows= count($result);
 ?>
 <div id="immediateblock">

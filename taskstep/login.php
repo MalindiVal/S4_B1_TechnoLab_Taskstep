@@ -26,8 +26,6 @@ else{
     $setting->setSession(1); 
 }
 
-
-
 header("Cache-control: private");
 include("lang/".$language.".php");
 ?>
@@ -36,10 +34,9 @@ include("lang/".$language.".php");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>TaskStep - Login</title>
-<?php 
-	$value = $setting->getStylesheet();
-	echo "<link rel='stylesheet' type='text/css' href='styles/".$value."' media='screen' />";
-?>
+
+<link rel='stylesheet' type='text/css' href='styles/default.css' media='screen' />
+
 </head>
 
 <body>
