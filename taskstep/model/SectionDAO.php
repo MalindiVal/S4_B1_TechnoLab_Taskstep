@@ -27,10 +27,8 @@ class SectionDAO extends Database
      */
     public function getById(int $id) : Section{
 
-        var_dump($id);
         $res= $this->queryOne("SELECT id,title,fancy_title FROM sections Where id = :id",[":id" => $id]);
         $section = new Section();
-        var_dump($res);
         $section->hydrate($res);
         return $section;
         
