@@ -12,8 +12,7 @@ abstract class Database{
             );
         }
         catch (PDOException $e) {
-            die('Erreur : ' . $e->getMessage());
-            throw new PDOException("Database connection failed");
+            throw new Exception("Erreur de connexion à la base de données : " . $e->getMessage());
         }
         
     }
@@ -25,7 +24,7 @@ abstract class Database{
      * @return array le tableau avec les valeurs de retour
      */
     public function queryMany(string $req, array $params = []) : array{
-        $req = $this->pdo->prepare($req, $params);
+        $req = $this->pdo->prepare($req);
         
         // Bind the parameters
         $this->binding($req,$params);
@@ -44,9 +43,9 @@ abstract class Database{
      * @param array $params les paramètres de la requête
      * @return mixed un tableau associatif avec en clés les noms des colonnes et en valeur les valeur de chaque */
     
-    public function queryOne(string $sql, array $params = []):array{
-        $req = $this->pdo->prepare($sql, $params);
-        $this->binding($req,$params);
+    public function queryOne(string $sql, array $params = []): array {
+        $req = $this->pdo->prepare($sql);
+        $this->binding($req, $params);
         $req->execute();
         $data = $req->fetch(PDO::FETCH_ASSOC);
 
@@ -64,9 +63,18 @@ abstract class Database{
         $req->execute();
     }
 
-    private function binding($req,array $params) : void{
+    /**
+     * Lier les paramètres à la requête préparée
+     * @param mixed $req La requête préparée
+     * @param array $params Les paramètres à lier
+     */
+    private function binding($req, array $params): void {
         foreach ($params as $key => $value) {
-            $req->bindValue($key, $value);
+            if (is_numeric($key)) {
+                $req->bindValue($key + 1, $value); 
+            } else {
+                $req->bindValue($key, $value);
+            }
         }
     }
 }

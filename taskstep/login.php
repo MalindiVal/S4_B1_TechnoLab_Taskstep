@@ -3,42 +3,11 @@ session_start();
 
 include("config.php");
 include("includes/functions.php");
-require_once("model/SettingDAO.php");
-$settingdb = new SettingDAO();
-$mysqli = connect();
+include("Controller/injectorContoller.php");
 
-$failed = false;
-
-if (isset($_POST["submit"]))
-{
-	//$hashpassword = $settingdb->getSetting('password');
-	//$salt = $settingdb->getSetting('salt');
-	$setting['password'] = $hashpassword;	//Build a multi-dimensional array containing the returned rows
-	$setting['salt'] = $salt;
-	
-	$given = $_POST["password"];
-	/*if (password_verify($_POST["password"],$hashpassword))
-	{*/
-		$_SESSION["loggedin"] = true;
-		$host  = $_SERVER['HTTP_HOST'];
-		$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-		$extra = 'index.php';
-		session_write_close();
-		header("Location: http://$host$uri/$extra");
-		exit;
-	/*}
-	else
-	{
-		$failed = true;
-		$_SESSION["loggedin"] = false;
-	}*/
-}
-else if (isset($_GET["action"])) $_SESSION['loggedin'] = false;	//If "action" is set, log out
-
-//if($_SESSION['loggedin'] == true)
-//{
-//  echo "You're already logged in! Either <a href='logout.php'>logout</a> or continue to the <a href='index.php'>main page.</a>";
-//}
+//Appelle de la méthode permettant la connexiuon
+$userController = InjectorContoller::getLoginController();
+$user = $userController->connexion();
 
 header("Cache-control: private");
 include("lang/".$language.".php");
@@ -48,7 +17,9 @@ include("lang/".$language.".php");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>TaskStep - Login</title>
+
 <link rel='stylesheet' type='text/css' href='styles/default.css' media='screen' />
+
 </head>
 
 <body>
@@ -56,17 +27,26 @@ include("lang/".$language.".php");
 <!--Open container-->
 <div id="container">
 <?php
-$sessionssetting = 1;
+//$sessionssetting = $settingdb->getSetting('sessions');
+$sessionssetting = 1 ;
 ?>
 <div id="loginbox">
 <h1><img src="images/icon.png" alt="" /> TaskStep</h1>
 <?php if($sessionssetting == '1'){ ?>
 <p><img src="images/shield.png" alt="" />&nbsp;<?php echo $l_login_l1; ?></p>
 <form action="login.php" method="post">
-<p>
-<input type="password" name="password" />&nbsp;
-<input type="text" style="display: none;" />	<!--IE workaround: pressing "enter" will submit the form-->
-<input type="submit" name="submit" value="<?php echo $l_login_button; ?>" /></p>
+	<div>
+		<label for="MailConnexion">Email</label>
+		<input type="text" name="identifiant">
+	</div>
+	<div>
+		<label for="PwdConnexion">Passord</label>
+		<input type="password" name="password" />&nbsp;
+	</div>
+	<div>
+		<input type="text" style="display: none;" />	<!--IE workaround: pressing "enter" will submit the form-->
+		<input type="submit" name="submit" value="<?php echo $l_login_button; ?>" />
+	</div>
 </form> <?php }
 else{ ?>
   <p><img src="images/shield_error.png" alt="" />&nbsp;<?php echo $l_login_l5; ?></p>
@@ -79,7 +59,11 @@ else{ ?>
 //Uncomment the next line for session debugging
 //echo $_SESSION["loggedin"];
 
-if ($failed) echo "<p><img src='images/cross.png' alt='' /> ".$l_login_l4."</p>";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($user == null) {
+        echo "<p><img src='images/cross.png' alt='' /> ".$l_login_l4."</p>";
+    }
+}
 ?>
 
 <span class="securityinfo">TaskStep login system version 1.0</span>

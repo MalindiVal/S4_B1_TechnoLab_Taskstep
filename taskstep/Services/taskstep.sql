@@ -135,9 +135,6 @@ ALTER TABLE `items`
   ADD CONSTRAINT `items_ibfk_4` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE;
 
 -- Insertion des données
-INSERT INTO `users` (`id`, `email`, `password`) VALUES
-(1, 'Test', 'taskstep');
-
 INSERT INTO `sections` (`id`, `title`, `fancy_title`) VALUES
 (1, 'ideas', 'Ideas'),
 (2, 'tobuy', 'Might want to buy'),
