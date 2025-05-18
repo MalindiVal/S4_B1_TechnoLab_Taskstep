@@ -41,14 +41,10 @@ foreach ($result as $res) {
 	$id = $res->getId();
 
 	// Context
-	$contextResult = $contextdb->getById($res->getContextId());
-	$contextTitle = $contextResult ? $contextResult->getTitle() : "No Context";
-	$context = htmlspecialchars($contextTitle);
+	$context = htmlspecialchars($res->getContext());
 
 	// Project
-	$projectResult = $projectdb->getById($res->getProjectId());
-	$projectTitle = $projectResult ? $projectResult->getTitle() : "No Project";
-	$project = htmlspecialchars($projectTitle);
+	$project = htmlspecialchars($res->getProject());
 
 	$rssnotes = !empty($notes) ? " | " . $notes : '';
 

@@ -9,7 +9,7 @@ class ContextDAO extends Database
      */
     public function getAll() : array {
         $tab = array();  
-        $res = $this->queryMany("SELECT id, title FROM contexts ORDER BY title");
+        $res = $this->queryMany("SELECT id, title FROM contexts Where user_id = :userid ORDER BY title",[":userid" => intval($_SESSION["user_id"])]);
         
         foreach ($res as $s) {
             $context = new Context(); 
@@ -28,7 +28,7 @@ class ContextDAO extends Database
      */
     public function getById(int $id) : Context {
         
-        $res = $this->queryOne("SELECT id, title FROM contexts WHERE id = :section", [":section" => $id]);
+        $res = $this->queryOne("SELECT id, title FROM contexts WHERE id = :section and user_id = :userid", [":section" => $id,":userid" => intval($_SESSION["user_id"])]);
         
         $context = new Context(); 
         $context->hydrate($res); 
@@ -51,12 +51,11 @@ class ContextDAO extends Database
      * @return void
      */
     public function Update(Context $context) {
-        var_dump($context);  
         
-        
-        $this->execute("UPDATE contexts SET title = :title WHERE id = :id", [
+        $this->execute("UPDATE contexts SET title = :title WHERE id = :id AND user_id = :userid", [
             ":title" => $context->getTitle(), 
-            ":id" => $context->getId()
+            ":id" => $context->getId(),
+            ":userid" => intval($_SESSION["user_id"])
         ]);
     }
 
@@ -66,6 +65,6 @@ class ContextDAO extends Database
      * @return void
      */
     public function Delete(int $id) {
-        $this->execute("DELETE FROM contexts WHERE id = :id", [":id" => $id]);
+        $this->execute("DELETE FROM contexts WHERE id = :id AND user_id = :userid", [":id" => $id,":userid" => intval($_SESSION["user_id"])]);
     }
 }

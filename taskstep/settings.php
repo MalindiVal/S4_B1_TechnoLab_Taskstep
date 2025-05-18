@@ -67,10 +67,10 @@ else $updatedblock = '';
 if (isset($_POST["passchanges"]))
 {
 	//Get the salt
-	$salt = $settingdb->getAll()->getSalt();
+	//$salt = $settingdb->getAll()->getSalt();
 
 	//Get the hashed password
-	$oldpass = $settingdb->getSetting('password');
+	//$oldpass = $settingdb->getSetting('password');
 
 	//Massive error trapping going on here
 	$submitted = md5($_POST['currentpass']);
@@ -84,11 +84,11 @@ if (isset($_POST["passchanges"]))
 			$newsalt = substr(uniqid(rand(), true), 0, 5);
 			$secure_password = md5($_POST['newpass1']);
 			$newtotal = $secure_password.$newsalt;
-			$settingdb->setSetting('salt',$newsalt);
-			$settingdb->setSetting('password',$newtotal);
+			//$settingdb->setSetting('salt',$newsalt);
+			//$settingdb->setSetting('password',$newtotal);
 		}
 		$svalue = (isset($_POST['sessions'])) ? 1 : 0;
-		$settingdb->setSetting('sessions',$svalue);
+		//$settingdb->setSetting('sessions',$svalue);
 		$pwmessage = $l_cp_password_updated;
 	}
 }
@@ -123,15 +123,9 @@ else
 		$done=$res->isDone() ;
 		$id=$res->getId();
 
-		$contextdb = new ContextDAO();
-		$idresult = $contextdb->getById($res->getContextId());
-		$Contexttitle = $idresult->getTitle();
-		$context=htmlentities($Contexttitle);
+		$context=htmlentities($res->getContext());
 		
-		$projectdb = new ProjectDAO();
-		$idresult = $projectdb->getById($res->getProjectId());
-		$projecttitle = $idresult->getTitle();
-		$project=htmlentities($projecttitle);
+		$project=htmlentities($res->getProject());
 
 		$data = "$id,$title,$date,$notes,$context,$project,$url,$done\r\n";
 		$file = "exported_results.csv";   

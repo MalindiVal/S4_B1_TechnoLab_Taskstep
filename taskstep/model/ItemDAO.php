@@ -105,7 +105,11 @@ class ItemDAO extends Database
     public function getChecked(bool $done): array {
         $tab = array();
         $num = $done ? 1 : 0;
-        $res = $this->queryMany("SELECT * FROM items WHERE done = :done and user_id= :user_id", [":done" => $num,":user_id" => intval($_SESSION["user_id"])]);
+        $res = $this->queryMany("SELECT i.*, s.title as section , p.title as project , c.title as context FROM items i 
+            JOIN sections s ON s.id = i.section_id 
+            JOIN projects p ON p.id = i.project_id 
+            JOIN contexts c ON c.id = i.context_id 
+            WHERE i.done = :done and i.user_id= :user_id", [":done" => $num,":user_id" => intval($_SESSION["user_id"])]);
         foreach ($res as $s) {
             $item = new Item();
             $item->hydrate($s);
@@ -146,10 +150,13 @@ class ItemDAO extends Database
     public function getImediateItems() : array{
         $tab = array();
         $today  = date("Y-m-d");
-        $result = $this->queryMany("SELECT * FROM items 
-        WHERE date <= :today AND done='0' 
-            AND date != '00-00-0000' OR section_id=3 
-            AND done='0' ORDER BY date LIMIT 5",[":today" => $today]);
+        $result = $this->queryMany("SELECT i.*, s.title as section , p.title as project , c.title as context FROM items i 
+        JOIN sections s ON s.id = i.section_id 
+        JOIN projects p ON p.id = i.project_id 
+        JOIN contexts c ON c.id = i.context_id 
+        WHERE i.date <= :today AND i.done='0' 
+            AND i.date != '00-00-0000' OR i.section_id=3 
+            AND i.done='0' ORDER BY i.date LIMIT 5",[":today" => $today]);
         foreach ($result as $s) {
             $item = new Item();
             $item->hydrate($s);
