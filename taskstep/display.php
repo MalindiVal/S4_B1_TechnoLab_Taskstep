@@ -18,11 +18,11 @@ if (isset($_GET["cmd"]))
 		break;
 		case "do":
 			$itemdb->setChecked(true,$id);
-		  	echo "<div id='updated' class='fade'><img src='images/accept.png' alt='' /> ".$l_msg_itemdo."</div>";
+		  	echo "<div id='updated' ><img src='images/accept.png' alt='' /> ".$l_msg_itemdo."</div>";
 		break;
 		case "undo":
 			$itemdb->setChecked(false,$id);
-		  	echo "<div id='deleted' class='fade'><img src='images/undone.png' alt='' /> ".$l_msg_itemundo."</div>";
+		  	echo "<div id='deleted' ><img src='images/undone.png' alt='' /> ".$l_msg_itemundo."</div>";
 		break;  
 		default:	//Error trap it so that if a dodgy command is given it doesn't drop dead
 			echo "<div class='error'><img src='images/exclamation.png' alt='' /> ".$l_msg_actionerror."</div>";
@@ -38,8 +38,10 @@ $section = (isset($_GET["section"])) ? $_GET["section"] : '';
 $tid = (isset($_GET["tid"])) ? intval($_GET["tid"]) : 0;
 
 $title = "";
+$backlink = "";
 switch ($display)
 {
+	
 	case "section":
 		//Massively cleaned up section which obtains section titles from the language file
 		foreach($l_sectionlist as $key=>$value){
@@ -55,6 +57,7 @@ switch ($display)
 		$noresultsurl = '?tid=' . $tid;
 	break;
 	case "project":
+		$backlink = "display_type.php?type=project";
 		$projectdb = new ProjectDAO();
 		$idresult = $projectdb->getById($tid);
 		$disptitle = $idresult->getTitle();
@@ -64,6 +67,7 @@ switch ($display)
 		$noresultsurl = '?tid=' . $tid;
 	break;
 	case "context":
+		$backlink = "display_type.php?type=context";
 		$contextdb = new ContextDAO();
 		$idresult = $contextdb->getById($tid);
 		$disptitle = $idresult->getTitle();
@@ -85,12 +89,15 @@ switch ($display)
 	break;
 }
 ?>
-
+<?php if( $display == "context" || $display == "project") : ?>
+	<a href=<?= $backlink ?> ><- Back</a>
+<?php endif; ?>
 <div id='sectiontitle'><h1><?=$title ?></h1></div>
 
 <?php
+sort_form($display, $section, $tid, $sortby); ?>
 
-sort_form($display, $section, $tid, $sortby);
+<div> <?php
 $numberrows = count($result);
 if ($numberrows == 0)
 {
@@ -151,14 +158,30 @@ else{
 
 	//if the date is neither of these, don't flag it.
 	else echo "<div class='np'> $title - $date_display | $project | $context";
-	
-	echo "<a href='display.php?display=$display&cmd=delete&id=$id&tid=$tid' title='$l_items_del' class='actionicon'><img src='images/bin_empty.png' alt='$l_items_del' /></a>";
-	echo "<a href='edit.php?id=$id' title='$l_items_edit' class='actionicon'><img src='images/pencil.png' alt='$l_items_edit' /></a>" ;
-	echo "<a href='display.php?display=$display&cmd=$cmd&id=$id&tid=$tid' title='$link' class='actionicon'><img src='images/$icon.png' alt='$link' /></a>";
-	echo "<br />$notes<br />$url</div>";
-	}
-} 
+	?>
 
+	<br /><?= $notes ?> <br /><?= $url ?>
+		<div class="actions">
+			<a href="display.php?display=<?= $display ?>&cmd=delete&id=<?= $id ?>&tid=<?= $tid?>" title="<?= $l_items_del?>" class="actionicon" onclick="return confirm('Are you sure you want to delete this item?');">
+				<img src="images/bin_empty.png" alt="<?= $l_items_del ?>" />
+				<?= $l_items_del ?>
+			</a>
+			<a href="edit.php?id=<?= $id ?>" title="<?= $l_items_edit?>" class="actionicon">
+				<img src="images/pencil.png" alt="<?= $l_items_edit ?>" />
+				<?= $l_items_edit?>
+			</a>
+			<a href="display.php?display=<?= $display ?>&cmd=<?= $cmd ?>&id=<?= $id ?>&tid=<?= $tid ?>" title="<?= $link ?>" class="actionicon" >
+				<img src="images/<?= $icon ?>.png" alt="<?= $link ?>" >
+				<?= $link ?>
+			</a>
+		</div>
+	</div>
+	<?php 
+	}
+}
+?></div> 
+
+<?php
 if(isset($_POST['submit'])) //If submit is hit
 {
   $section=$_POST['section'];
