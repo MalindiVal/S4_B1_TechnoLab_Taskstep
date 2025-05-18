@@ -1,6 +1,7 @@
 <?php
 
 require_once "LoginService.php";
+require_once "SettingService.php";
 
 /**
  * Classe Injecteur Service
@@ -13,6 +14,10 @@ class InjectorService{
      */
     public static function getLoginService(){
         return new LoginService();
+    }
+
+    public static function getSettingService(){
+        return new SettingService();
     }
 
 }
