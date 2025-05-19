@@ -13,7 +13,6 @@ if (isset($_GET["cmd"]))
 	switch ($_GET["cmd"])
 	{
 		case "delete":
-			var_dump($id);
 			$itemdb->Delete($id);
 		break;
 		case "do":

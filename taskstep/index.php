@@ -4,6 +4,7 @@ require_once("model/SettingDAO.php");
 require_once("model/ContextDAO.php");
 require_once("model/ProjectDAO.php");
 require_once("model/ItemDAO.php");
+require_once("Controller/injectorContoller.php");
 $itemdb = new ItemDAO();
 
 ?>
@@ -68,8 +69,9 @@ if ($numrows == 0) echo $l_index_noimmediate;
 echo '</div>';
 
 	$tips = 0;
-	if (isset($_SESSION['setting'])) {
-		$setting = $_SESSION['setting'];
+	if (isset($_SESSION['user_id'])) {
+		$settingController = InjectorContoller::getSettingController();
+		$setting = $settingController->getSettingByUser($_SESSION['user_id']);
 		$tips = intval($setting->getTips());
 	}
 	

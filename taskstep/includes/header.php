@@ -1,4 +1,5 @@
 <?php
+require_once("Controller/injectorContoller.php");
 include("sessioncheck.php");	//Initialize DB connection and make sure the user is logged in
 include("lang/".$language.".php");
 include("functions.php");
@@ -14,8 +15,9 @@ require_once("./model/SectionDAO.php");
 
 <link href="public/bootstrap-5.3.6-dist/css/bootstrap.min.css" rel="stylesheet" >
 <?php 
-	if (isset($_SESSION["user_id"]) && isset($_SESSION['setting'])){
-		$setting = $_SESSION['setting'];
+	if (isset($_SESSION["user_id"])){
+    $settingController = InjectorContoller::getSettingController();
+		$setting = $settingController->getSettingByUser($_SESSION['user_id']);
 		$value = $setting->getStylesheet();
 	} else {
 		$value = "default.css";

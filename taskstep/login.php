@@ -3,7 +3,7 @@ session_start();
 
 include("config.php");
 include("includes/functions.php");
-include("Controller/injectorContoller.php");
+require_once("Controller/injectorContoller.php");
 
 //Appelle de la méthode permettant la connexiuon
 $userController = InjectorContoller::getLoginController();
@@ -15,10 +15,8 @@ $settingController = InjectorContoller::getSettingController();
 if ($user){
 	//Récupération de variable réutilisable
 	$setting = $settingController->getSettingByUser($user->getId());
-	$_SESSION['user'] = $user;
 	$_SESSION["user_id"] = $user->getId();
-	$_SESSION['setting'] = $setting;
-	
+	$_SESSION["email"] = $user->getEmail();
 }
 else{
 	$setting = new Setting(); 
@@ -56,7 +54,7 @@ $sessionssetting = $setting->getSession();
 		<input type="text" name="identifiant">
 	</div>
 	<div>
-		<label for="PwdConnexion">Passord</label>
+		<label for="PwdConnexion">Password</label>
 		<input type="password" name="password" />&nbsp;
 	</div>
 	<div>

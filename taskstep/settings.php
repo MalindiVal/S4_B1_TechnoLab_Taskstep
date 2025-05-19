@@ -1,6 +1,6 @@
 <?php
 include("includes/header.php");
-include("Controller/injectorContoller.php");
+require_once("Controller/injectorContoller.php");
 require_once("model/SettingDAO.php");
 require_once("model/Setting.php");
 require_once("model/SectionDAO.php");
@@ -12,8 +12,11 @@ $setting = null;
 $user = null ;
 //Variable récupérer depuis la connexion via la session
 if (isset($_SESSION['user_id'])){
+	$user_id = $_SESSION['user_id'];
 	$settingController = InjectorContoller::getSettingController();
-	$setting = $settingController->getSettingByUser($_SESSION['user_id']);
+	$setting = $settingController->getSettingByUser($user_id);
+	$userController = InjectorContoller::getUserController();
+	$user = $userController->getUserById($user_id);
 }
 
 
@@ -78,23 +81,19 @@ if (isset($_POST["passchanges"]))
 {
 	//Get the hashed password
 	$oldpass = $user->getPassword();
-
-	//Massive error trapping going on here
-	$submittotal = password_hash($_POST['currentpass']);
-	if($submittotal !== $oldpass) $pwmessage = $l_cp_password_incorrect;
-	elseif($_POST['newpass1'] !== $_POST['newpass2']) $pwmessage = $l_cp_password_nomatch;
-	else	//Everything works, so slam it all in
-	{
-		if($_POST['newpass1'] !== '')
-		{
-			$newsalt = substr(uniqid(rand(), true), 0, 5);
-			$secure_password = password_hash($_POST['newpass1']);
-			$user->setPassword($secure_password); 
-			//UpdateUser($secure_password)
+	if (password_verify($_POST['currentpass'], $oldpass)) {
+		// Vérify the new passwords
+		if ($_POST['newpass1'] === $_POST['newpass2']) {
+			//hash the new password
+			$secure_password = password_hash($_POST['newpass1'], PASSWORD_DEFAULT);
+			$user->setPassword($secure_password);
+			$userController->updatePassword($user_id, $user->getPassword());
+			$pwmessage =  $l_cp_password_updated;
+		} else {
+			$pwmessage = $l_cp_password_nomatch;;
 		}
-		$svalue = (isset($_POST['sessions'])) ? 1 : 0;
-		$setting->setSession($svalue);
-		$pwmessage = $l_cp_password_updated;
+	} else {
+		$pwmessage = $l_cp_password_incorrect;;
 	}
 }
 else $pwmessage = '';
