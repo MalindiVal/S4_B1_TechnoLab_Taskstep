@@ -1,16 +1,18 @@
 <?php
 
-class Project{
+class Project
+{
     private int $id;
     private string $title;
 
     private int $userId;
-    
+
     /**
      * Récupère l'identifiant du projet.
      * @return int L'identifiant du projet
      */
-    public function getId(): int {
+    public function getId(): int
+    {
         return $this->id;
     }
 
@@ -18,7 +20,8 @@ class Project{
      * Récupère le titre du projet.
      * @return string Le titre du projet
      */
-    public function getTitle(): string {
+    public function getTitle(): string
+    {
         return $this->title;
     }
 
@@ -26,37 +29,41 @@ class Project{
      * le créateur du projet (clé étrangère)
      * @return int
      */
-    public function getUserID(): int {
+    public function getUserID(): int
+    {
         return $this->userId;
     }
-    
+
 
     /**
      * Définit le titre du projet.
      * @param string $title Le nouveau titre à attribuer
      */
-    public function setTitle(string $title): void {
+    public function setTitle(string $title): void
+    {
         $this->title = $title;
     }
 
     /**
      * Définit l’identifiant du createur
      */
-    public function setUserId(int $userId): void {
-        $this->$userId = $$userId;
+    public function setUserId(int $userId): void
+    {
+        $this->userId = $userId;
     }
 
     /**
      * Hydrate l'objet à partir d'un tableau associatif de données.
      * @param array $data Données à injecter dans l'objet
      */
-    public function hydrate(array $data) : void{
-        if (isset($data["id"])){
+    public function hydrate(array $data): void
+    {
+        if (isset($data["id"])) {
             $this->id = intval($data["id"]);
         }
 
-        if (isset($data["title"])){
-            $this->title= $data["title"];
+        if (isset($data["title"])) {
+            $this->title = $data["title"];
         }
 
         if (isset($data["user_id"])) {
