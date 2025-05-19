@@ -15,7 +15,7 @@
 	$l_login_l1 = "Please enter your password to login";
 	$l_login_l2 = "Password accepted.";
 	$l_login_l3 = "Click here to go to your lists.";
-	$l_login_l4 = "Incorrect email or password.";
+	$l_login_l4 = "Incorrect password.";
 	$l_login_l5 = "Password has been disabled. This isn't very secure, so please change this if you're using this on a public server.";
 
 	// Navigation
