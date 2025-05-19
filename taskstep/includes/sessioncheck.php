@@ -2,37 +2,32 @@
 //Allow sessions
 session_start();  
 header("Cache-control: private");
+$_SESSION["user_id"] = 1;
+$_SESSION["lang"] = "en";
 
 //Include the configuration
 include("config.php");
-
-//Connect and select the database
-$mysqli = new mysqli($server, $user, $password, $db);
-if ($mysqli->connect_error) {
-	die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
-}
+$_SESSION["lang"] = $language;
+$_SESSION["menu_date_format"] = $menu_date_format;	
+$_SESSION["task_date_format"] = $task_date_format;
 
 //Grab the setting for "sessions"
-$result = $mysqli->query("SELECT value FROM settings WHERE setting='sessions'");
-if ($result->num_rows > 0)
-{
-	//Select the results of the query in the format (query,row,column)
-	$r = $result->fetch_row();
+//Select the results of the query in the format (query,row,column)
+$session = 1;
 
-	//If sessions are enabled...
-	if ($r[0] == '1')
+//If sessions are enabled...
+if ($session == '1')
+{
+  //and there is no session for "loggedin"...
+	if(!$_SESSION['loggedin'])
 	{
-	  //and there is no session for "loggedin"...
-		if(!$_SESSION['loggedin'])
-		{
-			//...send them packing to the login page
-			$host  = $_SERVER['HTTP_HOST'];
-			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-			$extra = 'login.php';
-			session_write_close();
-			header("Location: http://$host$uri/$extra");
-			exit;
-		}
+		//...send them packing to the login page
+		$host  = $_SERVER['HTTP_HOST'];
+		$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+		$extra = 'login.php';
+		session_write_close();
+		header("Location: http://$host$uri/$extra");
+		exit;
 	}
 }
 ?>

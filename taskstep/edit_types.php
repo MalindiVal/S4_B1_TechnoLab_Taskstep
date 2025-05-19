@@ -1,6 +1,13 @@
 <?php
 include("includes/header.php");
-
+require_once("model/ContextDAO.php");
+require_once("model/ProjectDAO.php");
+require_once("model/Context.php");
+require_once("model/Project.php");
+require_once("model/ItemDAO.php");
+$itemdb = new ItemDAO();
+$contextdb = new ContextDAO();
+$projectdb = new ProjectDAO();
 $type = (isset($_GET['type'])) ? $_GET['type'] : '';
 $getcmd = (isset($_GET['cmd'])) ? $_GET['cmd'] : '';
 $postcmd = (isset($_POST['cmd'])) ? $_POST['cmd'] : '';
@@ -10,28 +17,57 @@ if($postcmd == "edit" && isset($_POST["submit"]))
 {
 	$eid = $_POST["id"];
 	$enewtitle = addslashes($_POST["title"]);
-	$updatequery = $mysqli->query("UPDATE {$type}s SET title='$enewtitle' WHERE id=$eid");
-	if($updatequery) echo "<div id='updated' class='fade'><img src='images/pencil_go.png' alt=''/> ".$l_msg_updated[$type]."</div>";
-	if($_POST["tasks"]){
-		$eoldtitle = $_POST["oldtitle"];
-		$mysqli->query("UPDATE items SET $type='$enewtitle' WHERE $type='$eoldtitle'");
+	if ($type == "context"){
+		$context = $contextdb->getById($eid);
+		$context->setTitle($enewtitle);
+		$contextdb->Update($context);
 	}
+	
+	if ($type == "project"){
+		$project = $projectdb->getById($eid);
+		$project->setTitle($enewtitle);
+		$projectdb->Update($project);
+	}
+	
+	
+	echo "<div id='updated' ><img src='images/pencil_go.png' alt=''/> ".$l_msg_updated[$type]."</div>";
 }
 
 //adding in mysql
 if($postcmd == "add" && isset($_POST["add"]))
 {
 	$title = addslashes($_POST["newtitle"]);
-	$result = $mysqli->query("INSERT INTO {$type}s (id,title) VALUES ('NULL', '$title')");
-	echo "<div id='updated' class='fade'><img src='images/add.png' alt=''/> ".$l_msg_added[$type]."</div>";
+
+	if ($type == "context"){
+		$context = new Context();
+		$context->setTitle($title);
+		$contextdb->Add($context);
+	}
+	
+	if ($type == "project"){
+		$project = new Project();
+		$project->setTitle($title);
+		$projectdb->Add($project);
+	}
+	
+	echo "<div id='updated' ><img src='images/add.png' alt=''/> ".$l_msg_added[$type]."</div>";
 }
 
 //deleting in mysql
 if($getcmd=="delete")
 {
     $delid = $_GET["id"];
-	$delquery = $mysqli->query("DELETE FROM {$type}s WHERE id=$delid");
-    if($delquery) echo "<div id='deleted' class='fade'><img src='images/bin.png' alt='' /> ".$l_msg_deleted[$type]."</div>";
+	if ($type == "context"){
+		$contextdb = new ContextDAO();
+		$contextdb->Delete($delid);
+	}
+	
+	if ($type == "project"){
+		$projectdb = new ProjectDAO();
+		$projectdb->Delete($delid);
+	}
+
+    echo "<div id='deleted' ><img src='images/bin.png' alt='' /> ".$l_msg_deleted[$type]."</div>";
 }
 
 //if the GET cmd has not been initialized, display a list of everything
@@ -39,13 +75,36 @@ if(!$getcmd || $getcmd == "delete")
 {
 	echo "<p>".$l_dbp_l2[$type]."</p>";
 	echo "<div id='editlist'><a href='edit_types.php?type=$type&amp;cmd=add' class='listlinkssmart'><img src='images/add.png' alt='' /> ".$l_dbp_add[$type]."</a>";
-	$result = $mysqli->query("SELECT * FROM {$type}s ORDER BY title");
-	while($r=$result->fetch_array())
-	{
-		$title=$r["title"];
-		$id=$r["id"];
-		echo "<a href='edit_types.php?type=$type&amp;cmd=edit&amp;id=$id' class='listlinkssmart'><img src='images/pencil.png' alt='' /> $title</a>";
-	}	
+	
+	if ($type == "context"){
+		$contextdb = new ContextDAO();
+		$contexts = $contextdb->getAll();
+		
+		
+		foreach($contexts as $s){
+			//grab the title and the ID of the project/context
+			$title=$s->getTitle();
+			$id=$s->getId();
+	
+			//make the title a link
+			echo "<a href='edit_types.php?type=$type&amp;cmd=edit&amp;id=$id' class='listlinkssmart'><img src='images/pencil.png' alt='' /> $title</a>";
+		}
+	}
+	
+	if ($type == "project"){
+		$contextdb = new ProjectDAO();
+		$contexts = $contextdb->getAll();
+		
+		foreach($contexts as $s){
+			//grab the title and the ID of the project/context
+			$title=$s->getTitle();
+			$id=$s->getId();
+	
+			//make the title a link
+			echo "<a href='edit_types.php?type=$type&amp;cmd=edit&amp;id=$id' class='listlinkssmart'><img src='images/pencil.png' alt='' /> $title</a>";
+		}
+	}
+		
 	echo "</div>";
 }
 	
@@ -61,42 +120,103 @@ elseif($getcmd == "edit")
 		die;
 	}
 	
-	$editid = $_GET["id"];
+	$editid = intval($_GET["id"]);
 	
 	//DEBUG echo "This would produce an edit form for the context with id $editid <br />";
 	
-	$editquery = $mysqli->query("SELECT * FROM {$type}s WHERE id=$editid");
-	while($r=$editquery->fetch_array())
-	{
-		$edittitle = $r["title"];
-		$editid2 = $r["id"];
+	if ($type == "context"){
+		$contextdb = new ContextDAO();
+		$context = $contextdb->getById($editid);
+		
+		
+		$title=$context->getTitle();
+		$id=$context->getId();
 	}
+	
+	if ($type == "project"){
+		$projectdb = new ProjectDAO();
+		$project = $projectdb->getById($editid);
+		
+		$title=$project->getTitle();
+		$id=$project->getId();
+	}
+
 	//DEBUG echo "The MySQL code has matched this to the context with the following: <br />";
 	//DEBUG echo "ID: $editid2 <br />";
 	//DEBUG echo "Title: $edittitle <br />";
 ?>
-	<form action="edit_types.php?type=<?php echo $type ?>" method="post">
-		<input type="hidden" name="id" value="<?php echo $editid2; ?>" />
-		<input type="hidden" name="oldtitle" value="<?php echo $edittitle; ?>" />
-		<?php echo $l_forms_title ?>&nbsp;<input type="text" name="title" value="<?php echo $edittitle; ?>" size="30" /><br /><br />
-		<input type="hidden" name="cmd" value="edit">
-		<input type="checkbox" name="tasks" checked>&nbsp;<?php echo $l_msg_updateassoctasks; ?><br />
-		<br />
-		<input type="submit" name="submit" value="<?php echo $l_dbp_edit[$type]; ?>" />
-	</form>
+<h1 class="mb-4">
+    <?= $l_dbp_edit[$type] ?> : <?= htmlspecialchars($title); ?>
+</h1>
+
+<form action="display_type.php?type=<?= htmlspecialchars($type) ?>" method="post" class="mb-4">
+  <input type="hidden" name="id" value="<?= htmlspecialchars($id); ?>" />
+  <input type="hidden" name="oldtitle" value="<?= htmlspecialchars($title); ?>" />
+  <input type="hidden" name="cmd" value="edit" />
+
+  <!-- Title -->
+  <div class="mb-3">
+    <label for="title" class="form-label"><?= $l_forms_title ?></label>
+    <input type="text"
+           class="form-control"
+           id="title"
+           name="title"
+           value="<?= htmlspecialchars($title); ?>"
+           size="30"
+           required />
+  </div>
+
+  <!-- Checkbox for tasks -->
+  <div class="form-check mb-3">
+    <input type="checkbox"
+           class="form-check-input"
+           id="tasks"
+           name="tasks"
+           checked>
+    <label class="form-check-label" for="tasks"><?= $l_msg_updateassoctasks; ?></label>
+  </div>
+
+  <!-- Submit -->
+  <button type="submit"
+          name="submit"
+          class="btn btn-primary"
+          onclick="return confirm('Are you sure you want to update this <?= htmlspecialchars($type) ?>?');">
+    <?= $l_dbp_edit[$type]; ?>
+  </button>
+</form>
+
 	<?php
-	echo "<br /><a href='edit_types.php?type=$type&amp;cmd=delete&amp;id=$editid2'><img src='images/bin_empty.png' alt='' /> ".$l_dbp_del[$type]."</a>";
 	}
 
 //Add form
 elseif($getcmd == "add")
 {?>
-	<form action="edit_types.php?type=<?php echo $type ?>" method="post">
-		<?php echo $l_forms_title ?>&nbsp;<input type="text" name="newtitle" value="<?php echo $l_dbp_new[$type];?>" size="30" /><br />
-		<br />
-		<input type="hidden" name="cmd" value="add" />
-		<input type="submit" name="add" value="<?php echo $l_dbp_add[$type]; ?>" />
-	</form>
+	<h1 class="mb-4">
+    <?= $l_dbp_add[$type] ?>
+</h1>
+
+<form action="display_type.php?type=<?= htmlspecialchars($type) ?>" method="post" class="mb-4">
+  <div class="mb-3">
+    <label for="newtitle" class="form-label"><?= $l_forms_title ?></label>
+    <input type="text"
+           class="form-control"
+           id="newtitle"
+           name="newtitle"
+           value="<?= htmlspecialchars($l_dbp_new[$type]); ?>"
+           size="30"
+           required>
+  </div>
+
+  <input type="hidden" name="cmd" value="add" />
+
+  <button type="submit"
+          name="add"
+          class="btn btn-success"
+          onclick="return confirm('Are you sure you want to create this <?= htmlspecialchars($type) ?>?');">
+    <?= $l_dbp_add[$type]; ?>
+  </button>
+</form>
+
 <?php
 }
 

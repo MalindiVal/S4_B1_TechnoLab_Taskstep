@@ -1,44 +1,61 @@
 <?php
-Header('Content-type: text/xml');
+Header('Content-type: text/xml; charset=utf-8');
+require_once("model/SectionDAO.php");
+require_once("model/ContextDAO.php");
+require_once("model/ProjectDAO.php");
+require_once("model/ItemDAO.php");
+require_once("config.php");
+require_once("includes/functions.php");
 
-//Same as bookmarklet code
+$itemdb = new ItemDAO();
+$contextdb = new ContextDAO();
+$projectdb = new ProjectDAO();
+
+// Build base URL
 $dirstuff = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
-$full = "http://".$_SERVER['HTTP_HOST'].$dirstuff;
+$full = "http://" . $_SERVER['HTTP_HOST'] . $dirstuff;
+
+// Fetch all completed tasks
+$result = $itemdb->getAll(null, null, "done");
+
+// Output RSS
+echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 ?>
-<?xml version="1.0"?>
 <rss version="2.0">
 	<channel>
 		<title>TaskStep</title>
-		<link><?php echo $full ?></link>
+		<link><?php echo htmlspecialchars($full); ?></link>
 		<description>TaskStep Items Feed</description>
 		<language>en-us</language>
 		<generator>IceMelon RSS Feeder</generator>
+
 <?php
-include("config.php");
-include("includes/functions.php");
+foreach ($result as $res) {
+	$title = htmlspecialchars($res->getTitle());
+	$dateRaw = $res->getDate();
+	$date = (!empty($dateRaw) && $dateRaw != '0000-00-00') ? $dateRaw . " | " : '';
+	$notes = htmlspecialchars($res->getNotes());
+	$url = htmlspecialchars($res->getUrl());
+	$id = $res->getId();
 
-connect();
+	// Context
+	$context = htmlspecialchars($res->getContext());
 
-$result = $mysqli->query("SELECT * FROM items");
+	// Project
+	$project = htmlspecialchars($res->getProject());
 
-while ($r=$result->fetch_assoc())
-{
-	$title=htmlentities($r["title"]);
-	$date = ($r["date"] != 00-00-0000) ? $r["date"]." | " : '';
-	$notes=htmlentities($r["notes"]);
-	$url=htmlentities($r["url"]);
-	$done=$r["done"];
-	$id=$r["id"];
-	$context=htmlentities($r["context"]);
-	$project=htmlentities($r["project"]);
+	$rssnotes = !empty($notes) ? " | " . $notes : '';
 
-	$rssnotes = ($notes != "") ? " | ".$notes : '';
+	echo <<<XML
+		<item>
+			<title>{$title}</title>
+			<link>{$full}edit.php?id={$id}</link>
+			<description><![CDATA[{$date}{$project} | {$context}{$rssnotes}]]></description>
+		</item>
 
-	echo "\t\t<item>\n";
-	echo "\t\t\t<title>".$title."</title>\n";
-	echo "\t\t\t<link>".$full."edit.php?id=".$id."</link>\n";
-	echo "\t\t\t<description>".$date.$project." | ".$context.$rssnotes."</description>\n";
-	echo "\t\t</item>\n";
-}?>
+XML;
+}
+?>
+
 	</channel>
 </rss>
