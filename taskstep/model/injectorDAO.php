@@ -12,7 +12,7 @@ class InjectorDAO{
      * Méthode statique permettant de retourner une instance de login Model
      * @return UserDAO instance du UserDao
      */
-    public static function getLoginDao(){
+    public static function getUserDao(){
         return new UserDAO();
     }
 
@@ -23,5 +23,6 @@ class InjectorDAO{
     public static function getSettingDao(){
         return new SettingDAO();
     }
+
 
 }

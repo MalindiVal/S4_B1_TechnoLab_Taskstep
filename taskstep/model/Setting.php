@@ -5,6 +5,7 @@ class Setting {
     private string $stylesheet;
     private bool $session;
     private int $userid;
+    
 
     // Getters
     public function getId(): int {
