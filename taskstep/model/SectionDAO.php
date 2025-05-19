@@ -5,7 +5,7 @@ class SectionDAO extends Database
 {
     /**
      * Recupère les sections
-     * @return Section[]
+     * @return Section[] Tableau d'objets Section
      */
     public function getAll() : array{
         $tab = array();
@@ -20,6 +20,11 @@ class SectionDAO extends Database
         
     }
 
+    /**
+     * Récupèration d'une section en fonction de l'identifiant
+     * @param int $id l'identifiant de la section
+     * @return Section l'objet Section récupéré
+     */
     public function getById(int $id) : Section{
 
         $res= $this->queryOne("SELECT id,title,fancy_title FROM sections Where id = :id",[":id" => $id]);
@@ -31,7 +36,7 @@ class SectionDAO extends Database
 
     /**
      * Récupère les Sections avec le ration taches terminées/Nombres de taches par section
-     * @return Section[]
+     * @return Section[] tableau d'objets Section
      */
     public function getRatio() : array{
         $tab = array();

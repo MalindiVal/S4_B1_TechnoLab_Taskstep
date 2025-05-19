@@ -127,15 +127,9 @@ else
 		$done=$res->isDone() ;
 		$id=$res->getId();
 
-		$contextdb = new ContextDAO();
-		$idresult = $contextdb->getById($res->getContextId());
-		$Contexttitle = $idresult->getTitle();
-		$context=htmlentities($Contexttitle);
+		$context=htmlentities($res->getContext());
 		
-		$projectdb = new ProjectDAO();
-		$idresult = $projectdb->getById($res->getProjectId());
-		$projecttitle = $idresult->getTitle();
-		$project=htmlentities($projecttitle);
+		$project=htmlentities($res->getProject());
 
 		$data = "$id,$title,$date,$notes,$context,$project,$url,$done\r\n";
 		$file = "exported_results.csv";   

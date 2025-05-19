@@ -11,8 +11,6 @@ $itemdb = new ItemDAO();
 $contextdb = new ContextDAO();
 $projectdb = new ProjectDAO();
 
-connect();
-
 // Build base URL
 $dirstuff = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
 $full = "http://" . $_SERVER['HTTP_HOST'] . $dirstuff;
@@ -41,14 +39,10 @@ foreach ($result as $res) {
 	$id = $res->getId();
 
 	// Context
-	$contextResult = $contextdb->getById($res->getContextId());
-	$contextTitle = $contextResult ? $contextResult->getTitle() : "No Context";
-	$context = htmlspecialchars($contextTitle);
+	$context = htmlspecialchars($res->getContext());
 
 	// Project
-	$projectResult = $projectdb->getById($res->getProjectId());
-	$projectTitle = $projectResult ? $projectResult->getTitle() : "No Project";
-	$project = htmlspecialchars($projectTitle);
+	$project = htmlspecialchars($res->getProject());
 
 	$rssnotes = !empty($notes) ? " | " . $notes : '';
 

@@ -6,7 +6,7 @@ require_once("model/ContextDAO.php");
 require_once("model/ProjectDAO.php");
 require_once("model/ItemDAO.php");
 $itemdb = new ItemDAO();
-include("lang/".$language.".php");
+include("lang/".$_SESSION["lang"] .".php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -74,15 +74,9 @@ if(!isset($cmd))	//If cmd is not set
 		$done=$res->isDone() ;
 		$id=$res->getId();
 
-		$contextdb = new ContextDAO();
-		$idresult = $contextdb->getById($res->getContextId());
-		$Contexttitle = $idresult->getTitle();
-		$context=htmlentities($Contexttitle);
+		$context=htmlentities($res->getContext());
 		
-		$projectdb = new ProjectDAO();
-		$idresult = $projectdb->getById($res->getProjectId());
-		$projecttitle = $idresult->getTitle();
-		$project=htmlentities($projecttitle);
+		$project=htmlentities($res->getProject());
 
 	   //nested if statement
 	   //display the row

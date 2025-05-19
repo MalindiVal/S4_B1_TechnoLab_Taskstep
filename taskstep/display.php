@@ -81,7 +81,7 @@ switch ($display)
 	break;
 	case "today":
 		$today = date("Y-m-d");
-		$todayf = date($menu_date_format);
+		$todayf = date($_SESSION["menu_date_format"]);
 		$result = $itemdb->getAll($display,null,$sortby);
 		$title = $l_nav_today.": ". $todayf.
 		$noresultsurl = '';
@@ -109,17 +109,13 @@ else{
 	//the format is $variable = $r["nameofmysqlcolumn"];
 	$title=htmlentities($res->getTitle());
 	$date=$res->getDate();
-	$date_display=date($task_date_format, strtotime($date));
+	$date_display=date($_SESSION["task_date_format"], strtotime($date));
 	$notes=htmlentities($res->getNotes());
 	$urlfull=htmlentities($res->getUrl());
 	$done=$res->isDone();
 	$id=$res->getId();
-	$contextdb = new ContextDAO();
-	$contextbyid = $contextdb->getById($res->getContextId());
-	$context=htmlentities($contextbyid->getTitle());
-	$projectdb = new ProjectDAO();
-	$projectbyid = $projectdb->getById($res->getProjectId());
-	$project=htmlentities($projectbyid->getTitle());
+	$context=htmlentities($res->getContext());
+	$project=htmlentities($res->getProject());
 
 	if ($urlfull == "") $url = "";
 	else

@@ -1,13 +1,5 @@
 <?php
 require_once("./model/SettingDAO.php");
-function connect(){
-	global $mysqli, $server, $user, $password, $db;
-
-	if (!($mysqli and $mysqli->ping())) {
-		$mysqli = new mysqli($server, $user, $password, $db); 
-	}
-	return $mysqli;
-}
 
 function pagespecific(){
 	global $language, $l_cp_tools_purgecheck;
@@ -37,7 +29,7 @@ function pagespecific(){
 		};
 		window.onload = function() {
 			JACS.make("jacs",true);
-			setLanguages("'.$language.'");
+			setLanguages("'.$_SESSION["lang"] .'");
 			if (document.getElementById("addtitle")) {
 				document.getElementById("addtitle").focus();
 				document.getElementById("addtitle").select();
@@ -59,70 +51,7 @@ function pagespecific(){
 	}
 }
 
-function display_items($display = '', $section = '', $tid = '', $sortby = ''){
-	global $mysqli, $result, $l_items_do, $l_items_edit, $l_items_del, $l_items_undo, $task_date_format;
 
-	if ($section) $section = 'section=' . $section . '&amp;';
-	if ($tid) $tid = 'tid=' . $tid . '&amp;';
-	if ($sortby) $sortby = 'sort=' . $sortby . '&amp;';
-
-	//grab all the content
-	while($r=$result->fetch_array())
-	{	
-	//the format is $variable = $r["nameofmysqlcolumn"];
-	$title=htmlentities($r["title"]);
-	$date=$r["date"];
-	$date_display=date($task_date_format, strtotime($date));
-	$notes=htmlentities($r["notes"]);
-	$urlfull=htmlentities($r["url"]);
-	$done=$r["done"];
-	$id=$r["id"];
-	$context=htmlentities($r["context"]);
-	$project=htmlentities($r["project"]);
-
-	if ($urlfull == "") $url = "";
-	else
-	{
-		$limit = 40; // set character limit
-		$url = "<a href='$urlfull'>";
-		// display URL up to character limit, shorten & add ellipsis if it is too long
-		$url .= (strlen($urlfull) > $limit) ? substr($urlfull,0,$limit) . '...</a>' : $urlfull . '</a>';
-	}
-	
-	//Set up a few variables for the do/undo button
-	$cmd = 'do';
-	$link = $l_items_do;
-	$icon = 'undone';
-	
-	//display the row
-   
-	//if the action is marked as done, then do not apply any current or old markings to it
-    if($done == 1)
-	{
-		echo "<div class='np'> <span style='text-decoration:line-through;'> $title - $date_display | $project | $context</span>";
-		$cmd = 'undo';
-		$link = $l_items_undo;
-		$icon = 'accept';
-	}
-
-	//if the date doesn't exist, then don't display the date
-	elseif($date == 00-00-0000) echo "<div class='np'> $title | $project | $context";
-
-	//if the date is equal to the current date, flag it as current
-   	elseif(date("Y-m-d") == $date) echo "<div class='current'><img src='images/flag_yellow.png' alt='' /> $title - $date_display | $project | $context";
-
-	//if the date is older than the current date, flag it as old
-	elseif(date("Y-m-d") > $date) echo "<div class='old'><img src='images/flag_red.png' alt='' /> $title - $date_display | $project | $context";
-
-	//if the date is neither of these, don't flag it.
-	else echo "<div class='np'> $title - $date_display | $project | $context";
-	
-	echo "<a href='display.php?display=$display&amp;{$section}{$tid}{$sortby}cmd=delete&amp;id=$id' title='$l_items_del' class='actionicon'><img src='images/bin_empty.png' alt='$l_items_del' /></a>
-	<a href='edit.php?id=$id' title='$l_items_edit' class='actionicon'><img src='images/pencil.png' alt='$l_items_edit' /></a> 
-	<a href='display.php?display=$display&amp;{$section}{$tid}{$sortby}cmd=$cmd&amp;id=$id' title='$link' class='actionicon'><img src='images/$icon.png' alt='$link' /></a>
-	<br />$notes<br />$url</div>";
-	}
-}
 
 function selfref_url(){
 	$dirstuff = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);

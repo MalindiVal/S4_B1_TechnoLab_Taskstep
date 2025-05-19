@@ -10,7 +10,7 @@ class ItemDAO extends Database
      */
     public function getAll(string $type = null, int $id = null, string $orderby): array {
         $tab = [];
-        $sql = "SELECT * FROM items";
+        $sql = "SELECT i.*, s.title as section , p.title as project , c.title as context FROM items i JOIN sections s ON s.id = i.section_id JOIN projects p ON p.id = i.project_id JOIN contexts c ON c.id = i.context_id";
         $params = [];
     
         $allowedTypes = ["section", "project", "context", "today"];
@@ -18,17 +18,17 @@ class ItemDAO extends Database
     
         if ($type !== "all" && in_array($type, $allowedTypes)) {
             if ($type !== "today") {
-                $sql .= " WHERE {$type}_id = :id";
+                $sql .= " WHERE i.{$type}_id = :id";
                 $params[':id'] = $id;
             } else {
                 $today = date("Y-m-d");
-                $sql .= " WHERE end_date = :today";
+                $sql .= " WHERE i.end_date = :today";
                 $params[':today'] = $today;
             }
         }
     
         if ($orderby && in_array($orderby, $allowedOrderBy)) {
-            $sql .= " ORDER BY {$orderby}";
+            $sql .= " ORDER BY i.{$orderby}";
         }
     
         $res = $this->queryMany($sql, $params);
@@ -41,11 +41,17 @@ class ItemDAO extends Database
         return $tab;
     }
 
+    /**
+     * Met à jour l'item dans la base de données
+     * @param Item $item l'objet item à mettre à jour
+     * @return void
+     */
     public function Update(Item $item){
-        $this->execute("UPDATE items SET title=:title , notes= :notes , url = :url , context_id = :context , section_id = :section, project_id = :project , done=:done WHERE id=:id and user_id= :user_id",
+        $this->execute("UPDATE items SET title=:title , notes= :notes , end_date= :end_date , url = :url , context_id = :context , section_id = :section, project_id = :project , done=:done WHERE id=:id and user_id= :user_id",
         [
             ":title" => $item->getTitle(),
             ":notes" => $item->getNotes(),
+            ":end_date" => $item->getDate(),
             ":url" => $item->getUrl(),
             ":context" => $item->getContextId(),
             ":project" => $item->getProjectId(),
@@ -57,6 +63,11 @@ class ItemDAO extends Database
     );
     }
 
+    /**
+     * Ajout de l'item dans la base de données
+     * @param Item $item l'item à ajouter
+     * @return void
+     */
     public function Add(Item $item){
         $this->execute("INSERT INTO items (title,date,section_id,notes,url,done,context_id,project_id,user_id)".
 		"values (:title, :date, :section, :notes,:url, 0, :context, :project,:user_id)",
@@ -76,8 +87,8 @@ class ItemDAO extends Database
 
     /**
      * Récupère un item selon son identifiant
-     * @param int $id
-     * @return Item
+     * @param int $id l'identifiant de l'item
+     * @return Item l'item à récupérer
      */
     public function getById(int $id): Item {
         $res = $this->queryOne("SELECT * FROM items WHERE id = :id and user_id= :user_id " , [":id" => $id,":user_id" => intval($_SESSION["user_id"])]);
@@ -88,13 +99,17 @@ class ItemDAO extends Database
 
     /**
      * Récupère tous les items cochés ou non cochés
-     * @param bool $done
+     * @param bool $done true = cochée et false = décochée
      * @return array Tableau d'objets Item
      */
     public function getChecked(bool $done): array {
         $tab = array();
         $num = $done ? 1 : 0;
-        $res = $this->queryMany("SELECT * FROM items WHERE done = :done and user_id= :user_id", [":done" => $num,":user_id" => intval($_SESSION["user_id"])]);
+        $res = $this->queryMany("SELECT i.*, s.title as section , p.title as project , c.title as context FROM items i 
+            JOIN sections s ON s.id = i.section_id 
+            JOIN projects p ON p.id = i.project_id 
+            JOIN contexts c ON c.id = i.context_id 
+            WHERE i.done = :done and i.user_id= :user_id", [":done" => $num,":user_id" => intval($_SESSION["user_id"])]);
         foreach ($res as $s) {
             $item = new Item();
             $item->hydrate($s);
@@ -105,8 +120,8 @@ class ItemDAO extends Database
 
     /**
      * Met à jour l'état "coché" d'un item (true/false)
-     * @param bool $done
-     * @param int $id
+     * @param bool $done true = cochée et false = décochée
+     * @param int $id l'identifiant de l'item
      */
     public function setChecked(bool $done, int $id): void {
         $num = $done ? 1 : 0;
@@ -128,13 +143,20 @@ class ItemDAO extends Database
         $this->execute("DELETE FROM items WHERE done = 1 and user_id= :user_id", [":user_id" => intval($_SESSION["user_id"])] );
     }
 
+    /**
+     * Récupére les items à faire imédiatement
+     * @return Item[] tableau d'items
+     */
     public function getImediateItems() : array{
         $tab = array();
         $today  = date("Y-m-d");
-        $result = $this->queryMany("SELECT * FROM items 
-        WHERE date <= :today AND done='0' 
-            AND date != '00-00-0000' OR section_id=3 
-            AND done='0' ORDER BY date LIMIT 5",[":today" => $today]);
+        $result = $this->queryMany("SELECT i.*, s.title as section , p.title as project , c.title as context FROM items i 
+        JOIN sections s ON s.id = i.section_id 
+        JOIN projects p ON p.id = i.project_id 
+        JOIN contexts c ON c.id = i.context_id 
+        WHERE i.date <= :today AND i.done='0' 
+            AND i.date != '00-00-0000' OR i.section_id=3 
+            AND i.done='0' ORDER BY i.date LIMIT 5",[":today" => $today]);
         foreach ($result as $s) {
             $item = new Item();
             $item->hydrate($s);
