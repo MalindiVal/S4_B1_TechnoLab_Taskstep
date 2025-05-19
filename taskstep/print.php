@@ -74,15 +74,9 @@ if(!isset($cmd))	//If cmd is not set
 		$done=$res->isDone() ;
 		$id=$res->getId();
 
-		$contextdb = new ContextDAO();
-		$idresult = $contextdb->getById($res->getContextId());
-		$Contexttitle = $idresult->getTitle();
-		$context=htmlentities($Contexttitle);
+		$context=htmlentities($res->getContext());
 		
-		$projectdb = new ProjectDAO();
-		$idresult = $projectdb->getById($res->getProjectId());
-		$projecttitle = $idresult->getTitle();
-		$project=htmlentities($projecttitle);
+		$project=htmlentities($res->getProject());
 
 	   //nested if statement
 	   //display the row

@@ -13,7 +13,6 @@ if (isset($_GET["cmd"]))
 	switch ($_GET["cmd"])
 	{
 		case "delete":
-			var_dump($id);
 			$itemdb->Delete($id);
 		break;
 		case "do":
@@ -115,12 +114,8 @@ else{
 	$urlfull=htmlentities($res->getUrl());
 	$done=$res->isDone();
 	$id=$res->getId();
-	$contextdb = new ContextDAO();
-	$contextbyid = $contextdb->getById($res->getContextId());
-	$context=htmlentities($contextbyid->getTitle());
-	$projectdb = new ProjectDAO();
-	$projectbyid = $projectdb->getById($res->getProjectId());
-	$project=htmlentities($projectbyid->getTitle());
+	$context=htmlentities($res->getContext());
+	$project=htmlentities($res->getProject());
 
 	if ($urlfull == "") $url = "";
 	else
