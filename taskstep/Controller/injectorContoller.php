@@ -2,6 +2,7 @@
 
 require_once "LoginController.php";
 require_once "SettingController.php";
+require_once "UserController.php"; 
 
 
 /**
@@ -19,10 +20,18 @@ class InjectorContoller {
     
     /**
      * Méthode static permettant de retourner une instance de Setting Controller
-     * @return SettingController
+     * @return SettingController instance de Setting Conroller
      */
     public static function getSettingController(){
         return new SettingController();
+    }
+
+    /**
+     * Méthode static permettant de retourner une instance de User Controller
+     * @return UserController instance de User Conroller
+     */
+    public static function getUserController(){
+        return new UserController();
     }
 
            
