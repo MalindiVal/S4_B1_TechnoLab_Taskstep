@@ -12,7 +12,7 @@ class LoginService{
      * Constructeur de loginService
      */
     public function __construct() {
-        $this->loginModel = InjectorDAO::getLoginDao();
+        $this->loginModel = InjectorDAO::getUserDao();
     }
 
     /**
@@ -45,4 +45,5 @@ class LoginService{
         return $user;
 
     }
+
 }
