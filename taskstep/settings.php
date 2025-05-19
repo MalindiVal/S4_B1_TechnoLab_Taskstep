@@ -1,11 +1,22 @@
 <?php
 include("includes/header.php");
+include("Controller/injectorContoller.php");
 require_once("model/SettingDAO.php");
 require_once("model/Setting.php");
 require_once("model/SectionDAO.php");
 require_once("model/ContextDAO.php");
 require_once("model/ProjectDAO.php");
 require_once("model/ItemDAO.php");
+
+$setting = null;
+$user = null ;
+//Variable récupérer depuis la connexion via la session
+if (isset($_SESSION['user_id'])){
+	$settingController = InjectorContoller::getSettingController();
+	$setting = $settingController->getSettingByUser($_SESSION['user_id']);
+}
+
+
 $settingdb = new SettingDAO();
 $itemdb = new ItemDAO();
 //"Settings Updated" block
@@ -22,7 +33,6 @@ if (isset($_POST["submit"]))
 	if ($style == 'none') $settingsstatus .= "<br />".$l_cp_display_defaultcss;
 	else $settingsstatus .= "<br />".$style;
 	
-	$setting= new Setting();
 	$setting->setTips($tips>0);
 	$setting->setStylesheet($_POST['style']);
 	$settingdb->UpdateSetting($setting);
@@ -34,12 +44,12 @@ else $updatedblock = '';
 
 //Show/Hide Tips checkbox
 	
-	$tipsON = intval($settingdb->getAll()->getTips());
+	$tipsON = intval($setting->getTips());
 	$checked = ($tipsON) ? ' checked="checked"' : '';
 	$tipsfield = $l_cp_display_tips.": <input type='checkbox' value='Display tips' name='tips'$checked />";
 
 //Stylesheets code
-	$style = $settingdb->getAll()->getStylesheet();
+	$style = $setting->getStylesheet();
 	$styleoptions = '';
 
 	//Define the folder and path
@@ -66,15 +76,11 @@ else $updatedblock = '';
 //Password code
 if (isset($_POST["passchanges"]))
 {
-	//Get the salt
-	//$salt = $settingdb->getAll()->getSalt();
-
 	//Get the hashed password
-	//$oldpass = $settingdb->getSetting('password');
+	$oldpass = $user->getPassword();
 
 	//Massive error trapping going on here
-	$submitted = md5($_POST['currentpass']);
-	$submittotal = $submitted.$salt;
+	$submittotal = password_hash($_POST['currentpass']);
 	if($submittotal !== $oldpass) $pwmessage = $l_cp_password_incorrect;
 	elseif($_POST['newpass1'] !== $_POST['newpass2']) $pwmessage = $l_cp_password_nomatch;
 	else	//Everything works, so slam it all in
@@ -82,20 +88,19 @@ if (isset($_POST["passchanges"]))
 		if($_POST['newpass1'] !== '')
 		{
 			$newsalt = substr(uniqid(rand(), true), 0, 5);
-			$secure_password = md5($_POST['newpass1']);
-			$newtotal = $secure_password.$newsalt;
-			//$settingdb->setSetting('salt',$newsalt);
-			//$settingdb->setSetting('password',$newtotal);
+			$secure_password = password_hash($_POST['newpass1']);
+			$user->setPassword($secure_password); 
+			//UpdateUser($secure_password)
 		}
 		$svalue = (isset($_POST['sessions'])) ? 1 : 0;
-		//$settingdb->setSetting('sessions',$svalue);
+		$setting->setSession($svalue);
 		$pwmessage = $l_cp_password_updated;
 	}
 }
 else $pwmessage = '';
 
 //"Use Passwords" checkbox
-$use = $settingdb->getAll()->getSession();
+$use = $setting->getSession();
 $checked = ($use) ? ' checked="checked"' : '';
 $usepwfield = $l_cp_password_use.": <input type='checkbox' value='Sessions' name='sessions'$checked />";
 
