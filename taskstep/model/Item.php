@@ -1,8 +1,10 @@
 <?php
-class Item{
+class Item
+{
     private int $id;
     private string $title;
     private string $date;
+    private string $end_date;
     private string $notes;
     private string $url;
     private int $contextId;
@@ -21,7 +23,8 @@ class Item{
      * Identifiant de l’item
      * @return int
      */
-    public function getId(): int {
+    public function getId(): int
+    {
         return $this->id;
     }
 
@@ -29,7 +32,8 @@ class Item{
      * Titre de l’item
      * @return string
      */
-    public function getTitle(): string {
+    public function getTitle(): string
+    {
         return $this->title;
     }
 
@@ -37,15 +41,26 @@ class Item{
      * Date associée à l’item
      * @return string
      */
-    public function getDate(): string {
+    public function getDate(): string
+    {
         return $this->date;
+    }
+
+    /**
+     * Date de fin associée à l’item
+     * @return string
+     */
+    public function getEndDate(): string
+    {
+        return $this->end_date;
     }
 
     /**
      * Notes ou description de l’item
      * @return string
      */
-    public function getNotes(): string {
+    public function getNotes(): string
+    {
         return $this->notes;
     }
 
@@ -53,7 +68,8 @@ class Item{
      * URL associée
      * @return string
      */
-    public function getUrl(): string {
+    public function getUrl(): string
+    {
         return $this->url;
     }
 
@@ -61,7 +77,8 @@ class Item{
      * Statut : est-ce que l’item est terminé ?
      * @return bool
      */
-    public function isDone(): bool {
+    public function isDone(): bool
+    {
         return $this->done;
     }
 
@@ -69,7 +86,8 @@ class Item{
      * Identifiant du contexte (clé étrangère)
      * @return int
      */
-    public function getContextId(): int {
+    public function getContextId(): int
+    {
         return $this->contextId;
     }
 
@@ -77,7 +95,8 @@ class Item{
      * Identifiant de la section (clé étrangère)
      * @return int
      */
-    public function getSectionId(): int {
+    public function getSectionId(): int
+    {
         return $this->sectionId;
     }
 
@@ -85,15 +104,17 @@ class Item{
      * Identifiant du projet (clé étrangère)
      * @return int
      */
-    public function getProjectId(): int {
+    public function getProjectId(): int
+    {
         return $this->projectId;
     }
 
-     /**
+    /**
      * Nom du contexte (clé étrangère)
      * @return string
      */
-    public function getContext(): string {
+    public function getContext(): string
+    {
         return $this->context;
     }
 
@@ -101,7 +122,8 @@ class Item{
      * le nom de la section (clé étrangère)
      * @return string
      */
-    public function getSection(): string {
+    public function getSection(): string
+    {
         return $this->section;
     }
 
@@ -109,7 +131,8 @@ class Item{
      * le nom du projet (clé étrangère)
      * @return string
      */
-    public function getProject(): string {
+    public function getProject(): string
+    {
         return $this->project;
     }
 
@@ -117,7 +140,8 @@ class Item{
      * le créateur du projet (clé étrangère)
      * @return int
      */
-    public function getUserID(): int {
+    public function getUserID(): int
+    {
         return $this->userId;
     }
 
@@ -125,71 +149,89 @@ class Item{
     /**
      * Définit le titre de l’item
      */
-    public function setTitle(string $title): void {
+    public function setTitle(string $title): void
+    {
         $this->title = $title;
     }
 
     /**
      * Définit la date de l’item
      */
-    public function setDate(string $date): void {
+    public function setDate(string $date): void
+    {
         $this->date = $date;
+    }
+
+    /**
+     * Set la date de fin de l’item
+     */
+    public function setEndDate(string $end_date): void
+    {
+        $this->end_date = $end_date;
     }
 
     /**
      * Définit les notes de l’item
      */
-    public function setNotes(string $notes): void {
+    public function setNotes(string $notes): void
+    {
         $this->notes = $notes;
     }
 
     /**
      * Définit l’URL de l’item
      */
-    public function setUrl(string $url): void {
+    public function setUrl(string $url): void
+    {
         $this->url = $url;
     }
 
     /**
      * Définit si l’item est terminé ou non
      */
-    public function setDone(bool $done): void {
+    public function setDone(bool $done): void
+    {
         $this->done = $done;
     }
 
     /**
      * Définit l’identifiant du contexte
      */
-    public function setContextId(int $contextId): void {
+    public function setContextId(int $contextId): void
+    {
         $this->contextId = $contextId;
     }
 
     /**
      * Définit l’identifiant de la section
      */
-    public function setSectionId(int $sectionId): void {
+    public function setSectionId(int $sectionId): void
+    {
         $this->sectionId = $sectionId;
     }
 
     /**
      * Définit l’identifiant du projet
      */
-    public function setProjectId(int $projectId): void {
+    public function setProjectId(int $projectId): void
+    {
         $this->projectId = $projectId;
     }
 
     /**
      * Définit l’identifiant du createur
      */
-    public function setUserId(int $userId): void {
-        $this->$userId = $$userId;
+    public function setUserId(int $userId): void
+    {
+        $this->userId = $userId;
     }
 
-     /**
+    /**
      * Hydrate l'objet à partir d'un tableau associatif de données.
      * @param array $data Données à injecter dans l'objet
      */
-    public function hydrate(array $data): void {
+    public function hydrate(array $data): void
+    {
         if (isset($data["id"])) {
             $this->id = intval($data["id"]);
         }
@@ -203,7 +245,7 @@ class Item{
         }
 
         if (isset($data["end_date"])) {
-            $this->date = $data["end_date"];
+            $this->end_date = $data["end_date"];
         }
 
         if (isset($data["notes"])) {
