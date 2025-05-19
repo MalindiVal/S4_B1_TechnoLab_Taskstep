@@ -42,7 +42,7 @@ foreach($result as $res)
 {	
 	//the format is $variable = $r["nameofmysqlcolumn"];
 	$title=htmlentities($res->getTitle());
-	$date = ($res->getDate() != 00-00-0000) ? ' - '.date($task_date_format, strtotime($res->getDate())) : '';
+	$date = ($res->getDate() != 00-00-0000) ? ' - '.date($_SESSION["task_date_format"], strtotime($res->getDate())) : '';
 	$notes=htmlentities($res->getNotes());
 	$url=htmlentities($res->getUrl());
 	$done=$res->isDone() ;

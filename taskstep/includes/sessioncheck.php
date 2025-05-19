@@ -5,10 +5,13 @@ header("Cache-control: private");
 require_once("model/SettingDAO.php");
 $settingdb = new SettingDAO();
 $_SESSION["user_id"] = 1;
+$_SESSION["lang"] = "en";
 
 //Include the configuration
 include("config.php");
 $_SESSION["lang"] = $language;
+$_SESSION["menu_date_format"] = $menu_date_format;	
+$_SESSION["task_date_format"] = $task_date_format;
 
 //Grab the setting for "sessions"
 //Select the results of the query in the format (query,row,column)

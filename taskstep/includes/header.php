@@ -59,7 +59,7 @@ require_once("./model/SectionDAO.php");
         <li class="nav-item">
           <a class="nav-link" href="display.php?display=today&amp;sort=done">
             <img src="images/calendar_view_day.png" alt="" class="me-1" />
-            <?php echo $l_nav_today; ?>: <?php echo date($menu_date_format); ?>
+            <?php echo $l_nav_today; ?>: <?php echo date($_SESSION["menu_date_format"]); ?>
           </a>
         </li>
         <li class="nav-item"><a class="nav-link" href="index.php"><img src="images/house.png" alt="" class="me-1" /><?php echo $l_nav_home; ?></a></li>
