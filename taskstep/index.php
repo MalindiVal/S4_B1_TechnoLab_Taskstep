@@ -42,7 +42,7 @@ foreach($result as $res)
 {	
 	//the format is $variable = $r["nameofmysqlcolumn"];
 	$title=htmlentities($res->getTitle());
-	$date = ($res->getDate() != 00-00-0000) ? ' - '.date($task_date_format, strtotime($res->getDate())) : '';
+	$date = ($res->getDate() != 00-00-0000) ? ' - '.date($_SESSION["task_date_format"], strtotime($res->getDate())) : '';
 	$notes=htmlentities($res->getNotes());
 	$url=htmlentities($res->getUrl());
 	$done=$res->isDone() ;
@@ -77,7 +77,7 @@ echo '</div>';
 		echo '<div id="tipsbox"><img src="images/information.png" alt="" />&nbsp;' . $l_index_tip . ':&nbsp;';
 		//TEMPORARY LANGUAGE VALUE
 		srand((double)microtime()*1000000); 
-		$arry_txt=preg_split("/--NEXT--/",join('',file("lang/tips_$language.txt"))); 
+		$arry_txt=preg_split("/--NEXT--/",join('',file("lang/tips_" . $_SESSION["lang"] .".txt"))); 
 		echo $arry_txt[rand(0,sizeof($arry_txt)-1)] . '</div>'; 
 	}
 
