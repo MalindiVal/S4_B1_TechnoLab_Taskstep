@@ -1,10 +1,7 @@
 <!-- Close content -->
-</main>
 </div>
-<footer id="footer" class="text-center py-3 mt-auto">
-  <div class="container">
-    Taskstep 1.1 – By Rob Lowcock, Ethan Romba, and Thomas Hooge
-  </div>
-</footer>
+<div id="footer">Taskstep 1.1 - By Rob Lowcock, Ethan Romba, and Thomas Hooge</div>
+<!--Close container-->
+</div>
 </body>
 </html>

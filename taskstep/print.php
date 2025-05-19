@@ -1,12 +1,7 @@
 <?php
 include("includes/sessioncheck.php");
 include("config.php");
-require_once("model/SectionDAO.php");
-require_once("model/ContextDAO.php");
-require_once("model/ProjectDAO.php");
-require_once("model/ItemDAO.php");
-$itemdb = new ItemDAO();
-include("lang/".$_SESSION["lang"] .".php");
+include("lang/".$language.".php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -24,37 +19,42 @@ $print = (isset($_GET['print'])) ? $_GET['print'] : '';
 switch ($print)
 {
 case 'section':
-	$tid = intval($_GET["id"]);
-	$sectiondb = new SectionDAO();
-	$idresult = $sectiondb->getById($tid);
-	$result = $itemdb->getAll($print,$tid,"date");
-	$title=$l_sectionlist[$idresult->getTitle()];
-	$result = $itemdb->getAll($print,$tid,"date");
-	break;
+	//Long if elseif statement to determine what section to display
+	//This means only one file is used to display the section, rather than several individual ones
+	// Modified by Cord
+	// --28/8/07--
+	foreach($l_sectionlist as $k=>$v)
+	{
+		$l_sectionlistkeys[]=$k;
+	}
+	if(isset($_GET["section"]) && in_array($_GET["section"],$l_sectionlistkeys))
+	{
+	  $currentsection=$_GET["section"];
+	  $title=$l_sectionlist[$_GET["section"]];
+	}
+	else
+	{
+	  echo "<div class='error'><img src='images/exclamation.png' alt='' /> $l_print_sectionnotfound </div>";
+	}
+	$result = $mysqli->query("SELECT * FROM items WHERE section='$currentsection' ORDER BY date");	//select the table
+break;
 case 'project':
-	$tid = intval($_GET["id"]);
-	$projectdb = new ProjectDAO();
-	$idresult = $projectdb->getById($tid);
-	$title = $idresult->getTitle();
-	$result = $itemdb->getAll($print,$tid);
-	break;
 case 'context':
-	$tid = intval($_GET["id"]);
-	$contextdb = new ContextDAO();
-	$idresult = $contextdb->getById($tid);
-	$title = $idresult->getTitle();
-	$result = $itemdb->getAll($print,$tid);
-	break;
+	$tid = $_GET["id"];
+	$idresult = $mysqli_query("SELECT title FROM {$print}s WHERE id='$tid'");	//Select the row
+	$title = $idresult->fetch_row()[0];
+	$result = $mysqli->query("SELECT * FROM items WHERE $print='$title' ORDER BY date");	//select the table
+break;
 case 'all':
 	$title = $l_print_printalltasks;
-	$result = $itemdb->getAll(null,null,"done");
-	break;
+	$result = $mysqli->query("SELECT * FROM items ORDER BY done,title");	//select the table
+break;
 case 'today':
 	$fancytoday = date("jS M Y");
 	$title = "$l_print_printtoday ($fancytoday)";
 	$today = date("Y-m-d");
-	$result = $itemdb->getAll($print,null,"done");
-	break;
+	$result = $mysqli->query("SELECT * FROM items WHERE date='$today ORDER BY done,title");	//select the table
+break;
 }
 
 echo "<h1>$title</h1>\n";
@@ -63,20 +63,18 @@ if(!isset($cmd))	//If cmd is not set
 {
 	echo"<ul>";
 	//grab all the content
-	foreach($result as $res)
+	while($r=$result->fetch_array())
 	{
 	   //the format is $variable = $r["nameofmysqlcolumn"];
 
-		$title=htmlentities($res->getTitle());
-		$date = ($res->getDate() != 00-00-0000) ? $res->getDate()." | " : '';
-		$notes=htmlentities($res->getNotes());
-		$url=htmlentities($res->getUrl());
-		$done=$res->isDone() ;
-		$id=$res->getId();
-
-		$context=htmlentities($res->getContext());
-		
-		$project=htmlentities($res->getProject());
+		$title=htmlentities($r["title"]);
+		$date = ($r["date"] != 00-00-0000) ? $r["date"]." | " : '';
+		$notes=htmlentities($r["notes"]);
+		$url=htmlentities($r["url"]);
+		$done=$r["done"];
+		$id=$r["id"];
+		$context=htmlentities($r["context"]);
+		$project=htmlentities($r["project"]);
 
 	   //nested if statement
 	   //display the row
