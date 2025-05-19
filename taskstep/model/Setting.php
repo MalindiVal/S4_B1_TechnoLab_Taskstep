@@ -1,5 +1,6 @@
 <?php
-class Setting {
+class Setting
+{
     private int $id;
     private bool $tips;
     private string $stylesheet;
@@ -11,7 +12,8 @@ class Setting {
      * Identifiant des parametres
      * @return int
      */
-    public function getId(): int {
+    public function getId(): int
+    {
         return $this->id;
     }
 
@@ -19,7 +21,8 @@ class Setting {
      * La possibilité d'afficher des tips
      * @return bool
      */
-    public function getTips(): bool {
+    public function getTips(): bool
+    {
         return $this->tips;
     }
 
@@ -27,7 +30,8 @@ class Setting {
      * Le CSS dans les parametres
      * @return string
      */
-    public function getStylesheet(): string {
+    public function getStylesheet(): string
+    {
         return $this->stylesheet;
     }
 
@@ -35,7 +39,8 @@ class Setting {
      * Si le site utilise les sessions
      * @return bool
      */
-    public function getSession(): bool {
+    public function getSession(): bool
+    {
         return $this->session;
     }
 
@@ -43,7 +48,8 @@ class Setting {
      * Identifiant de l'utilisateur des parametres
      * @return int
      */
-    public function getUserId(): int {
+    public function getUserId(): int
+    {
         return $this->userid;
     }
 
@@ -53,7 +59,8 @@ class Setting {
      * @param int $id
      * @return void
      */
-    public function setId(int $id): void {
+    public function setId(int $id): void
+    {
         $this->id = $id;
     }
 
@@ -62,7 +69,8 @@ class Setting {
      * @param bool $tips
      * @return void
      */
-    public function setTips(bool $tips): void {
+    public function setTips(bool $tips): void
+    {
         $this->tips = $tips;
     }
 
@@ -71,7 +79,8 @@ class Setting {
      * @param string $stylesheet
      * @return void
      */
-    public function setStylesheet(string $stylesheet): void {
+    public function setStylesheet(string $stylesheet): void
+    {
         $this->stylesheet = $stylesheet;
     }
 
@@ -80,7 +89,8 @@ class Setting {
      * @param bool $session
      * @return void
      */
-    public function setSession(bool $session): void {
+    public function setSession(bool $session): void
+    {
         $this->session = $session;
     }
 
@@ -89,7 +99,8 @@ class Setting {
      * @param int $userid
      * @return void
      */
-    public function setUserId(int $userid): void {
+    public function setUserId(int $userid): void
+    {
         $this->userid = $userid;
     }
 
@@ -98,21 +109,22 @@ class Setting {
      * @param array $data tableau de données
      * @return void
      */
-    public function hydrate(array $data): void {
+    public function hydrate(array $data): void
+    {
         if (isset($data['id'])) {
-            $this->setId((int)$data['id']);
+            $this->setId((int) $data['id']);
         }
         if (isset($data['tips'])) {
-            $this->setTips((bool)$data['tips']);
+            $this->setTips((bool) $data['tips']);
         }
-        if (isset($data['stylesheet']) || isset($data['style'])) {
-            $this->setStylesheet((string)$data['stylesheet']);
+        if (isset($data['stylesheet'])) {
+            $this->setStylesheet((string) $data['stylesheet']);
         }
         if (isset($data['session'])) {
-            $this->setSession((bool)$data['session']);
+            $this->setSession((bool) $data['session']);
         }
         if (isset($data['user_id'])) {
-            $this->setUserId((int)$data['user_id']);
+            $this->setUserId((int) $data['user_id']);
         }
     }
 }
