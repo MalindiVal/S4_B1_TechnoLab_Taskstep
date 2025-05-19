@@ -2,8 +2,6 @@
 //Allow sessions
 session_start();  
 header("Cache-control: private");
-require_once("model/SettingDAO.php");
-$settingdb = new SettingDAO();
 $_SESSION["user_id"] = 1;
 $_SESSION["lang"] = "en";
 
