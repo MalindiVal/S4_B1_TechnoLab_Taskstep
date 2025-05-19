@@ -16,18 +16,29 @@ function installerBase(PDO $pdo, string $host, string $dbname, string $user, str
     // Si aucun DSN défini, alors on génère le fichier de config
     if (!$dsn) {
         $config_content = <<<INI
-; config dev
-[DB]
-dsn = mysql:host=$host;dbname=$dbname;charset=utf8
-user = $user
-pass = $password
-INI;
+        ; config dev
+        [DB]
+        dsn = mysql:host=$host;dbname=$dbname;charset=utf8
+        user = $user
+        pass = $password
+        INI;
 
         file_put_contents(__DIR__ . '/Config/dev.ini', $config_content);
         echo "Fichier de configuration 'dev.ini' créé avec succès.\n";
     }
 
-    echo "<a href='index.php'>Retour à l'acceuil</a>";
+    $stmt = $pdo->prepare("INSERT INTO users (email, password) VALUES (:email, :password)");
+    
+    // Définir les valeurs à insérer
+    $email = 'test@gmail.com';
+    $password = password_hash('toto', PASSWORD_DEFAULT); // Hachage du mot de passe
+    
+    // Exécuter la requête
+    $stmt->execute(['email' => $email, 'password' => $password]);
+    
+    echo "Données insérées avec succès.";
+
+    echo "<a href='../index.php'>Retour à l'acceuil</a>";
 }
 
 // Récupération des valeurs depuis la config ou le formulaire
