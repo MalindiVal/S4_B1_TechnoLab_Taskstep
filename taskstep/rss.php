@@ -11,8 +11,6 @@ $itemdb = new ItemDAO();
 $contextdb = new ContextDAO();
 $projectdb = new ProjectDAO();
 
-connect();
-
 // Build base URL
 $dirstuff = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
 $full = "http://" . $_SERVER['HTTP_HOST'] . $dirstuff;
