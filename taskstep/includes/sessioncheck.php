@@ -8,12 +8,7 @@ $_SESSION["user_id"] = 1;
 
 //Include the configuration
 include("config.php");
-
-//Connect and select the database
-$mysqli = new mysqli($server, $user, $password, $db);
-if ($mysqli->connect_error) {
-	die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
-}
+$_SESSION["lang"] = $language;
 
 //Grab the setting for "sessions"
 //Select the results of the query in the format (query,row,column)

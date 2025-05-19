@@ -1,6 +1,6 @@
 <?php
 include("sessioncheck.php");	//Initialize DB connection and make sure the user is logged in
-include("lang/".$language.".php");
+include("lang/".$_SESSION["lang"] .".php");
 include("functions.php");
 require_once("./model/SettingDAO.php");
 require_once("./model/SectionDAO.php");

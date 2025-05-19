@@ -74,7 +74,7 @@ $settings = $settingdb->getAll();
 		echo '<div id="tipsbox"><img src="images/information.png" alt="" />&nbsp;' . $l_index_tip . ':&nbsp;';
 		//TEMPORARY LANGUAGE VALUE
 		srand((double)microtime()*1000000); 
-		$arry_txt=preg_split("/--NEXT--/",join('',file("lang/tips_$language.txt"))); 
+		$arry_txt=preg_split("/--NEXT--/",join('',file("lang/tips_" . $_SESSION["lang"] .".txt"))); 
 		echo $arry_txt[rand(0,sizeof($arry_txt)-1)] . '</div>'; 
 	}
 

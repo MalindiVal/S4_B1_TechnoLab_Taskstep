@@ -37,7 +37,7 @@ function pagespecific(){
 		};
 		window.onload = function() {
 			JACS.make("jacs",true);
-			setLanguages("'.$language.'");
+			setLanguages("'.$_SESSION["lang"] .'");
 			if (document.getElementById("addtitle")) {
 				document.getElementById("addtitle").focus();
 				document.getElementById("addtitle").select();
