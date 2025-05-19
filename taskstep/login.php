@@ -9,23 +9,6 @@ include("Controller/injectorContoller.php");
 $userController = InjectorContoller::getLoginController();
 $user = $userController->connexion();
 
-$settingController = InjectorContoller::getSettingController();
-
-
-if ($user){
-	//Récupération de variable réutilisable
-	$setting = $settingController->getSettingByUser($user->getId());
-	$_SESSION['user'] = $user;
-	$_SESSION["user_id"] = $user->getId();
-	$_SESSION['setting'] = $setting;
-	
-}
-else{
-	$setting = new Setting(); 
-    $setting->setStylesheet("default.css"); 
-    $setting->setSession(1); 
-}
-
 header("Cache-control: private");
 include("lang/".$_SESSION["lang"] .".php");
 ?>
@@ -44,7 +27,8 @@ include("lang/".$_SESSION["lang"] .".php");
 <!--Open container-->
 <div id="container">
 <?php
-$sessionssetting = $setting->getSession();
+//$sessionssetting = $settingdb->getSetting('sessions');
+$sessionssetting = 1 ;
 ?>
 <div id="loginbox">
 <h1><img src="images/icon.png" alt="" /> TaskStep</h1>

@@ -14,8 +14,9 @@ require_once("./model/SectionDAO.php");
 
 <link href="public/bootstrap-5.3.6-dist/css/bootstrap.min.css" rel="stylesheet" >
 <?php 
-	if (isset($_SESSION["user_id"]) && isset($_SESSION['setting'])){
-		$setting = $_SESSION['setting'];
+	if (isset($_SESSION["user_id"])){
+		$settingdb = new SettingDAO();
+		$setting = $settingdb->getAll();
 		$value = $setting->getStylesheet();
 	} else {
 		$value = "default.css";

@@ -1,7 +1,6 @@
 <?php
 
 require_once "UserDAO.php";
-require_once "SettingDAO.php";
 
 /**
  * Classe InjectorDAO
@@ -14,14 +13,6 @@ class InjectorDAO{
      */
     public static function getLoginDao(){
         return new UserDAO();
-    }
-
-    /**
-     * Méthode statique permettant de retourner une instance de SettingDao
-     * @return SettingDAO instance de SettingDao
-     */
-    public static function getSettingDao(){
-        return new SettingDAO();
     }
 
 }
