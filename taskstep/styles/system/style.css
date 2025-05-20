@@ -20,4 +20,29 @@
 .pagination span {
     margin: 0 10px;
     font-size: 14px;
+}
+
+.password-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 14px 18px;
+    align-items: center;
+    max-width: 420px;
+    margin-bottom: 18px;
+}
+
+.password-grid label {
+    font-weight: 500;
+    color: #222;
+    text-align: right;
+    padding-right: 8px;
+}
+
+.password-grid input[type="password"] {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 1em;
+    background: #f9f9f9;
 } 
