@@ -3,37 +3,18 @@ session_start();
 
 include("config.php");
 include("includes/functions.php");
+require_once("Controller/injectorContoller.php");
 
 $mysqli = connect();
 
 $failed = false;
 
-if (isset($_POST["submit"]))
-{
-	$result = $mysqli->query("SELECT setting,value FROM settings WHERE setting='password' OR setting='salt'");
-	while($r=$result->fetch_assoc())
-	{
-		$setting[$r['setting']] = $r['value'];	//Build a multi-dimensional array containing the returned rows
-	}
-	
-	$given = $_POST["password"];
-	$secured = md5($given);
-	$total = $secured.$setting['salt'];
-	if ($total == $setting['password'])
-	{
-		$_SESSION["loggedin"] = true;
-		$host  = $_SERVER['HTTP_HOST'];
-		$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-		$extra = 'index.php';
-		session_write_close();
-		header("Location: http://$host$uri/$extra");
-		exit;
-	}
-	else
-	{
-		$failed = true;
-		$_SESSION["loggedin"] = false;
-	}
+
+if ($user){
+	//Récupération de variable réutilisable
+	$setting = $settingController->getSettingByUser($user->getId());
+	$_SESSION["user_id"] = $user->getId();
+	$_SESSION["email"] = $user->getEmail();
 }
 else if (isset($_GET["action"])) $_SESSION['loggedin'] = false;	//If "action" is set, log out
 
@@ -70,10 +51,18 @@ while($r3=$result->fetch_array())
 <?php if($sessionssetting == '1'){ ?>
 <p><img src="images/shield.png" alt="" />&nbsp;<?php echo $l_login_l1; ?></p>
 <form action="login.php" method="post">
-<p>
-<input type="password" name="password" />&nbsp;
-<input type="text" style="display: none;" />	<!--IE workaround: pressing "enter" will submit the form-->
-<input type="submit" name="submit" value="<?php echo $l_login_button; ?>" /></p>
+	<div>
+		<label for="MailConnexion">Email</label>
+		<input type="text" name="identifiant">
+	</div>
+	<div>
+		<label for="PwdConnexion">Password</label>
+		<input type="password" name="password" />&nbsp;
+	</div>
+	<div>
+		<input type="text" style="display: none;" />	<!--IE workaround: pressing "enter" will submit the form-->
+		<input type="submit" name="submit" value="<?php echo $l_login_button; ?>" />
+	</div>
 </form> <?php }
 else{ ?>
   <p><img src="images/shield_error.png" alt="" />&nbsp;<?php echo $l_login_l5; ?></p>

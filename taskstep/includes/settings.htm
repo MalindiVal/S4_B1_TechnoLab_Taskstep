@@ -31,25 +31,17 @@
 	<h2><b><?php echo $l_cp_password_title; ?></b></h2>
 	<?php echo $pwmessage ?><br />
 	<form action='settings.php' method='post'>
-		<div>
-			<table>
-				<tr>
-					<td><?php echo $l_cp_password_current; ?><span class="marked">*</span>:</td>
-					<td><input type="password" name="currentpass" class="necessary" /></td>
-				</tr>
-				<tr>
-					<td><?php echo $l_cp_password_new1; ?>:</td>
-					<td><input type="password" name="newpass1" /></td>
-				</tr>
-				<tr>
-					<td><?php echo $l_cp_password_new2; ?>:</td>
-					<td><input type="password" name="newpass2" /></td>
-				</tr>
-			</table>
-			<?php echo $usepwfield ?>
-			<br /><br /><?php echo $l_cp_password_fieldss; ?> <span class="marked">*</span> <?php echo $l_cp_password_fieldse; ?>.
-			<br /><input name="passchanges" type="submit" value="<?php echo $l_cp_password_button; ?>" />
+		<div class="password-grid">
+			<label for="currentpass"><?php echo $l_cp_password_current; ?><span class="marked">*</span>:</label>
+			<input type="password" name="currentpass" class="necessary" id="currentpass" />
+			<label for="newpass1"><?php echo $l_cp_password_new1; ?>:</label>
+			<input type="password" name="newpass1" id="newpass1" />
+			<label for="newpass2"><?php echo $l_cp_password_new2; ?>:</label>
+			<input type="password" name="newpass2" id="newpass2" />
 		</div>
+		<?php echo $usepwfield ?>
+		<br /><br /><?php echo $l_cp_password_fieldss; ?> <span class="marked">*</span> <?php echo $l_cp_password_fieldse; ?>.
+		<br /><input name="passchanges" type="submit" value="<?php echo $l_cp_password_button; ?>" />
 	</form> 
 </div>
 
